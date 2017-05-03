@@ -1,0 +1,6 @@
+High Level Design for FEWD Capstone
+
+Summary: This app will allow users to plan a road trip and see the events that are happening in their selected locations. It will break the road trip up into legs, allow them to determine how long they'd like to stay in each location, and show events that correspond to the days they are staying.
+
+APIs: Eventbrite  https://www.programmableweb.com/api/eventbrite
+      Google Maps: https://developers.google.com/maps/documentation/static-maps/intro
