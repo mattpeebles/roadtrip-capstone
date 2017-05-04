@@ -17,9 +17,23 @@
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
-
 <body>
-
+	<section class="container roadtrip-form">
+		<div>
+			<form id="destination-form">
+				<input type="text" name="Start" id="start" placeholder="Start">
+				<input type="date" name="begin-date">
+				<button id="js-addDest">Add Destination</button><br id="start-break">
+				<input type="text" name="End" id="end" placeholder="End">
+				<input type="text" name="length" placeholder="length of stay"><br>
+				<input type="submit" name="submit" id="js-form-submit">
+			</form>
+		
+		</div>
+		<div>
+			<div id="map-holder"></div>
+		</div>
+	</section>
 </body>
 
 	<!-- jquery -->
