@@ -5,8 +5,7 @@ State
 
 	var leg=[destination[legCounter], destination[legCounter+1];
 
-	var legCounter = 0 //starts at 0 and goes up by 1 every time principle information function is called
-	function to push user destination inputs into array
+	var legCounter = 0;
 
 	var legData  ={startPoint: {geocode: {latitude: number,
 	  				      longitude: number},
@@ -60,6 +59,7 @@ Map Tomfoolery Section
 	function that creates url for staticmap
 		function that creates start point marker
 		function that creates endpoint marker
+		function that creates path between start and end
 		function that creates midpoint marker
 			calls weather marker determiner
 		function that creates 0.5 marker
