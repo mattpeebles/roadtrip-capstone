@@ -2,6 +2,8 @@
 
 // GoogleMaps API Call
 
+var EVENTBRITE_BASE_URL = "https://www.eventbriteapi.com/v3/events/search/"
+
 // allows for additional destinations
 function addDest(){
 	var counter = 1;
@@ -33,7 +35,30 @@ function routeDest(){
 	})
 }
 
+function getDataFromEventBrite(callback){
+	var query = {
+		"location.latitude": 29.7604267, //need to determine how to get latitude of inputted city
+		"location.longitude": -95.3698028, //need to determine how to get longitude
+		"start_date.range_start": $("#start-date").val() + "T13:00:00",
+		token: "NYUIK7WAP7JD57IF4W4H",
+	}
+	$.getJSON(EVENTBRITE_BASE_URL, query, callback)
+}
+
+function displayEventBriteData(data){
+	data.events.forEach(function(item){
+		console.log(item);
+	})
+}
+
+function logEventBriteData(){
+	$("#js-form-submit").on("click", function(event){
+		getDataFromEventBrite(displayEventBriteData);
+	})
+}
+
 $(function(){ //ready function
 	addDest();
 	routeDest();
+	logEventBriteData();
 });
