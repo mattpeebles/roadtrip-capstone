@@ -1,0 +1,116 @@
+Low Level Design for FEWD Capstone
+
+State
+	var destinations = [];
+
+	var leg=[destination[legCounter], destination[legCounter+1];
+
+	var legCounter = 0 //starts at 0 and goes up by 1 every time principle information function is called
+	function to push user destination inputs into array
+
+	var legData  ={startPoint: {geocode: {latitude: number,
+	  				      longitude: number},
+				    weather: {}
+				   },
+		       endPoint: {geocode: {latitude: number,
+                                   	    longitude: number},
+                        	  weather: {}
+                        	 },
+		       midPoint: {geocode: {latitude: number,
+                                   	    longitude: number},
+                        	  weather: {}
+                       		  },
+
+		       0.5point: {geocode: {latitude: number,
+                                   	    longitude: number},
+                        	  weather: {}
+                        	 },
+		       1.5point: {geocode: {latitude: number,
+                                   	    longitude: number},
+                        	  weather: {}
+                        	 },	
+		      }
+
+
+
+State Manipulation Section
+
+	function to update leg
+		leg.push(destination[legCounter])
+		leg.push(desintation[legCounter+1])
+	
+	function to update startPoint and endPoint
+		calls return geocode data function and sets the startPoint.geocode and endPoint.geocode to returned data
+
+	function to calculate geocode for midpoint between start and end i.e. midpoint
+	function to calculate geocode for midpoint between start and Geo-1 i.e 0.5point
+	function to calculate geocode for midpoint between Geo-1 and end i.e. 1.5point
+		
+
+
+Weather Tomfoolery Section
+	function to create rain mapmarker //these may be variables
+	function to create thunderstorm mapmarker
+	function to create snow mapmarker
+		etc etc
+
+	function that gets weather data for each geocode and updates the points weather object.
+
+Map Tomfoolery Section
+	function that creates url for staticmap
+		function that creates start point marker
+		function that creates endpoint marker
+		function that creates midpoint marker
+			calls weather marker determiner
+		function that creates 0.5 marker
+			calls weather marker determiner
+		function that creates 1.5 marker
+			calls weather marker determiner
+		function that determines which weather marker to use depending on weather results
+
+DOM Manipulation Section
+	function to add destinations in user input form
+	
+	function to suggest destinations by user input i.e. Hou ---> Houston, TX?	
+	
+	Principle information function
+		calls function to render google map
+		calls function to render eventbrite events
+		calls function to show route data
+			Travel Time
+			Distance
+	
+	function to cycle back through legs if we are on the last leg
+		if (legCounter == destination.length - 1) {
+			legCounter = 0;
+			}
+
+API Section
+	Get Section
+		function to get data from EventBrite API
+		function to get data from OpenWeather API
+		function to get data from Google Maps API
+		function to get data from Google Geocode API
+
+	Data Manipulation Section
+		function to render google map for specific leg
+			Start: destination[leg]
+			End: desination[leg+1]
+
+		function to render eventbrite events
+		function to return geocode data
+
+Event Watch Section
+	function that watches for add destination button
+		calls add destination function
+	
+	function that watches for form submit
+		calls principle information function to render everything
+
+	function that watches for forward  navigation button
+		increments legCounter by 1
+		calls principle information function to rerender
+	
+	function that watches for backward navigation button
+		decrements legCounter by 1
+		calls principle information function to rerender
