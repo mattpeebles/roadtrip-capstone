@@ -1,6 +1,34 @@
 High Level Design for FEWD Capstone
 
-Summary: This app will allow users to plan a road trip and see the events that are happening in their selected locations. It will break the road trip up into legs, allow them to determine how long they'd like to stay in each location, and show events that correspond to the days they are staying.
+Summary: This app will allow users to plan a road trip and see the events that are happening in their selected locations.
+It will break the road trip up into legs, allow them to determine how long they'd like to stay in each location, and show
+events that correspond to the days they are staying. Additionally, it will show the weather forecast along their route.
 
 APIs: Eventbrite  https://www.eventbrite.com/developer/v3/
       Google Maps: https://developers.google.com/maps/documentation/static-maps/intro
+      Google Geocode: https://developers.google.com/maps/documentation/geocoding/start
+      Open Weather: https://openweathermap.org/api
+
+API Interaction
+	Will create a static google map with a path between the two cities. The application will also layer
+	markers depending on the forecast pulled from Open Weather.
+	If that becomes too complicated then will display forecast along route in a seperate section.
+	Finally, Eventbrite will display it's own data outside of the map.
+
+
+Initial Users Input:
+	Start Point
+	End Point
+	n points in between
+	Road Trip Start
+	Length of Stay at each n point and end point 
+
+Possible User Interactions After Form Submit
+	select event
+	navigate to next leg
+
+
+
+
+Resources
+Google Maps Autocomplete: https://developers.google.com/maps/documentation/javascript/places-autocomplete	
