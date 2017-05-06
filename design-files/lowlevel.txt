@@ -34,6 +34,8 @@ State
 
 State Manipulation Section
 
+	function to get destinations from form and update destination variable
+
 	function to update leg
 		leg.push(destination[legCounter])
 		leg.push(desintation[legCounter+1])
