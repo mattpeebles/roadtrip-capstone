@@ -51,30 +51,32 @@ function getLeg(){
   leg = [destinations[legCounter], destinations[legCounter + 1]];
 }
 
-  //Obtaining geocodes section
+    //Obtaining geocodes section
+// ******************************************************************
   var GOOGLE_GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
   var myGeoArray = []; //holds coordinates that geocode returns
 
-function getDataFromGoogleGeocode(address, callback){
-    var query = {
-      "address": address,
-      key: "AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ",
-    };
-    $.getJSON(GOOGLE_GEOCODE_BASE_URL, query, callback)
-}
+  function getDataFromGoogleGeocode(address, callback){ //gets JSON for addresses
+      var query = {
+        "address": address,
+        key: "AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ",
+      };
+      $.getJSON(GOOGLE_GEOCODE_BASE_URL, query, callback)
+  }
 
-function returnGeocodeData(data){
-      myGeoArray.push(data.results[0]["geometry"]["location"]);
-        legData["startPoint"]["geocode"] = myGeoArray[0];
-        legData["endPoint"]["geocode"] = myGeoArray[1];
-}
+  function returnGeocodeData(data){ //pushes coodinates to myGeoArray and provides directions on where to put the coordinates depending on index
+        myGeoArray.push(data.results[0]["geometry"]["location"]);
+          legData["startPoint"]["geocode"] = myGeoArray[0];
+          legData["endPoint"]["geocode"] = myGeoArray[1];
+  }
 
-function updateLegDataGeocode(){
-    myGeoArray=[];
-    leg.forEach(function(item){
-      getDataFromGoogleGeocode(item, returnGeocodeData);
-    });
-}
+  function updateLegDataGeocode(){ //calls and executes Geocode API for each item in the leg array, clears geoarray so no duplicates are pushed
+      myGeoArray=[];
+      leg.forEach(function(item){
+        getDataFromGoogleGeocode(item, returnGeocodeData);
+      });
+  }
+// ******************************************************************
 
 
 // DOM Manipulation
