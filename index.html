@@ -21,10 +21,10 @@
 	<section class="container roadtrip-form">
 		<div>
 			<form id="destination-form">
-				<input type="text" name="Start" id="start" placeholder="Start">
+				<input type="text" name="Start" class="js-destination" id="start" placeholder="Start">
 				<input type="date" name="begin-date" id="start-date">
 				<button id="js-addDest">Add Destination</button><br id="start-break">
-				<input type="text" name="End" id="end" placeholder="End">
+				<input type="text" name="End" class="js-destination" id="end" placeholder="End">
 				<input type="text" name="length" placeholder="length of stay"><br>
 				<input type="submit" name="submit" id="js-form-submit">
 			</form>
@@ -42,6 +42,9 @@
 
 	<!-- jquery -->
 	<script src="resources/jquery.js"></script>
+
+	<!-- Google Places -->
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ&libraries=places"></script>
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
