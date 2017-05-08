@@ -83,7 +83,6 @@ function getLeg(){
   legDates = [dates[legCounter], dates[legCounter +1]];
 }
 
-
 function calcDistance(lat1, lon1, lat2, lon2){
   var R = 6371; 
   var φ1 = lat1 * (Math.PI / 180);
