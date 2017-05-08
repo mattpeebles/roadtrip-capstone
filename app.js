@@ -19,19 +19,26 @@ var legData  = {startPoint: {geocode: {},
                endPoint: {geocode: {},
                           weather: {}
                          },
-               midPoint: {geocode: {lat: null,
-                                    lng: null},
+               midPoint: {geocode: {},
                           weather: {}
                           },
 
-               "point0.5": {geocode: {lat: null,
-                                    lng: null},
+               "point0.25": {geocode: {},
                           weather: {}
                          },
-               "point1.5": {geocode: {lat: null,
-                                    lng: null},
+               "point0.75": {geocode: {},
                           weather: {}
                          },
+                "startToEnd": {distance: null,
+                                time: null},
+                "startTo0.25": {distance: null,
+                                time: null },
+                "point0.25ToMid": {distance: null,
+                                time: null },
+                "midTo0.75": {distance: null,
+                                time: null },
+                "Point0.75ToEnd": {distance: null,
+                                time: null },
               };
 
 // State Manipulation Section
@@ -77,7 +84,33 @@ function getLeg(){
 }
 
 
+function calcDistance(lat1, lon1, lat2, lon2){
+  var R = 6371; 
+  var φ1 = lat1 * (Math.PI / 180);
+  var φ2 = lat2 * (Math.PI / 180);
+  var Δφ = (lat2-lat1) * (Math.PI / 180);
+  var Δλ = (lon2-lon1) * (Math.PI / 180);
+
+  var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+          Math.cos(φ1) * Math.cos(φ2) *
+          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  var d = R * c;
+
+  var miles = d * 0.621371
+
+  console.log(miles + "miles");
+}
+
+function calcAllDistance(){ //make this less complicated
+  calcDistance(legData["startPoint"]["geocode"]["lat"], legData["startPoint"]["geocode"]["lng"], 
+               legData["endPoint"]["geocode"]["lat"], legData["endPoint"]["geocode"]["lng"]);
+}
+
+
 // DOM Manipulation
+  
   // adds new destination input area in form
 function addDest(){
   $("#destination-form").on("click", "#js-addDest", function(event){
@@ -121,6 +154,7 @@ function addDest(){
             legData["endPoint"]["geocode"]["lng"] = myGeoArray[1].lng;
             //updateWeatherObject();
             getGoogleMaps();
+            calcAllDistance();
           }
   }
 
@@ -131,6 +165,7 @@ function addDest(){
       });
   }
 // ******************************************************************
+
 
     	//EventBrite API
     	//Calculates Events for EndPoint at each leg
@@ -163,6 +198,7 @@ function addDest(){
 		getDataFromEventBrite(displayEventBriteData);
 	}
 // ******************************************************************
+
 
   //Google Autocomplete API Section
 // ******************************************************************
@@ -203,7 +239,7 @@ function addDest(){
   }
 // ******************************************************************
 
-  //Google Static Maps API
+  //Google Maps API
 // ******************************************************************
     var GOOGLE_MAPS_BASE_URL = "https://www.google.com/maps/embed/v1/directions"
 
@@ -212,7 +248,7 @@ function addDest(){
       var destination1 = leg[legCounter+1].replace(/, /g, ",")
       var origin = origin1.replace(/ /g, "+")
       var destination = destination1.replace(/ /g, "+")
-      
+
       var resultElement = "<iframe width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" src=\"https://www.google.com/maps/embed/v1/directions?"+
       "origin=" + origin + 
       "&destination=" + destination + 
@@ -220,8 +256,9 @@ function addDest(){
       "allowfullscreen></iframe>";
       $("#map-holder").html(resultElement);
     }
-
 // ******************************************************************
+
+
 
 // Watch Submit
 
