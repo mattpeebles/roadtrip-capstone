@@ -11,29 +11,25 @@ var leg = [];
 
 var legDates = [];
 
-var autocompleteArray = [];
-
 var legCounter = 0;
 
-var legData  = {startPoint: {geocode: {latitude: null,
-                                      longitude: null},
+var legData  = {startPoint: {geocode: {},
                             weather: {}
                            },
-               endPoint: {geocode: {latitude: null,
-                                    longitude: null},
+               endPoint: {geocode: {},
                           weather: {}
                          },
-               midPoint: {geocode: {latitude: null,
-                                    longitude: null},
+               midPoint: {geocode: {lat: null,
+                                    lng: null},
                           weather: {}
                           },
 
-               "point0.5": {geocode: {latitude: null,
-                                    longitude: null},
+               "point0.5": {geocode: {lat: null,
+                                    lng: null},
                           weather: {}
                          },
-               "point1.5": {geocode: {latitude: null,
-                                    longitude: null},
+               "point1.5": {geocode: {lat: null,
+                                    lng: null},
                           weather: {}
                          },
               };
@@ -52,6 +48,9 @@ function getDestinations(){
 
 	// grabs first date and based on that calculates all
 	//subsequent dates based on length of time user inputs
+	//MAY NEED TO ADD FUNCTIONALITY TO ACCOUNT FOR DRIVE TIME
+	//ALL NEED TO UPDATE HTML TO MAKE IT CLEAR HOW DATES ARE 
+	//CALCULATED
 function getDates(){
 	dates = [];
 	var datesIndex = 0;
@@ -77,33 +76,6 @@ function getLeg(){
   legDates = [dates[legCounter], dates[legCounter +1]];
 }
 
-    //Obtaining geocodes section
-// ******************************************************************
-  var GOOGLE_GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
-  var myGeoArray = []; //holds coordinates that geocode returns
-
-  function getDataFromGoogleGeocode(address, callback){ //gets JSON for addresses
-      var query = {
-        "address": address,
-        key: "AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ",
-      };
-      $.getJSON(GOOGLE_GEOCODE_BASE_URL, query, callback)
-  }
-
-  function returnGeocodeData(data){ //pushes coodinates to myGeoArray and provides directions on where to put the coordinates depending on index
-        myGeoArray.push(data.results[0]["geometry"]["location"]);
-          legData["startPoint"]["geocode"] = myGeoArray[0];
-          legData["endPoint"]["geocode"] = myGeoArray[1];
-  }
-
-  function updateLegDataGeocode(){ //calls and executes Geocode API for each item in the leg array, clears geoarray so no duplicates are pushed
-      myGeoArray=[];
-      leg.forEach(function(item){
-        getDataFromGoogleGeocode(item, returnGeocodeData);
-      });
-  }
-// ******************************************************************
-
 
 // DOM Manipulation
   // adds new destination input area in form
@@ -125,41 +97,115 @@ function addDest(){
 
 // API SECTION
 
-    	//Obtaining Events for EndPoint
-	// ******************************************************************
+      //Obtaining geocodes section
+// ******************************************************************
+  var GOOGLE_GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
+  var myGeoArray = []; //holds coordinates that geocode returns
+
+  function getDataFromGoogleGeocode(address, callback){ //gets JSON for addresses
+      var query = {
+        "address": address,
+        key: "AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ",
+      };
+      $.getJSON(GOOGLE_GEOCODE_BASE_URL, query, callback)
+  }
+
+  function returnGeocodeData(data){ //pushes coodinates to myGeoArray and provides directions on where to put the coordinates depending on index
+        myGeoArray.push(data.results[0]["geometry"]["location"]);
+          if (myGeoArray.length == 1){
+            legData["startPoint"]["geocode"]["lat"] = myGeoArray[0].lat;
+            legData["startPoint"]["geocode"]["lng"] = myGeoArray[0].lng;
+          }
+          else if (myGeoArray.length == 2){
+            legData["endPoint"]["geocode"]["lat"] = myGeoArray[1].lat;
+            legData["endPoint"]["geocode"]["lng"] = myGeoArray[1].lng;
+            //updateWeatherObject();
+          }
+  }
+
+  function updateLegDataGeocode(){ //calls and executes Geocode API for each item in the leg array, clears geoarray so no duplicates are pushed
+      myGeoArray=[];
+      leg.forEach(function(item){
+        getDataFromGoogleGeocode(item, returnGeocodeData);
+      });
+  }
+// ******************************************************************
+
+    	//EventBrite API
+    	//Calculates Events for EndPoint at each leg
+// ******************************************************************
 	var EVENTBRITE_BASE_URL = "https://www.eventbriteapi.com/v3/events/search/"
 
 	function getDataFromEventBrite(callback){
-		var query = {
-			"location.latitude": legData.endPoint.geocode.lat,
-			"location.longitude": legData.endPoint.geocode.lng,
-			"start_date.range_start": $("#start-date").val() + "T00:00:00",
-			// "start_data.range-end": 
+    var query = {
+			"location.latitude": legData["endPoint"]["geocode"]["lat"],
+			"location.longitude": legData["endPoint"]["geocode"]["lng"],
+			"start_date.range_start": legDates[legCounter] + "T00:00:00",
+			"start_date.range_end": legDates[legCounter + 1] + "T00:00:00",
+			"price": null, //future functionality
+			"categories": null, //future functionality
 			token: "NYUIK7WAP7JD57IF4W4H",
 		}
 		$.getJSON(EVENTBRITE_BASE_URL, query, callback)
 	}
 
 	function displayEventBriteData(data){
-		data.events.forEach(function(item){
-			console.log(item);
-		})
+		// data.events.forEach(function(item){
+			console.log(data) //need to format html in order to push it on screen. Will require fairly complex
+        //css in order to make everything render. Need to research on what i actually want to appear
+        //probably logo, date of event, price, name, location, short description, and a link to 
+        //eventbrite. maybe determine how to get a referral link in it as well.
+		// })
 	}
 
 	function logEventBriteData(){
 		getDataFromEventBrite(displayEventBriteData);
 	}
-	// ******************************************************************
+// ******************************************************************
 
   //Google Autocomplete API Section
-  //NEED TO DETERMINE HOW TO ADD FUNCTIONALITY
-  //TO NEW DESTINATIONS
-var begin = document.getElementById("start");
-var end = document.getElementById("end")
+// ******************************************************************
+  	function autoComplete(){
+      var begin = document.getElementById("start");
+    	var end = document.getElementById("end")
 
-var autocompleteBegin = new google.maps.places.Autocomplete(begin)
-var autocompleteEnd = new google.maps.places.Autocomplete(end)
+    	var autocompleteBegin = new google.maps.places.Autocomplete(begin)
+    	var autocompleteEnd = new google.maps.places.Autocomplete(end)
+    }
+// ******************************************************************
 
+
+  //Open Weather API - CONTINOUSLY REFUSES MY REQUESTS. MY KEY IS CORRECT HOWEVER
+// ******************************************************************
+  var OPEN_WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+
+  function getDataFromOpenWeather(point, callback){
+    var lat = point.lat;
+    var lon = point.lng;
+    var query = {
+      "lat": lat,
+      "lon": lon,
+      appid: "d01498adc1f04688324d55f1b9507017",
+    }
+  $.getJSON(OPEN_WEATHER_BASE_URL, query, callback)
+  }
+
+  function pushDataFromOpenWeather(data){
+    console.log(data.results);
+  }
+
+  function updateWeatherObject(){
+    var pointsArray = [legData.startPoint.geocode, legData.endPoint.geocode];
+    // , legData.midPoint, legData["point0.5"], legData["point1.5"]]
+    getDataFromOpenWeather(pointsArray[0], pushDataFromOpenWeather);
+    getDataFromOpenWeather(pointsArray[1], pushDataFromOpenWeather)
+  }
+// ******************************************************************
+
+  //Google Static Maps API
+// ******************************************************************
+
+// ******************************************************************
 
 // Watch Submit
 
@@ -175,6 +221,7 @@ function watchFormSubmit(){
 }
 
 $(function(){
+  autoComplete();
   watchFormSubmit();
   addDest();
 })
