@@ -120,6 +120,7 @@ function addDest(){
             legData["endPoint"]["geocode"]["lat"] = myGeoArray[1].lat;
             legData["endPoint"]["geocode"]["lng"] = myGeoArray[1].lng;
             //updateWeatherObject();
+            getGoogleMaps();
           }
   }
 
@@ -204,6 +205,21 @@ function addDest(){
 
   //Google Static Maps API
 // ******************************************************************
+    var GOOGLE_MAPS_BASE_URL = "https://www.google.com/maps/embed/v1/directions"
+
+    function getGoogleMaps(callback){
+      var origin1 = leg[legCounter].replace(/, /g, ",")
+      var destination1 = leg[legCounter+1].replace(/, /g, ",")
+      var origin = origin1.replace(/ /g, "+")
+      var destination = destination1.replace(/ /g, "+")
+      
+      var resultElement = "<iframe width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" src=\"https://www.google.com/maps/embed/v1/directions?"+
+      "origin=" + origin + 
+      "&destination=" + destination + 
+      "&key=AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ\"" +
+      "allowfullscreen></iframe>";
+      $("#map-holder").html(resultElement);
+    }
 
 // ******************************************************************
 
