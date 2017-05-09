@@ -19,23 +19,34 @@
 
 <body>
 	<section class="container roadtrip-form">
-		<div>
+		<div class="roadtrip-inputs">
 			<form id="destination-form">
-				<input type="text" name="Start" class="js-destination" id="start" placeholder="Start">
-				<input type="date" name="begin-date" id="start-date">
-				<button id="js-addDest">Add Destination</button><br id="start-break">
-				<input type="text" name="End" class="js-destination" id="end" placeholder="End">
-				<input type="text" name="length" class="length" placeholder="length of stay"><br>
+				<label>RoadTrip Planner</label>
+				<div>
+					<input type="text" name="Start" class="js-destination" id="start" placeholder="Start" required/>
+					<input type="date" name="begin-date" id="start-date" required/>
+					<button id="js-addDest">Add Destination</button><br id="start-break">
+				</div>
+				<div>
+					<input type="text" name="End" class="js-destination" id="end" placeholder="End" required/>
+					<input type="text" name="length" class="length" placeholder="length of stay" required/>
+				</div>
 				<input type="submit" name="submit" id="js-form-submit">
 			</form>
 		
 		</div>
 		<div>
+			<button type="button" class="btn btn-default leg-nav-btn hidden" id="prev-leg-button">Previous Leg</button>
+			<button type="button" class="btn btn-default leg-nav-btn hidden" id="next-leg-button">Next Leg</button>
+		</div>
+		<div>
 			<div id="map-holder"></div>
 		</div>
 
-		<div>
-			<div id="event-holder container"></div>
+		<div id="js-event-holder">
+			<button type="button" class="btn btn-default event-nav-btn hidden" id="prev-events-button">Previous Events</button>
+			<button type="button" class="btn btn-default event-nav-btn hidden" id="next-events-button">Next Events</button>
+			<div id="event-holder" class="container"></div>
 		</div>
 	</section>
 </body>
