@@ -5,6 +5,12 @@ var destinations = [];
 
 var dates = [];
 
+var eventsList = [];
+
+var viewedEvents = [];
+
+var justViewedEvent = [];
+
 var addDestCounter = 1;
 
 var leg = [];
@@ -99,7 +105,7 @@ function calcDistance(lat1, lon1, lat2, lon2){
 
   var miles = d * 0.621371
 
-  console.log(miles + "miles");
+  console.log((miles).toFixed(2) + " miles, and approximately " + (miles/55).toFixed(2) + " hours");
 }
 
 function calcAllDistance(){ //make this less complicated
@@ -152,6 +158,7 @@ function addDest(){
             legData["endPoint"]["geocode"]["lat"] = myGeoArray[1].lat;
             legData["endPoint"]["geocode"]["lng"] = myGeoArray[1].lng;
             //updateWeatherObject();
+            logEventBriteData();
             getGoogleMaps();
             calcAllDistance();
           }
@@ -169,7 +176,10 @@ function addDest(){
     	//EventBrite API
     	//Calculates Events for EndPoint at each leg
 // ******************************************************************
-	var EVENTBRITE_BASE_URL = "https://www.eventbriteapi.com/v3/events/search/"
+	var EVENTBRITE_BASE_URL = "https://www.eventbriteapi.com/v3/events/search/";
+
+  var nextPushed = 0;
+  var prevPushed = 0;
 
 	function getDataFromEventBrite(callback){
     var query = {
@@ -181,17 +191,149 @@ function addDest(){
 			"categories": null, //future functionality
 			token: "NYUIK7WAP7JD57IF4W4H",
 		}
+    console.log(legData["endPoint"]["geocode"]["lat"])
 		$.getJSON(EVENTBRITE_BASE_URL, query, callback)
 	}
 
-	function displayEventBriteData(data){
-		// data.events.forEach(function(item){
-			console.log(data) //need to format html in order to push it on screen. Will require fairly complex
-        //css in order to make everything render. Need to research on what i actually want to appear
-        //probably logo, date of event, price, name, location, short description, and a link to 
-        //eventbrite. maybe determine how to get a referral link in it as well.
-		// })
+	function displayEventBriteData(data){ //grabs all event data and displays first 6 events in DOM
+    var events = [];
+    nextPushed = 0; //next pushed is used in event navigation
+    prevPushed = 0; // prev pushed is used in event navigation
+    var resultHTML = ""; //will be used for DOM Manipulation
+    data.events.forEach(function(item){ //pushes all items from JSON into events variable
+      events.push(item);
+    });
+    var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
+    currentResults.forEach(function(item){
+      if (item.logo !== null){ //some events do not have logos which threw errors, this conditional catches that
+        var logo = item.logo.url;
+      }
+      else {
+        var logo = "#"; //if there is no logo, this generic image will replace it. NEED TO ADD GENERIC IMAGE
+      };
+      resultHTML += "<a href=\"" + item.url + "\">" +
+                      "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+                        "<div class=\"event-container row\">" +
+                         " <div class=\"logo-container col-sm-3\">" +
+                            "<img class=\"event-logo\" src=\""+ logo + "\">" +
+                          "</div>" +
+                          "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
+                            "<div class=\"event-title-container\">"+ item.name.text + "</div>" +
+                            "<div class=\"event-description-container\">" + item.description.text + "</div>" +
+                          "</div>" + 
+                          "<div class=\"date-time-cost-container row\">" +
+                            "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + "</div>" +
+                            "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + "</div>" +
+                          "</div>" +
+                        "</div>" +
+                      "</div>" +
+                    "</a>";
+    });
+    $("#event-holder").empty() //removes any previous html in event holder
+    $("#event-holder").append(resultHTML); //pushes all html from resultHTML to DOM
+    // var eventsFinal = events.concat(currentResults);
+    currentResults.forEach(function(item){ //pushes just rendered objects to a justViewed element for navigation purposes
+      justViewedEvent.push(item)
+    })
+    eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
 	}
+
+  function nextEventsPage(){ //displays next 6 events in DOM
+    var resultHTML = "";
+    if (prevPushed<=0){ //this conditional is dominant over the if statement in prevEventsPage. looks to see if previous button has ever been pushed. if it hasn't then only next has so it pulls events from eventsList rather that viewedEvents -- pairs with if statement in prevEventsPage function
+      var currentResults = eventsList.splice(0, 6) //grabs and removes first 6 events from events variable. the ones displayed in DOM are only in justViewed variable
+      viewedEvents = justViewedEvent.concat(viewedEvents); //moves justViewed items to viewedEvents. viewedEvents holds all previously viewed events, used for backwards navigation
+      justViewedEvent = []; //empties justViewed events in preparation to refill it with events that are currently displayed
+      currentResults.forEach(function(item){ //justViewedEvent is now equal to the events displayed on the dom
+        justViewedEvent.push(item);
+      });
+    }
+      //this is working backwords throw the array as it only triggers if user has gone through events backwards
+    else if (prevPushed >0){ //this conditional requires that that else if conditional in prevEventPage was called. looks to see if previous button has ever been pushed. if it has then next begins to pull from viewedEvents rather than eventsList -- pairs with else if statement in prevEventsPage function
+      var currentResults = viewedEvents.splice(0, 6); //grabs and removes first 6 items from viewedEvents variable that prevPageEvents placed
+      eventsList = eventsList.concat(justViewedEvent); //places just viewed event at end of variable where it originally was in JSON
+      justViewedEvent = []; //empties justViewedEvent
+      currentResults.forEach(function(item){ //justViewedEvent is now equal to the event displayed on screen
+        justViewedEvent.push(item);
+      })
+    }
+
+    currentResults.forEach(function(item){ //same functionality as displayEventBriteData section
+      if (item.logo !== null){
+        var logo = item.logo.url;
+      }
+      else {
+        var logo = "#";
+      }
+      resultHTML += "<a href=\"" + item.url + "\">" +
+                      "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+                        "<div class=\"event-container row\">" +
+                         " <div class=\"logo-container col-sm-3\">" +
+                            "<img class=\"event-logo\" src=\""+ logo + "\">" +
+                          "</div>" +
+                          "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
+                            "<div class=\"event-title-container\">"+ item.name.text + "</div>" +
+                            "<div class=\"event-description-container\">" + item.description.text + "</div>" +
+                          "</div>" + 
+                          "<div class=\"date-time-cost-container row\">" +
+                            "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + "</div>" +
+                            "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + "</div>" +
+                          "</div>" +
+                        "</div>" +
+                      "</div>" +
+                    "</a>";
+    });
+    $("#event-holder").empty();
+    $("#event-holder").append(resultHTML);
+  }
+
+  function prevEventsPage(){ //displays previously viewed events on screen,
+    var resultHTML = "";
+    if (nextPushed > 0){ //this conditional requires that the if statement in nextEventsPage was called; triggers if next button has ever been pushed when prevEventsPage is called
+      var prevResults = viewedEvents.splice(0, 6); //grabs and removes first 6 items from viewedEvents var that nextEventPage function put
+      eventsList = justViewedEvent.concat(eventsList); //places justViewedEvent at beginning of eventsList. This ensures var is in same order as it was in JSON
+      justViewedEvent = []; //empties justViewedEvent var
+      prevResults.forEach(function(item){ //events on screen are now in JustViewedEvent var
+        justViewedEvent.push(item);
+      })
+    }
+
+    else if (nextPushed<=0){ //displays last 6 events in JSON -> this conditional is Dominant over else if in nextPage
+      var prevResults = eventsList.splice(eventsList.length - 6) //grabs and removes last 6 events from JSON
+      viewedEvents = justViewedEvent.concat(viewedEvents); //placed just viewed event at beginning of viewed events because the next page function works throught it from front to back
+      justViewedEvent = []; //empties justViewedEvent var
+      prevResults.forEach(function(item){//events on screen are now in justViewedEvent var
+        justViewedEvent.push(item);
+      })
+    }
+    prevResults.forEach(function(item){ //same functionality as displayEventBriteData
+      if (item.logo !== null){
+        var logo = item.logo.url
+      }
+      else {
+        var logo = "#";
+      };
+      resultHTML += "<a href=\"" + item.url + "\">" +
+                      "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+                        "<div class=\"event-container row\">" +
+                         " <div class=\"logo-container col-sm-3\">" +
+                            "<img class=\"event-logo\" src=\""+ logo + "\">" +
+                          "</div>" +
+                          "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
+                            "<div class=\"event-title-container\">"+ item.name.text + "</div>" +
+                            "<div class=\"event-description-container\">" + item.description.text + "</div>" +
+                          "</div>" + 
+                          "<div class=\"date-time-cost-container row\">" +
+                            "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + "</div>" +
+                            "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + "</div>" +
+                          "</div>" +
+                        "</div>" +
+                      "</div>" +
+                    "</a>";
+    });
+    $("#event-holder").empty();
+    $("#event-holder").append(resultHTML);
+  }
 
 	function logEventBriteData(){
 		getDataFromEventBrite(displayEventBriteData);
@@ -199,7 +341,7 @@ function addDest(){
 // ******************************************************************
 
 
-  //Google Autocomplete API Section
+      //Google Autocomplete API Section
 // ******************************************************************
   	function autoComplete(){
       var begin = document.getElementById("start");
@@ -211,7 +353,7 @@ function addDest(){
 // ******************************************************************
 
 
-  //Open Weather API - CONTINOUSLY REFUSES MY REQUESTS. MY KEY IS CORRECT HOWEVER
+      //Open Weather API - CONTINOUSLY REFUSES MY REQUESTS. MY KEY IS CORRECT HOWEVER
 // ******************************************************************
   var OPEN_WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
@@ -238,7 +380,7 @@ function addDest(){
   }
 // ******************************************************************
 
-  //Google Maps API
+      //Google Maps API
 // ******************************************************************
     var GOOGLE_MAPS_BASE_URL = "https://www.google.com/maps/embed/v1/directions"
 
@@ -268,12 +410,39 @@ function watchFormSubmit(){
     getDates();
     getLeg();
     updateLegDataGeocode();
-    logEventBriteData();
+    // logEventBriteData();
   });
+}
+
+function watchEventsNavigate(){
+  $("#next-events-button").on("click", function(){
+    if (eventsList.length == 0){ //if eventsList has been empties by user scrolling through it, this resets everything to beginning
+      logEventBriteData();
+    }
+    else { //increments eventnavbutton counters for use in functions 
+      nextPushed++
+      prevPushed--
+    }
+    event.preventDefault();
+    nextEventsPage();
+  })
+
+  $("#prev-events-button").on("click", function(){
+    if (eventsList.length == 0){ //this function is exactly function above but focused on the previous button
+      logEventBriteData();
+    }
+    else if {
+      prevPushed++
+      nextPushed--
+    }
+    event.preventDefault();
+    prevEventsPage();
+  })
 }
 
 $(function(){
   autoComplete();
   watchFormSubmit();
   addDest();
+  watchEventsNavigate();
 })
