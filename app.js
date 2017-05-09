@@ -120,10 +120,13 @@ function calcAllDistance(){ //make this less complicated
 function addDest(){
   $("#destination-form").on("click", "#js-addDest", function(event){
     event.preventDefault();
-    var newDestForm = "<br><input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\">" + 
-    "<input type=\"text\" name=\"Dest-" +addDestCounter+ "-date\" class=\"length\" placeholder=\"length of stay\">" + 
-    "<button id=\"js-addDest\">Add Destination</button>";
-    $(this).after(newDestForm);
+    var newDestForm = "<div class=\"dest-container\"><input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\" required>" + 
+    "<input type=\"text\" name=\"Dest-" +addDestCounter+ "-date\" class=\"length\" placeholder=\"length of stay\" required>" + 
+    "<button id=\"js-addDest\">Add Destination</button>" +
+    "<button id=\"js-removeDest\">Remove Destination</button>" +
+    "</div>";
+    var currentParent = $(this).parent();
+    $(currentParent).after(newDestForm);
 		// adds autocomplete functionality to each new input
 	var nPoint = "destination-" + addDestCounter;
 	var newPoint = document.getElementById(nPoint);
@@ -131,6 +134,14 @@ function addDest(){
 	addDestCounter++;
   })
 }
+
+function removeDest(){
+  $("#destination-form").on("click", "#js-removeDest", function(event){
+    event.preventDefault();
+    var currentParent = $(this).parent();
+    $(currentParent).remove();
+  })
+};
 
 
 // API SECTION
@@ -185,13 +196,12 @@ function addDest(){
     var query = {
 			"location.latitude": legData["endPoint"]["geocode"]["lat"],
 			"location.longitude": legData["endPoint"]["geocode"]["lng"],
-			"start_date.range_start": legDates[legCounter] + "T00:00:00",
-			"start_date.range_end": legDates[legCounter + 1] + "T00:00:00",
-			"price": null, //future functionality
-			"categories": null, //future functionality
+			"start_date.range_start": legDates[0] + "T00:00:00",
+			"start_date.range_end": legDates[1] + "T00:00:00",
+			// "price": null, //future functionality
+			// "categories": null, //future functionality
 			token: "NYUIK7WAP7JD57IF4W4H",
 		}
-    console.log(legData["endPoint"]["geocode"]["lat"])
 		$.getJSON(EVENTBRITE_BASE_URL, query, callback)
 	}
 
@@ -200,6 +210,7 @@ function addDest(){
     nextPushed = 0; //next pushed is used in event navigation
     prevPushed = 0; // prev pushed is used in event navigation
     var resultHTML = ""; //will be used for DOM Manipulation
+    console.log(data)
     data.events.forEach(function(item){ //pushes all items from JSON into events variable
       events.push(item);
     });
@@ -209,38 +220,42 @@ function addDest(){
         var logo = item.logo.url;
       }
       else {
-        var logo = "#"; //if there is no logo, this generic image will replace it. NEED TO ADD GENERIC IMAGE
+        var logo = "resources/event-placeholder-logo.jpeg"; //if there is no logo, this generic image will replace it. NEED TO ADD GENERIC IMAGE
       };
-      resultHTML += "<a href=\"" + item.url + "\">" +
-                      "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+      resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+                            "<div class=\"event-title-container\">"+ item.name.text + 
+                            "</div>" +
                         "<div class=\"event-container row\">" +
-                         " <div class=\"logo-container col-sm-3\">" +
-                            "<img class=\"event-logo\" src=\""+ logo + "\">" +
+                         "<div class=\"logo-container col-sm-3\">" +
+                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
-                            "<div class=\"event-title-container\">"+ item.name.text + "</div>" +
-                            "<div class=\"event-description-container\">" + item.description.text + "</div>" +
+                            "<div class=\"event-description-container\">" + item.description.text + 
+                            "</div>" +
                           "</div>" + 
-                          "<div class=\"date-time-cost-container row\">" +
-                            "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + "</div>" +
-                            "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + "</div>" +
+                          "<div class=\"date-time-cost-container col-sm-12\">" +
+                            "<div class=\"row\">" +
+                              "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + 
+                              "</div>" +
+                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
+                              "</div>" +
+                            "</div>" +
                           "</div>" +
                         "</div>" +
-                      "</div>" +
-                    "</a>";
+                      "</div>";
     });
     $("#event-holder").empty() //removes any previous html in event holder
-    $("#event-holder").append(resultHTML); //pushes all html from resultHTML to DOM
-    // var eventsFinal = events.concat(currentResults);
+    $("#event-holder").html(resultHTML); //pushes all html from resultHTML to DOM
     currentResults.forEach(function(item){ //pushes just rendered objects to a justViewed element for navigation purposes
       justViewedEvent.push(item)
     })
+    $(".event-nav-btn").removeClass("hidden");
     eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
 	}
 
   function nextEventsPage(){ //displays next 6 events in DOM
     var resultHTML = "";
-    if (prevPushed<=0){ //this conditional is dominant over the if statement in prevEventsPage. looks to see if previous button has ever been pushed. if it hasn't then only next has so it pulls events from eventsList rather that viewedEvents -- pairs with if statement in prevEventsPage function
+    if (prevPushed<0){ //this conditional is dominant over the if statement in prevEventsPage. looks to see if previous button has ever been pushed. if it hasn't then only next has so it pulls events from eventsList rather that viewedEvents -- pairs with if statement in prevEventsPage function
       var currentResults = eventsList.splice(0, 6) //grabs and removes first 6 events from events variable. the ones displayed in DOM are only in justViewed variable
       viewedEvents = justViewedEvent.concat(viewedEvents); //moves justViewed items to viewedEvents. viewedEvents holds all previously viewed events, used for backwards navigation
       justViewedEvent = []; //empties justViewed events in preparation to refill it with events that are currently displayed
@@ -249,7 +264,7 @@ function addDest(){
       });
     }
       //this is working backwords throw the array as it only triggers if user has gone through events backwards
-    else if (prevPushed >0){ //this conditional requires that that else if conditional in prevEventPage was called. looks to see if previous button has ever been pushed. if it has then next begins to pull from viewedEvents rather than eventsList -- pairs with else if statement in prevEventsPage function
+    else if (prevPushed >=0){ //this conditional requires that that else if conditional in prevEventPage was called. looks to see if previous button has ever been pushed. if it has then next begins to pull from viewedEvents rather than eventsList -- pairs with else if statement in prevEventsPage function
       var currentResults = viewedEvents.splice(0, 6); //grabs and removes first 6 items from viewedEvents variable that prevPageEvents placed
       eventsList = eventsList.concat(justViewedEvent); //places just viewed event at end of variable where it originally was in JSON
       justViewedEvent = []; //empties justViewedEvent
@@ -263,25 +278,31 @@ function addDest(){
         var logo = item.logo.url;
       }
       else {
-        var logo = "#";
+        var logo = "resources/event-placeholder-logo.jpeg";
       }
-      resultHTML += "<a href=\"" + item.url + "\">" +
-                      "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+
+      resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+                            "<div class=\"event-title-container\">"+ item.name.text + 
+                            "</div>" +
                         "<div class=\"event-container row\">" +
-                         " <div class=\"logo-container col-sm-3\">" +
-                            "<img class=\"event-logo\" src=\""+ logo + "\">" +
+                         "<div class=\"logo-container col-sm-3\">" +
+                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
-                            "<div class=\"event-title-container\">"+ item.name.text + "</div>" +
-                            "<div class=\"event-description-container\">" + item.description.text + "</div>" +
+                            "<div class=\"event-description-container\">" + item.description.text + 
+                            "</div>" +
                           "</div>" + 
-                          "<div class=\"date-time-cost-container row\">" +
-                            "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + "</div>" +
-                            "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + "</div>" +
+                          "<div class=\"date-time-cost-container col-sm-12\">" +
+                            "<div class=\"row\">" +
+                              "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + 
+                              "</div>" +
+                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
+                              "</div>" +
+                            "</div>" +
                           "</div>" +
                         "</div>" +
-                      "</div>" +
-                    "</a>";
+                      "</div>";
+
     });
     $("#event-holder").empty();
     $("#event-holder").append(resultHTML);
@@ -289,7 +310,7 @@ function addDest(){
 
   function prevEventsPage(){ //displays previously viewed events on screen,
     var resultHTML = "";
-    if (nextPushed > 0){ //this conditional requires that the if statement in nextEventsPage was called; triggers if next button has ever been pushed when prevEventsPage is called
+    if (nextPushed >= 0){ //this conditional requires that the if statement in nextEventsPage was called; triggers if next button has ever been pushed when prevEventsPage is called
       var prevResults = viewedEvents.splice(0, 6); //grabs and removes first 6 items from viewedEvents var that nextEventPage function put
       eventsList = justViewedEvent.concat(eventsList); //places justViewedEvent at beginning of eventsList. This ensures var is in same order as it was in JSON
       justViewedEvent = []; //empties justViewedEvent var
@@ -298,7 +319,7 @@ function addDest(){
       })
     }
 
-    else if (nextPushed<=0){ //displays last 6 events in JSON -> this conditional is Dominant over else if in nextPage
+    else if (nextPushed<0){ //displays last 6 events in JSON -> this conditional is Dominant over else if in nextPage
       var prevResults = eventsList.splice(eventsList.length - 6) //grabs and removes last 6 events from JSON
       viewedEvents = justViewedEvent.concat(viewedEvents); //placed just viewed event at beginning of viewed events because the next page function works throught it from front to back
       justViewedEvent = []; //empties justViewedEvent var
@@ -313,23 +334,28 @@ function addDest(){
       else {
         var logo = "#";
       };
-      resultHTML += "<a href=\"" + item.url + "\">" +
-                      "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+
+      resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+                            "<div class=\"event-title-container\">"+ item.name.text + 
+                            "</div>" +
                         "<div class=\"event-container row\">" +
-                         " <div class=\"logo-container col-sm-3\">" +
-                            "<img class=\"event-logo\" src=\""+ logo + "\">" +
+                         "<div class=\"logo-container col-sm-3\">" +
+                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
-                            "<div class=\"event-title-container\">"+ item.name.text + "</div>" +
-                            "<div class=\"event-description-container\">" + item.description.text + "</div>" +
+                            "<div class=\"event-description-container\">" + item.description.text + 
+                            "</div>" +
                           "</div>" + 
-                          "<div class=\"date-time-cost-container row\">" +
-                            "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + "</div>" +
-                            "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + "</div>" +
+                          "<div class=\"date-time-cost-container col-sm-12\">" +
+                            "<div class=\"row\">" +
+                              "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + 
+                              "</div>" +
+                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
+                              "</div>" +
+                            "</div>" +
                           "</div>" +
                         "</div>" +
-                      "</div>" +
-                    "</a>";
+                      "</div>";
     });
     $("#event-holder").empty();
     $("#event-holder").append(resultHTML);
@@ -385,17 +411,19 @@ function addDest(){
     var GOOGLE_MAPS_BASE_URL = "https://www.google.com/maps/embed/v1/directions"
 
     function getGoogleMaps(callback){
-      var origin1 = leg[legCounter].replace(/, /g, ",")
-      var destination1 = leg[legCounter+1].replace(/, /g, ",")
+      var origin1 = leg[0].replace(/, /g, ",")
+      var destination1 = leg[1].replace(/, /g, ",")
       var origin = origin1.replace(/ /g, "+")
       var destination = destination1.replace(/ /g, "+")
 
-      var resultElement = "<iframe width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" src=\"https://www.google.com/maps/embed/v1/directions?"+
+      var resultElement = "<iframe frameborder=\"0\" style=\"border:0\" src=\"https://www.google.com/maps/embed/v1/directions?"+
       "origin=" + origin + 
       "&destination=" + destination + 
       "&key=AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ\"" +
       "allowfullscreen></iframe>";
+      $("#map-holder").empty();
       $("#map-holder").html(resultElement);
+      $(".leg-nav-btn").removeClass("hidden")
     }
 // ******************************************************************
 
@@ -410,8 +438,35 @@ function watchFormSubmit(){
     getDates();
     getLeg();
     updateLegDataGeocode();
-    // logEventBriteData();
   });
+}
+
+function watchLegsNavigate(){
+  $("#next-leg-button").on("click", function(){
+    if ((legCounter + 1) == (destinations.length-1)){
+      legCounter = 0;
+      getLeg();
+      updateLegDataGeocode();
+    }
+    else { 
+      legCounter++;
+      getLeg();
+      updateLegDataGeocode();
+    }
+  })
+
+  $("#prev-leg-button").on("click", function(){
+    if ((legCounter - 1) < 0){
+      legCounter = (destinations.length-2)
+      getLeg();
+      updateLegDataGeocode();
+    }
+    else {
+    legCounter--;
+    getLeg();
+    updateLegDataGeocode();
+    }
+  })
 }
 
 function watchEventsNavigate(){
@@ -431,7 +486,7 @@ function watchEventsNavigate(){
     if (eventsList.length == 0){ //this function is exactly function above but focused on the previous button
       logEventBriteData();
     }
-    else if {
+    else {
       prevPushed++
       nextPushed--
     }
@@ -444,5 +499,7 @@ $(function(){
   autoComplete();
   watchFormSubmit();
   addDest();
+  removeDest();
   watchEventsNavigate();
+  watchLegsNavigate();
 })
