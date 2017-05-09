@@ -1,9 +1,11 @@
 # roadtrip-capstone
 
+https://mattpeebles.github.io/roadtrip-capstone/
+
 completed:
--destination form framework
--maps api call
+-MVP javascript - 95%
+-MVP html - 98%
 
 to do:
--eventbrite api call
--multiple api calls for google maps, breaking roadtrip into legs
+-begin creating mobile first MVP CSS
+-added js to display leg of journey with cities
