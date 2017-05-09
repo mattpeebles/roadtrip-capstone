@@ -453,6 +453,7 @@ function watchLegsNavigate(){
       getLeg();
       updateLegDataGeocode();
     }
+    viewedEvents = [];
   })
 
   $("#prev-leg-button").on("click", function(){
@@ -466,6 +467,7 @@ function watchLegsNavigate(){
     getLeg();
     updateLegDataGeocode();
     }
+    viewedEvents = [];
   })
 }
 
