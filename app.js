@@ -1,15 +1,11 @@
 'use strict';
 
 // State
+
+  //destination variables
 var destinations = [];
 
 var dates = [];
-
-var eventsList = [];
-
-var viewedEvents = [];
-
-var justViewedEvent = [];
 
 var addDestCounter = 1;
 
@@ -19,33 +15,49 @@ var legDates = [];
 
 var legCounter = 0;
 
-var legData  = {startPoint: {geocode: {},
+var legData  = {
+                startPoint: {geocode: {},
                             weather: {}
                            },
-               endPoint: {geocode: {},
+                endPoint: {geocode: {},
                           weather: {}
                          },
-               midPoint: {geocode: {},
-                          weather: {}
-                          },
+                         //FUTURE FUNCTIONALITY
+               // midPoint: {geocode: {},
+               //            weather: {}
+               //            },
 
-               "point0.25": {geocode: {},
-                          weather: {}
-                         },
-               "point0.75": {geocode: {},
-                          weather: {}
-                         },
-                "startToEnd": {distance: null,
-                                time: null},
-                "startTo0.25": {distance: null,
-                                time: null },
-                "point0.25ToMid": {distance: null,
-                                time: null },
-                "midTo0.75": {distance: null,
-                                time: null },
-                "Point0.75ToEnd": {distance: null,
-                                time: null },
+               // "point0.25": {geocode: {},
+               //            weather: {}
+               //           },
+               // "point0.75": {geocode: {},
+               //            weather: {}
+               //           },
+               //  "startToEnd": {distance: null,
+               //                  time: null},
+               //  "startTo0.25": {distance: null,
+               //                  time: null },
+               //  "point0.25ToMid": {distance: null,
+               //                  time: null },
+               //  "midTo0.75": {distance: null,
+               //                  time: null },
+               //  "Point0.75ToEnd": {distance: null,
+               //                  time: null },
               };
+
+
+  //events variables
+var eventsList = [];
+
+var viewedEvents = [];
+
+var justViewedEvent = [];
+
+var pageCount = 1;
+
+var eventPages = {};
+
+
 
 // State Manipulation Section
 
@@ -57,7 +69,6 @@ function getDestinations(){
     destinations.push($(this).val());
   }); //initiates initial leg of the journey
 }
-
 
 	// grabs first date and based on that calculates all
 	//subsequent dates based on length of time user inputs
@@ -94,6 +105,7 @@ function getLeg(){
   $("#leg-title-container").append(resultHTML);
 }
 
+  //provides the formula to calculate the rough distance between two different geocoordinates 
 function calcDistance(lat1, lon1, lat2, lon2){
   var R = 6371; 
   var φ1 = lat1 * (Math.PI / 180);
@@ -113,6 +125,7 @@ function calcDistance(lat1, lon1, lat2, lon2){
   console.log((miles).toFixed(2) + " miles, and approximately " + (miles/55).toFixed(2) + " hours");
 }
 
+  //this calculates the distance between two different geocoordinates
 function calcAllDistance(){ //make this less complicated
   calcDistance(legData["startPoint"]["geocode"]["lat"], legData["startPoint"]["geocode"]["lng"], 
                legData["endPoint"]["geocode"]["lat"], legData["endPoint"]["geocode"]["lng"]);
@@ -120,16 +133,36 @@ function calcAllDistance(){ //make this less complicated
 
 
 // DOM Manipulation
+var destIds = [];
   
+  //creates label for each new destination and ensures that the
+  //label has the proper order each time
+function updateDestLabel(){
+  destIds.forEach(function(item){
+    var locationDest = document.getElementById(item);
+    var jqueryItem = "#" + item
+    var parentDiv = $(jqueryItem).parent()
+    var location = $(parentDiv).index(this);
+    var tarLabel = "#label-" + item;
+    $(tarLabel).text('');
+    $(tarLabel).text("Stop - " + (location -1)); 
+  })
+}
+
   // adds new destination input area in form
 function addDest(){
   $("#destination-form").on("click", "#js-addDest", function(event){
     event.preventDefault();
-    var newDestForm = "<div class=\"dest-container\"><input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\" required>" + 
-    "<input type=\"text\" name=\"Dest-" +addDestCounter+ "-date\" class=\"length\" placeholder=\"length of stay\" required>" + 
-    "<button id=\"js-addDest\">Add Destination</button>" +
-    "<button id=\"js-removeDest\">Remove Destination</button>" +
+    var newDestForm = "<div class=\"dest-container\">"+
+    "<label id=\"label-destination-" + addDestCounter + "\"></label>"+
+    "<input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\" required>" + 
+    "<label>How Many Days Are You Staying?</label>" +
+    "<input type=\"text\" name=\"Dest-" + addDestCounter + "-date\" class=\"length\" placeholder=\"3\" required>" + 
+    "<button id=\"js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
+    "<button id=\"js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
     "</div>";
+    var destId = "destination-" + addDestCounter;
+    destIds.push(destId);
     var currentParent = $(this).parent();
     $(currentParent).after(newDestForm);
 		// adds autocomplete functionality to each new input
@@ -137,21 +170,28 @@ function addDest(){
 	var newPoint = document.getElementById(nPoint);
 	var autocompleteN = new google.maps.places.Autocomplete(newPoint);
 	addDestCounter++;
+  updateDestLabel();
   })
 }
 
+  //allows users to remove destination
 function removeDest(){
   $("#destination-form").on("click", "#js-removeDest", function(event){
     event.preventDefault();
     var currentParent = $(this).parent();
     $(currentParent).remove();
+    updateDestLabel();
   })
 };
 
 
 // API SECTION
 
-      //Obtaining geocodes section
+      //Obtaining geocodes section 
+      //All other apis require the data that this section
+      //gathers. As such, all other api calls are made within this
+      //section to ensure that the data is in it's proper place
+      //before the other calls are run
 // ******************************************************************
   var GOOGLE_GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
   var myGeoArray = []; //holds coordinates that geocode returns
@@ -173,7 +213,7 @@ function removeDest(){
           else if (myGeoArray.length == 2){
             legData["endPoint"]["geocode"]["lat"] = myGeoArray[1].lat;
             legData["endPoint"]["geocode"]["lng"] = myGeoArray[1].lng;
-            //updateWeatherObject();
+            // updateWeatherObject(); //weather api refuses all of my requests
             logEventBriteData();
             getGoogleMaps();
             calcAllDistance();
@@ -199,13 +239,15 @@ function removeDest(){
 
 	function getDataFromEventBrite(callback){
     var query = {
-			"location.latitude": legData["endPoint"]["geocode"]["lat"],
+      "location.latitude": legData["endPoint"]["geocode"]["lat"],
 			"location.longitude": legData["endPoint"]["geocode"]["lng"],
 			"start_date.range_start": legDates[0] + "T00:00:00",
 			"start_date.range_end": legDates[1] + "T00:00:00",
+      "location.within": 25 + "mi",
 			// "price": null, //future functionality
 			// "categories": null, //future functionality
-			token: "NYUIK7WAP7JD57IF4W4H",
+			// "page_number": pageCount, //this is causing an error, it should return paginated responses however
+      token: "NYUIK7WAP7JD57IF4W4H",
 		}
 		$.getJSON(EVENTBRITE_BASE_URL, query, callback)
 	}
@@ -219,6 +261,7 @@ function removeDest(){
     data.events.forEach(function(item){ //pushes all items from JSON into events variable
       events.push(item);
     });
+    eventPages = data.pagination;
     var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
     currentResults.forEach(function(item){
       if (item.logo !== null){ //some events do not have logos which threw errors, this conditional catches that
@@ -226,6 +269,13 @@ function removeDest(){
       }
       else {
         var logo = "resources/event-placeholder-logo.jpeg"; //if there is no logo, this generic image will replace it. NEED TO ADD GENERIC IMAGE
+      };
+      if (item.is_free == true){
+        var cost = "FREE";
+      }
+
+      else {
+        var cost = "PAID"
       };
       resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
@@ -240,7 +290,7 @@ function removeDest(){
                           "</div>" + 
                           "<div class=\"date-time-cost-container col-sm-12\">" +
                             "<div class=\"row\">" +
-                              "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + 
+                              "<div class=\"cost-container col-sm-3\">" + cost + 
                               "</div>" +
                               "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
                               "</div>" +
@@ -268,7 +318,8 @@ function removeDest(){
         justViewedEvent.push(item);
       });
     }
-      //this is working backwords throw the array as it only triggers if user has gone through events backwards
+
+      //this is working backwords through the array as it only triggers if user has gone through events backwards
     else if (prevPushed >=0){ //this conditional requires that that else if conditional in prevEventPage was called. looks to see if previous button has ever been pushed. if it has then next begins to pull from viewedEvents rather than eventsList -- pairs with else if statement in prevEventsPage function
       var currentResults = viewedEvents.splice(0, 6); //grabs and removes first 6 items from viewedEvents variable that prevPageEvents placed
       eventsList = eventsList.concat(justViewedEvent); //places just viewed event at end of variable where it originally was in JSON
@@ -286,6 +337,14 @@ function removeDest(){
         var logo = "resources/event-placeholder-logo.jpeg";
       }
 
+      if (item.is_free == true){
+        var cost = "FREE";
+      }
+
+      else {
+        var cost = "PAID"
+      }
+
       resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
@@ -299,7 +358,7 @@ function removeDest(){
                           "</div>" + 
                           "<div class=\"date-time-cost-container col-sm-12\">" +
                             "<div class=\"row\">" +
-                              "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + 
+                              "<div class=\"cost-container col-sm-3\">" + cost + 
                               "</div>" +
                               "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
                               "</div>" +
@@ -332,12 +391,20 @@ function removeDest(){
         justViewedEvent.push(item);
       })
     }
+
     prevResults.forEach(function(item){ //same functionality as displayEventBriteData
       if (item.logo !== null){
         var logo = item.logo.url
       }
       else {
         var logo = "#";
+      };
+
+      if (item.is_free == true){
+        var cost = "FREE";
+      }
+      else {
+        var cost = "PAID"
       };
 
       resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
@@ -353,7 +420,7 @@ function removeDest(){
                           "</div>" + 
                           "<div class=\"date-time-cost-container col-sm-12\">" +
                             "<div class=\"row\">" +
-                              "<div class=\"cost-container col-sm-3\">" + "UNKNOWN" + 
+                              "<div class=\"cost-container col-sm-3\">" + cost + 
                               "</div>" +
                               "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
                               "</div>" +
@@ -384,7 +451,7 @@ function removeDest(){
 // ******************************************************************
 
 
-      //Open Weather API - CONTINOUSLY REFUSES MY REQUESTS. MY KEY IS CORRECT HOWEVER
+      //Open Weather API - CONTINOUSLY REFUSES MY REQUESTS. LIKELY WILL REPLACE WITH DIFFERENT API
 // ******************************************************************
   var OPEN_WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
@@ -442,8 +509,8 @@ function watchFormSubmit(){
     createRoadTrip();
   });
 
-  function createRoadTrip(){
-    var proceed = false;
+  function createRoadTrip(){ //function ensures that user is alerted of required tags
+    var proceed = false; //locks application rendering behind this variable
     if($("#destination-form")[0].checkValidity){
       if($("#destination-form")[0].checkValidity()){
         proceed = true
@@ -452,7 +519,7 @@ function watchFormSubmit(){
     else {
       proceed = true
     }
-    if (proceed){
+    if (proceed){ //if proceed returns true application runs
       getDestinations();
       getDates();
       getLeg();
@@ -491,9 +558,10 @@ function watchLegsNavigate(){
   })
 }
 
-function watchEventsNavigate(){
+function watchEventsNavigate(){ //this ensures users always see events
   $("#next-events-button").on("click", function(){
-    if (eventsList.length == 0){ //if eventsList has been empties by user scrolling through it, this resets everything to beginning
+    if (eventsList.length == 0){ //if eventsList has been emptied by user scrolling through it, this resets everything to beginning
+      // pageCount++; //feature for when pagination is working in eventbrite api call
       logEventBriteData();
     }
     else { //increments eventnavbutton counters for use in functions 

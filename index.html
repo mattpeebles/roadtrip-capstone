@@ -23,13 +23,17 @@
 			<form id="destination-form">
 				<label>RoadTrip Planner</label>
 				<div>
+					<label>Start</label>
 					<input type="text" name="Start" class="js-destination" id="start" placeholder="Start" required/>
+					<label>What Day Are You Leaving?</label>
 					<input type="date" name="begin-date" id="start-date" required/>
-					<button id="js-addDest">Add Destination</button><br id="start-break">
+					<button id="js-addDest"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
 				</div>
 				<div>
+					<label>End</label>
 					<input type="text" name="End" class="js-destination" id="end" placeholder="End" required/>
-					<input type="text" name="length" class="length" placeholder="length of stay" required/>
+					<label>How Many Days Are You Staying?</label>
+					<input type="text" name="length" class="length" placeholder="3" required/>
 				</div>
 				<input type="submit" name="submit" id="js-form-submit">
 			</form>

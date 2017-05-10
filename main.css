@@ -27,9 +27,10 @@
 
 .event-description-container{
   overflow: auto;
-  height: 30%;
+  height: 150px;
   line-height: 1.2em;
   width: 100%;
+  padding: 5px;
 }
 
 .logo-container .event-logo{
@@ -38,6 +39,10 @@
     height: 100%;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.information-container{
+	padding: 0;
 }
 
 iframe{
