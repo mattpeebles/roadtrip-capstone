@@ -87,6 +87,11 @@ function getDates(){
 function getLeg(){
   leg = [destinations[legCounter], destinations[legCounter + 1]];
   legDates = [dates[legCounter], dates[legCounter +1]];
+  var resultHTML = "<div id=\"leg-title\">" +
+                      "<p>" + leg[0] + " to " + leg[1] + "</p>"
+                    "</div>"
+  $("#leg-title-container").empty(resultHTML);
+  $("#leg-title-container").append(resultHTML);
 }
 
 function calcDistance(lat1, lon1, lat2, lon2){
@@ -432,13 +437,28 @@ function removeDest(){
 // Watch Submit
 
 function watchFormSubmit(){
-  $("#js-form-submit").on("click", function(event){
+  $("#destination-form").submit(function(event){
     event.preventDefault();
-    getDestinations();
-    getDates();
-    getLeg();
-    updateLegDataGeocode();
+    createRoadTrip();
   });
+
+  function createRoadTrip(){
+    var proceed = false;
+    if($("#destination-form")[0].checkValidity){
+      if($("#destination-form")[0].checkValidity()){
+        proceed = true
+      }
+    }
+    else {
+      proceed = true
+    }
+    if (proceed){
+      getDestinations();
+      getDates();
+      getLeg();
+      updateLegDataGeocode();
+    }
+  }
 }
 
 function watchLegsNavigate(){
