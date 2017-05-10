@@ -281,7 +281,7 @@ function removeDest(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
@@ -355,7 +355,7 @@ function goToResults(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
@@ -418,7 +418,7 @@ function goToResults(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
