@@ -99,7 +99,8 @@ function getLeg(){
   leg = [destinations[legCounter], destinations[legCounter + 1]];
   legDates = [dates[legCounter], dates[legCounter +1]];
   var resultHTML = "<div id=\"leg-title\">" +
-                      "<p>" + leg[0] + " to " + leg[1] + "</p>"
+                      "<p>" + leg[0] + " to " + leg[1] + "</p><br>"+
+                      "<p>" + legDates[0] + " to " + legDates[1] + "</p>"
                     "</div>"
   $("#leg-title-container").empty(resultHTML);
   $("#leg-title-container").append(resultHTML);
@@ -139,7 +140,6 @@ var destIds = [];
   //label has the proper order each time
 function updateDestLabel(){
   destIds.forEach(function(item){
-    var locationDest = document.getElementById(item);
     var jqueryItem = "#" + item
     var parentDiv = $(jqueryItem).parent()
     var location = $(parentDiv).index(this);
@@ -257,7 +257,6 @@ function removeDest(){
     nextPushed = 0; //next pushed is used in event navigation
     prevPushed = 0; // prev pushed is used in event navigation
     var resultHTML = ""; //will be used for DOM Manipulation
-    console.log(data)
     data.events.forEach(function(item){ //pushes all items from JSON into events variable
       events.push(item);
     });
@@ -307,6 +306,12 @@ function removeDest(){
     $(".event-nav-btn").removeClass("hidden");
     eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
 	}
+
+function goToResults(){
+  $('html,body').animate({
+        scrollTop: $("#event-holder").offset().top},
+        'slow');
+};
 
   function nextEventsPage(){ //displays next 6 events in DOM
     var resultHTML = "";
@@ -370,6 +375,7 @@ function removeDest(){
     });
     $("#event-holder").empty();
     $("#event-holder").append(resultHTML);
+    goToResults();
   }
 
   function prevEventsPage(){ //displays previously viewed events on screen,
@@ -431,6 +437,7 @@ function removeDest(){
     });
     $("#event-holder").empty();
     $("#event-holder").append(resultHTML);
+    goToResults();
   }
 
 	function logEventBriteData(){
