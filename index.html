@@ -34,8 +34,8 @@
 						<label>Day Leaving?</label>
 						<input type="date" name="begin-date" id="start-date" placeholder="mm/dd/yyyy" required/>
 					</div>
-					<div class="dest-nav-button col-xs-2 start-btn-set">
-						<button class="btn" id="js-addDest"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
+					<div class="dest-nav-button col-xs-3 start-btn-set">
+						<button class="btn js-addDest" id="start-add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
 					</div>
 				</div>
 				<div class="dest-container row">
@@ -55,12 +55,17 @@
 			</form>
 		</div>
 	</section>
+	<nav class="navbar navbar-default hidden" id="results-nav">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">
+	        <img alt="Brand" src="#">
+	      </a>
+	      <button type="button" class="btn btn-default navbar-btn" id="edit-trip">Edit Trip</button>
+	    </div>
+	  </div>
+	</nav>
 
-	<section class="container roadtrip-results-page hidden">
-		<div>
-			<!-- Styling results here -->
-		</div>
-	</section>
 	<section>
 		<div class="container" id="leg-title-container">
 		</div>

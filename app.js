@@ -152,7 +152,7 @@ function updateDestLabel(){
 
   // adds new destination input area in form
 function addDest(){
-  $("#destination-form").on("click", "#js-addDest", function(event){
+  $("#destination-form").on("click", ".js-addDest", function(event){
     event.preventDefault();
     var newDestForm = "<div class=\"dest-container row\">"+
                         "<div class=\"city-input col-xs-4\">" +
@@ -164,8 +164,8 @@ function addDest(){
                           "<input type=\"text\" name=\"Dest-" + addDestCounter + "-date\" class=\"length\" id=\"length-destination-" + addDestCounter + "\" placeholder=\"3 days\" required>" + 
                         "</div>" +
                         "<div class=\"dest-nav-button col-xs-3\">" +
-                          "<button class=\"btn\" id=\"js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
-                          "<button class=\"btn\" id=\"js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
+                          "<button class=\"btn js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
+                          "<button class=\"btn js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
                         "</div>" +
                       "</div>";
     var destId = "destination-" + addDestCounter;
@@ -185,7 +185,7 @@ function addDest(){
 
   //allows users to remove destination
 function removeDest(){
-  $("#destination-form").on("click", "#js-removeDest", function(event){
+  $("#destination-form").on("click", ".js-removeDest", function(event){
     event.preventDefault();
     var currentParent = $(this).parent();
     var formParent = $(currentParent).parent();
@@ -239,6 +239,7 @@ function randomizePlaceHolder(){
   }
 
   function returnGeocodeData(data){ //pushes coodinates to myGeoArray and provides directions on where to put the coordinates depending on index
+        console.log(data)
         myGeoArray.push(data.results[0]["geometry"]["location"]);
           if (myGeoArray.length == 1){
             legData["startPoint"]["geocode"]["lat"] = myGeoArray[0].lat;
@@ -485,7 +486,6 @@ function randomizePlaceHolder(){
     function autoComplete(){
       var begin = document.getElementById("start");
       var end = document.getElementById("end")
-
       var autocompleteBegin = new google.maps.places.Autocomplete(begin)
       var autocompleteEnd = new google.maps.places.Autocomplete(end)
     }
@@ -561,11 +561,14 @@ function watchFormSubmit(){
       proceed = true
     }
     if (proceed){ //if proceed returns true application runs
-      $("#roadtrip-begin-page").slideUp("slow", function(){
-        getDestinations();
-        getDates();
-        getLeg();
-        updateLegDataGeocode();
+      $(".roadtrip-inputs").slideToggle("slow", function(){
+        $("#roadtrip-begin-page").slideToggle("slow", function(){
+          $("#results-nav").toggleClass("hidden");
+          getDestinations();
+          getDates();
+          getLeg();
+          updateLegDataGeocode();
+        });
       })
     }
   }
@@ -628,6 +631,15 @@ function watchEventsNavigate(){ //this ensures users always see events
   })
 }
 
+function watchTripEdit(){
+  $("#edit-trip").on("click", function(){
+    $("#roadtrip-begin-page").slideToggle("slow", function(){
+      $(".roadtrip-inputs").slideToggle("slow")
+      $("#results-nav").toggleClass("hidden");
+    })
+  }) 
+}
+
 $(function(){
   randomizePlaceHolder()
   setInterval(function(){randomizePlaceHolder()}, 5000);
@@ -637,4 +649,5 @@ $(function(){
   removeDest();
   watchEventsNavigate();
   watchLegsNavigate();
+  watchTripEdit();
 })

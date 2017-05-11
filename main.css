@@ -2,7 +2,7 @@
 /*************************************************/	
 	#roadtrip-begin-page{
 		border: 1px solid black;
-		min-height: 60vh;
+		min-height: auto;
 		max-height: auto;
 		width: 100%;
 		background-image: 
@@ -17,6 +17,10 @@
 	#roadtrip-title{
 		color: #D1457F;
 		text-align: center;
+	}
+
+	.roadtrip-title-min{
+		background-color: #EDF0DA
 	}
 	/*FORM STYLING*/
 	/*************************************************/
@@ -83,15 +87,20 @@
 		.js-destination{
 			width: 110%;
 		}
-		#js-addDest{
+
+		#start-add-button{
+			margin-left: 8%;
+		}
+
+		.js-addDest{
 			position: absolute;
-			left: 0;
+			right: 5%;
 			background-color: #A3C3D9;
 		}
 
-		#js-removeDest{
+		.js-removeDest{
 			position: absolute;
-			right: 0;
+			left: 0;
 			background-color: #A3C3D9;
 		}
 	/*************************************************/
@@ -135,6 +144,10 @@
 
 	.information-container{
 		padding: 0;
+	}
+
+	.pac-container{ /*targets google's autocomplete dropdown*/
+		width: 75% !important;
 	}
 /*************************************************/
 
