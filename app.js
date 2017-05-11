@@ -70,26 +70,26 @@ function getDestinations(){
   }); //initiates initial leg of the journey
 }
 
-	// grabs first date and based on that calculates all
-	//subsequent dates based on length of time user inputs
-	//MAY NEED TO ADD FUNCTIONALITY TO ACCOUNT FOR DRIVE TIME
-	//ALL NEED TO UPDATE HTML TO MAKE IT CLEAR HOW DATES ARE 
-	//CALCULATED
+  // grabs first date and based on that calculates all
+  //subsequent dates based on length of time user inputs
+  //MAY NEED TO ADD FUNCTIONALITY TO ACCOUNT FOR DRIVE TIME
+  //ALL NEED TO UPDATE HTML TO MAKE IT CLEAR HOW DATES ARE 
+  //CALCULATED
 function getDates(){
-	dates = [];
-	var datesIndex = 0;
-	var startDate = document.getElementById("start-date").value;
-	dates.push(startDate);
-	$("#destination-form .length").each(function(){
-		var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
-		var timeDate = new Date(dtstr.split("-").join("-")).getTime(); //this gets the last date's exact time in seconds
-		var length = $(this).val() //this grabs the length the user inputted
-		var newDate = new Date(timeDate+(length*24*60*60*1000)) //this calculates the new date based on the old date's exact time by adding the number of seconds in the length
-		var isoDate = newDate.toISOString(); //this converts it to ISO8601 as eventbrite requires
-		var localDate = isoDate.split('T')[0] //this removes the UTC timezone, will add it in the api call back manually
-		dates.push(localDate); //this pushes the calculated date in the yyyy-mm-dd format
-		datesIndex++; //this increments the dates index so the most recently pushed date becomes the last one to calculate the next leg.
-	})
+  dates = [];
+  var datesIndex = 0;
+  var startDate = document.getElementById("start-date").value;
+  dates.push(startDate);
+  $("#destination-form .length").each(function(){
+    var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
+    var timeDate = new Date(dtstr.split("-").join("-")).getTime(); //this gets the last date's exact time in seconds
+    var length = $(this).val() //this grabs the length the user inputted
+    var newDate = new Date(timeDate+(length*24*60*60*1000)) //this calculates the new date based on the old date's exact time by adding the number of seconds in the length
+    var isoDate = newDate.toISOString(); //this converts it to ISO8601 as eventbrite requires
+    var localDate = isoDate.split('T')[0] //this removes the UTC timezone, will add it in the api call back manually
+    dates.push(localDate); //this pushes the calculated date in the yyyy-mm-dd format
+    datesIndex++; //this increments the dates index so the most recently pushed date becomes the last one to calculate the next leg.
+  })
 }
 
   //this function gets the leg of the journey and the dates associated with it.
@@ -173,11 +173,11 @@ function addDest(){
     var currentParent = $(this).parent();
     var formParent = $(currentParent).parent();
     $(formParent).after(newDestForm);
-		// adds autocomplete functionality to each new input
-	var nPoint = "destination-" + addDestCounter;
-	var newPoint = document.getElementById(nPoint);
-	var autocompleteN = new google.maps.places.Autocomplete(newPoint);
-	addDestCounter++;
+    // adds autocomplete functionality to each new input
+  var nPoint = "destination-" + addDestCounter;
+  var newPoint = document.getElementById(nPoint);
+  var autocompleteN = new google.maps.places.Autocomplete(newPoint);
+  addDestCounter++;
   updateDestLabel();
   randomizePlaceHolder();
   })
@@ -211,8 +211,6 @@ function randomizePlaceHolder(){
       var dayLength = days.splice(Math.floor(Math.random()*days.length), 1);
       var jqueryItem = "#" + item;
       var jqueryLength = "#length-" + item
-      console.log(jqueryLength)
-      console.log(dayLength)
       $(jqueryItem).attr("placeholder", city)
       $(jqueryLength).attr("placeholder", dayLength)
       cities.push(city[0])
@@ -265,30 +263,30 @@ function randomizePlaceHolder(){
 // ******************************************************************
 
 
-    	//EventBrite API
-    	//Calculates Events for EndPoint at each leg
+      //EventBrite API
+      //Calculates Events for EndPoint at each leg
 // ******************************************************************
-	var EVENTBRITE_BASE_URL = "https://www.eventbriteapi.com/v3/events/search/";
+  var EVENTBRITE_BASE_URL = "https://www.eventbriteapi.com/v3/events/search/";
 
   var nextPushed = 0;
   var prevPushed = 0;
 
-	function getDataFromEventBrite(callback){
+  function getDataFromEventBrite(callback){
     var query = {
       "location.latitude": legData["endPoint"]["geocode"]["lat"],
-			"location.longitude": legData["endPoint"]["geocode"]["lng"],
-			"start_date.range_start": legDates[0] + "T00:00:00",
-			"start_date.range_end": legDates[1] + "T00:00:00",
+      "location.longitude": legData["endPoint"]["geocode"]["lng"],
+      "start_date.range_start": legDates[0] + "T00:00:00",
+      "start_date.range_end": legDates[1] + "T00:00:00",
       "location.within": 25 + "mi",
-			// "price": null, //future functionality
-			// "categories": null, //future functionality
-			// "page_number": pageCount, //this is causing an error, it should return paginated responses however
+      // "price": null, //future functionality
+      // "categories": null, //future functionality
+      // "page_number": pageCount, //this is causing an error, it should return paginated responses however
       token: "NYUIK7WAP7JD57IF4W4H",
-		}
-		$.getJSON(EVENTBRITE_BASE_URL, query, callback)
-	}
+    }
+    $.getJSON(EVENTBRITE_BASE_URL, query, callback)
+  }
 
-	function displayEventBriteData(data){ //grabs all event data and displays first 6 events in DOM
+  function displayEventBriteData(data){ //grabs all event data and displays first 6 events in DOM
     var events = [];
     nextPushed = 0; //next pushed is used in event navigation
     prevPushed = 0; // prev pushed is used in event navigation
@@ -317,7 +315,7 @@ function randomizePlaceHolder(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
@@ -341,7 +339,7 @@ function randomizePlaceHolder(){
     })
     $(".event-nav-btn").removeClass("hidden");
     eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
-	}
+  }
 
   function goToResults(){
     $('html,body').animate({
@@ -391,7 +389,7 @@ function randomizePlaceHolder(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
@@ -454,7 +452,7 @@ function randomizePlaceHolder(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
@@ -476,20 +474,20 @@ function randomizePlaceHolder(){
     goToResults();
   }
 
-	function logEventBriteData(){
-		getDataFromEventBrite(displayEventBriteData);
-	}
+  function logEventBriteData(){
+    getDataFromEventBrite(displayEventBriteData);
+  }
 // ******************************************************************
 
 
       //Google Autocomplete API Section
 // ******************************************************************
-  	function autoComplete(){
+    function autoComplete(){
       var begin = document.getElementById("start");
-    	var end = document.getElementById("end")
+      var end = document.getElementById("end")
 
-    	var autocompleteBegin = new google.maps.places.Autocomplete(begin)
-    	var autocompleteEnd = new google.maps.places.Autocomplete(end)
+      var autocompleteBegin = new google.maps.places.Autocomplete(begin)
+      var autocompleteEnd = new google.maps.places.Autocomplete(end)
     }
 // ******************************************************************
 
