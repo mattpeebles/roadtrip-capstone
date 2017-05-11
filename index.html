@@ -18,29 +18,50 @@
 </head>
 
 <body>
-	<section class="container roadtrip-form">
+	<section class="container" id="roadtrip-begin-page">
+		<header id="roadtrip-title">
+			<h1>RoadTrip Capstone</h1>
+		</header>
 		<div class="roadtrip-inputs">
 			<form id="destination-form">
-				<label>RoadTrip Planner</label>
-				<div>
-					<label>Start</label>
-					<input type="text" name="Start" class="js-destination" id="start" placeholder="Start" required/>
-					<label>What Day Are You Leaving?</label>
-					<input type="date" name="begin-date" id="start-date" required/>
-					<button id="js-addDest"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
+				<label id="form-title">Plan My Trip</label>
+				<div class="dest-container row">
+					<div class="city-input col-xs-5">
+						<label>Start</label>
+						<input type="text" name="Start" class="js-destination" id="start" placeholder="Start" required/>
+					</div>
+					<div class="date-input col-xs-5">
+						<label>Day Leaving?</label>
+						<input type="date" name="begin-date" id="start-date" required/>
+					</div>
+					<div class="dest-nav-button col-xs-2">
+						<button id="js-addDest"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
+					</div>
+					<img class="down-arrow" src="resources/down-arrow.svg">
 				</div>
-				<div>
-					<label>End</label>
-					<input type="text" name="End" class="js-destination" id="end" placeholder="End" required/>
-					<label>How Many Days Are You Staying?</label>
-					<input type="text" name="length" class="length" placeholder="3" required/>
+				<div class="dest-container row">
+					<div class="city-input col-xs-5">
+						<label>End</label>
+						<input type="text" name="End" class="js-destination" id="end" placeholder="End" required/>
+					</div>
+					<div class="length-input col-xs-5">
+						<label>Length of Stay</label>
+						<input type="text" name="length" class="length" placeholder="3 days" required/>
+					</div>
 				</div>
-				<input type="submit" name="submit" id="js-form-submit">
+				<div class="row" id="form-submit-container">
+					<div class="form-submit-input col-xs-12">
+						<input type="submit" name="submit" id="js-form-submit">
+					</div>
 			</form>
-		
 		</div>
 	</section>
 
+	<section class="container roadtrip-results-page hidden">
+		<div>
+			<!-- Styling results here -->
+		</div>
+	</section>
 	<section>
 		<div class="container" id="leg-title-container">
 		</div>

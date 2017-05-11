@@ -139,13 +139,14 @@ var destIds = [];
   //creates label for each new destination and ensures that the
   //label has the proper order each time
 function updateDestLabel(){
-  destIds.forEach(function(item){
-    var jqueryItem = "#" + item
-    var parentDiv = $(jqueryItem).parent()
-    var location = $(parentDiv).index(this);
-    var tarLabel = "#label-" + item;
-    $(tarLabel).text('');
-    $(tarLabel).text("Stop - " + (location -1)); 
+  destIds.forEach(function(item){ //loops through all destIDs which consists of "destination-x" where x is a number 
+    var jqueryItem = "#" + item //initiates variable to use destIDs in jquery
+    var parentDiv = $(jqueryItem).parent() //grabs the parent of the label which is the city-input div
+    var parentContainer = $(parentDiv).parent(); //grabs the parent of the city-input div which is the dest-container div
+    var location = $(parentContainer).index(this); //calculates it's position in relation to its siblings
+    var tarLabel = "#label-" + item; //creates new label text
+    $(tarLabel).text(''); //removes prior label text if it existed
+    $(tarLabel).text("Stop - " + (location -1)); //sets label to it's current location. Because the start position will always be at position 1, we account for that by subtracting 1
   })
 }
 
@@ -153,18 +154,26 @@ function updateDestLabel(){
 function addDest(){
   $("#destination-form").on("click", "#js-addDest", function(event){
     event.preventDefault();
-    var newDestForm = "<div class=\"dest-container\">"+
-    "<label id=\"label-destination-" + addDestCounter + "\"></label>"+
-    "<input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\" required>" + 
-    "<label>How Many Days Are You Staying?</label>" +
-    "<input type=\"text\" name=\"Dest-" + addDestCounter + "-date\" class=\"length\" placeholder=\"3\" required>" + 
-    "<button id=\"js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
-    "<button id=\"js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
-    "</div>";
+    var newDestForm = "<div class=\"dest-container row\">"+
+                        "<div class=\"city-input col-xs-5\">" +
+                          "<label id=\"label-destination-" + addDestCounter + "\">TEST</label>"+
+                          "<input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\" required>" + 
+                        "</div>" +
+                        "<div class=\"date-input col-xs-5\">" +
+                          "<label>Length of Stay</label>" +
+                          "<input type=\"text\" name=\"Dest-" + addDestCounter + "-date\" class=\"length\" placeholder=\"3 days\" required>" + 
+                        "</div>" +
+                        "<div class=\"dest-nav-button col-xs-2\">" +
+                          "<button id=\"js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
+                          "<button id=\"js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
+                        "</div>" +
+                        "<img class=\"down-arrow\" src=\"resources/down-arrow.svg\">" +
+                      "</div>";
     var destId = "destination-" + addDestCounter;
     destIds.push(destId);
     var currentParent = $(this).parent();
-    $(currentParent).after(newDestForm);
+    var formParent = $(currentParent).parent();
+    $(formParent).after(newDestForm);
 		// adds autocomplete functionality to each new input
 	var nPoint = "destination-" + addDestCounter;
 	var newPoint = document.getElementById(nPoint);
@@ -179,7 +188,8 @@ function removeDest(){
   $("#destination-form").on("click", "#js-removeDest", function(event){
     event.preventDefault();
     var currentParent = $(this).parent();
-    $(currentParent).remove();
+    var formParent = $(currentParent).parent();
+    $(formParent).remove();
     updateDestLabel();
   })
 };
@@ -213,7 +223,7 @@ function removeDest(){
           else if (myGeoArray.length == 2){
             legData["endPoint"]["geocode"]["lat"] = myGeoArray[1].lat;
             legData["endPoint"]["geocode"]["lng"] = myGeoArray[1].lng;
-            // updateWeatherObject(); //weather api refuses all of my requests
+            updateWeatherObject(); //weather api refuses all of my requests
             logEventBriteData();
             getGoogleMaps();
             calcAllDistance();
@@ -307,11 +317,11 @@ function removeDest(){
     eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
 	}
 
-function goToResults(){
-  $('html,body').animate({
-        scrollTop: $("#event-holder").offset().top},
-        'slow');
-};
+  function goToResults(){
+    $('html,body').animate({
+          scrollTop: $("#event-holder").offset().top},
+          'slow');
+  };
 
   function nextEventsPage(){ //displays next 6 events in DOM
     var resultHTML = "";
@@ -460,7 +470,7 @@ function goToResults(){
 
       //Open Weather API - CONTINOUSLY REFUSES MY REQUESTS. LIKELY WILL REPLACE WITH DIFFERENT API
 // ******************************************************************
-  var OPEN_WEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+  var OPEN_WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
   function getDataFromOpenWeather(point, callback){
     var lat = point.lat;
@@ -474,7 +484,7 @@ function goToResults(){
   }
 
   function pushDataFromOpenWeather(data){
-    console.log(data.results);
+    console.log(data);
   }
 
   function updateWeatherObject(){
@@ -527,10 +537,12 @@ function watchFormSubmit(){
       proceed = true
     }
     if (proceed){ //if proceed returns true application runs
-      getDestinations();
-      getDates();
-      getLeg();
-      updateLegDataGeocode();
+      $("#roadtrip-begin-page").slideUp("slow", function(){
+        getDestinations();
+        getDates();
+        getLeg();
+        updateLegDataGeocode();
+      })
     }
   }
 }

@@ -1,54 +1,123 @@
-.roadtrip-form{
-	border: 1px solid black;
-	width: 100%;
-}
+ 	/*ROADTRIP BEGIN PAGE STYLING*/
+/*************************************************/	
+	#roadtrip-begin-page{
+		border: 1px solid black;
+		min-height: 60vh;
+		max-height: auto;
+		background-color: #BEECF4;
+		padding: 1%;
+		position: absolute;
+	}
 
-.roadtrip-inputs{
-	border: 1px solid black;
-	margin-left: auto;
-	margin-right: auto;
-}
+	#roadtrip-title{
+		color: #D1457F;
+		text-align: center;
+	}
+	/*FORM STYLING*/
+	/*************************************************/
+		input, label {
+			display: block;
+			text-align: left;
+		}
+
+		input {
+			height: 50px;
+			font-size: 16px;
+			width: 90%;
+		}
+
+		label{
+			color: #333333;
+			font-size: 18px;
+		}
+
+		.down-arrow{
+			width: 20%;
+			height: 20%
+		}
+
+		#form-title{
+			text-align: center;
+			font-size: 22px;
+		}
+
+		#start-date{
+			width: 110%;
+		}
+
+		.roadtrip-inputs{
+			width: 100%;
+			margin: 0;
+		}
+
+		.roadtrip-inputs{
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		#form-submit-container{
+			margin-top: 5%;
+		}
+
+		#js-form-submit{
+			background-color: #FFFFFF;
+			text-align: center;
+			width: 100%
+		}
+	/*************************************************/
+
+/*************************************************/
 
 
 
-.total-event-container{ /*holds all html for each event instance*/
-	border: 1px solid black;
-	width: 100%;
-	height: auto;
-	margin-top: 5%;
-}
 
-.logo-container{
-	width: 100%;
-	height: 100%;
-	position: relative;
-	border: 1px solid black;
-}
+		/*EVENTS CSS*/
+/*************************************************/
+	.total-event-container{ /*holds all html for each event instance*/
+		border: 1px solid black;
+		width: 100%;
+		height: auto;
+		margin-top: 5%;
+	}
 
-.event-description-container{
-  overflow: auto;
-  height: 150px;
-  line-height: 1.2em;
-  width: 100%;
-  padding: 5px;
-}
+	.logo-container{
+		width: 100%;
+		height: 100%;
+		position: relative;
+		border: 1px solid black;
+	}
 
-.logo-container .event-logo{
-	position: relative;
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+	.event-description-container{
+	  overflow: auto;
+	  height: 150px;
+	  line-height: 1.2em;
+	  width: 100%;
+	  padding: 5px;
+	}
 
-.information-container{
-	padding: 0;
-}
+	.logo-container .event-logo{
+		position: relative;
+	    width: 100%;
+	    height: 100%;
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	}
 
-iframe{
-	width: 100%;
-	height: 450px;
-}
+	.information-container{
+		padding: 0;
+	}
+/*************************************************/
+
+
+
+	/*MAPS CSS*/
+/*************************************************/
+	iframe{
+		width: 100%;
+		height: 450px;
+	}
+/*************************************************/
+
 
 .hidden{
 	display: none;
