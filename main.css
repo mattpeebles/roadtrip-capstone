@@ -4,9 +4,14 @@
 		border: 1px solid black;
 		min-height: 60vh;
 		max-height: auto;
-		background-color: #BEECF4;
-		padding: 1%;
-		position: absolute;
+		width: 100%;
+		background-image: 
+			linear-gradient(rgba(237,240,218,0.4), rgba(237,240,218,0.2)),
+			url(resources/hero-image.jpeg);
+		background-size: cover;
+		position: relative;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 
 	#roadtrip-title{
@@ -24,16 +29,15 @@
 			height: 50px;
 			font-size: 16px;
 			width: 90%;
+			background-color: rgba(237,240,218,0.7);
+  			border: none;
+  			border-bottom: solid 2px #c9c9c9;
+  			transition: border 0.3s;
 		}
 
 		label{
 			color: #333333;
 			font-size: 18px;
-		}
-
-		.down-arrow{
-			width: 20%;
-			height: 20%
 		}
 
 		#form-title{
@@ -42,7 +46,7 @@
 		}
 
 		#start-date{
-			width: 110%;
+			width: 107%;
 		}
 
 		.roadtrip-inputs{
@@ -60,9 +64,35 @@
 		}
 
 		#js-form-submit{
-			background-color: #FFFFFF;
+			position: relative;
+			background-color: #D1457F;
 			text-align: center;
 			width: 100%
+			font-size: 20px;
+			color: #FFFFFF;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.dest-nav-button {
+			margin-top: 30px;
+			position: relative;
+			height: 48px;
+		}
+
+		.js-destination{
+			width: 110%;
+		}
+		#js-addDest{
+			position: absolute;
+			left: 0;
+			background-color: #A3C3D9;
+		}
+
+		#js-removeDest{
+			position: absolute;
+			right: 0;
+			background-color: #A3C3D9;
 		}
 	/*************************************************/
 

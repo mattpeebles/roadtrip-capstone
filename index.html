@@ -26,27 +26,26 @@
 			<form id="destination-form">
 				<label id="form-title">Plan My Trip</label>
 				<div class="dest-container row">
-					<div class="city-input col-xs-5">
+					<div class="city-input col-xs-4">
 						<label>Start</label>
-						<input type="text" name="Start" class="js-destination" id="start" placeholder="Start" required/>
+						<input type="text" name="Start" class="js-destination" id="start" required/>
 					</div>
 					<div class="date-input col-xs-5">
 						<label>Day Leaving?</label>
-						<input type="date" name="begin-date" id="start-date" required/>
+						<input type="date" name="begin-date" id="start-date" placeholder="mm/dd/yyyy" required/>
 					</div>
-					<div class="dest-nav-button col-xs-2">
-						<button id="js-addDest"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
+					<div class="dest-nav-button col-xs-2 start-btn-set">
+						<button class="btn" id="js-addDest"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
 					</div>
-					<img class="down-arrow" src="resources/down-arrow.svg">
 				</div>
 				<div class="dest-container row">
-					<div class="city-input col-xs-5">
+					<div class="city-input col-xs-4">
 						<label>End</label>
-						<input type="text" name="End" class="js-destination" id="end" placeholder="End" required/>
+						<input type="text" name="End" class="js-destination" id="end" required/>
 					</div>
 					<div class="length-input col-xs-5">
 						<label>Length of Stay</label>
-						<input type="text" name="length" class="length" placeholder="3 days" required/>
+						<input type="text" name="length" class="length" id="end-length" placeholder="3 days" required/>
 					</div>
 				</div>
 				<div class="row" id="form-submit-container">

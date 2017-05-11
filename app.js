@@ -155,19 +155,18 @@ function addDest(){
   $("#destination-form").on("click", "#js-addDest", function(event){
     event.preventDefault();
     var newDestForm = "<div class=\"dest-container row\">"+
-                        "<div class=\"city-input col-xs-5\">" +
+                        "<div class=\"city-input col-xs-4\">" +
                           "<label id=\"label-destination-" + addDestCounter + "\">TEST</label>"+
                           "<input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\" required>" + 
                         "</div>" +
                         "<div class=\"date-input col-xs-5\">" +
                           "<label>Length of Stay</label>" +
-                          "<input type=\"text\" name=\"Dest-" + addDestCounter + "-date\" class=\"length\" placeholder=\"3 days\" required>" + 
+                          "<input type=\"text\" name=\"Dest-" + addDestCounter + "-date\" class=\"length\" id=\"length-destination-" + addDestCounter + "\" placeholder=\"3 days\" required>" + 
                         "</div>" +
-                        "<div class=\"dest-nav-button col-xs-2\">" +
-                          "<button id=\"js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
-                          "<button id=\"js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
+                        "<div class=\"dest-nav-button col-xs-3\">" +
+                          "<button class=\"btn\" id=\"js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
+                          "<button class=\"btn\" id=\"js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
                         "</div>" +
-                        "<img class=\"down-arrow\" src=\"resources/down-arrow.svg\">" +
                       "</div>";
     var destId = "destination-" + addDestCounter;
     destIds.push(destId);
@@ -180,6 +179,7 @@ function addDest(){
 	var autocompleteN = new google.maps.places.Autocomplete(newPoint);
 	addDestCounter++;
   updateDestLabel();
+  randomizePlaceHolder();
   })
 }
 
@@ -194,6 +194,32 @@ function removeDest(){
   })
 };
 
+  //changes placeholder for destination cities
+
+function randomizePlaceHolder(){
+    var cities = ["San Antonio", "Austin", "Seattle", "Portland", "New York", "Chicago", "Atlanta", "San Francisco", "DC", "Vancouver", "Detroit", "Miami", "St. Louis", "Memphis", "Kansas City", "Santa Fe", "Fargo", "New Orleans", "Las Vegas"]
+    var days = ["1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days", "10 days", "11 days", "12 days", "13 days", "14 days", "15 days", "16 days", "17 days", "18 days", "19 days", "20 days"]
+    var city1 = cities.splice(Math.floor(Math.random()*cities.length), 1);
+    var city2 = cities.splice(Math.floor(Math.random()*cities.length), 1);
+    $("#start").attr("placeholder", city1);
+    $("#end").attr("placeholder", city2);
+    var day = days.splice(Math.floor(Math.random()*days.length), 1);
+    $("#end-length").attr("placeholder", day);
+
+    destIds.forEach(function(item){
+      var city = cities.splice(Math.floor(Math.random()*cities.length), 1);
+      var dayLength = days.splice(Math.floor(Math.random()*days.length), 1);
+      var jqueryItem = "#" + item;
+      var jqueryLength = "#length-" + item
+      console.log(jqueryLength)
+      console.log(dayLength)
+      $(jqueryItem).attr("placeholder", city)
+      $(jqueryLength).attr("placeholder", dayLength)
+      cities.push(city[0])
+    })
+    cities.push(city1[0]);
+    cities.push(city2[0]);
+}
 
 // API SECTION
 
@@ -605,6 +631,8 @@ function watchEventsNavigate(){ //this ensures users always see events
 }
 
 $(function(){
+  randomizePlaceHolder()
+  setInterval(function(){randomizePlaceHolder()}, 5000);
   autoComplete();
   watchFormSubmit();
   addDest();
