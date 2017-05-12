@@ -83,7 +83,15 @@ function getDates(){
   $("#destination-form .length").each(function(){
     var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
     var timeDate = new Date(dtstr.split("-").join("-")).getTime(); //this gets the last date's exact time in seconds
-    var length = $(this).val() //this grabs the length the user inputted
+    var length = $(this).val().toLowerCase(); //this grabs the length the user inputted
+    if (length.indexOf("d") != -1){ //if user enters day or days, catches and converts to number
+        var length = length.substring(0, length.indexOf("d") - 1)
+    }
+
+    else if (length.indexOf("w") != -1){ //if user enters week or weeks, catches, converts to number, and converts to days
+      var week = length.substring(0, length.indexOf("w") - 1)
+      var length = parseInt(week) * 7;
+    }
     var newDate = new Date(timeDate+(length*24*60*60*1000)) //this calculates the new date based on the old date's exact time by adding the number of seconds in the length
     var isoDate = newDate.toISOString(); //this converts it to ISO8601 as eventbrite requires
     var localDate = isoDate.split('T')[0] //this removes the UTC timezone, will add it in the api call back manually
@@ -99,14 +107,18 @@ function getLeg(){
   leg = [destinations[legCounter], destinations[legCounter + 1]];
   legDates = [dates[legCounter], dates[legCounter +1]];
   var resultHTML = "<div id=\"leg-title\">" +
-                      "<p>" + leg[0] + " to " + leg[1] + "</p><br>"+
-                      "<p>" + legDates[0] + " to " + legDates[1] + "</p>"
+                      "<p><span class=\"bold\">Destination:</span> " + leg[1] + "</p>"+
+                      "<p><span class=\"bold\">Dates: </span>" + legDates[0] + " to " + legDates[1] + "</p>"
                     "</div>"
   $("#leg-title-container").empty(resultHTML);
   $("#leg-title-container").append(resultHTML);
 }
 
   //provides the formula to calculate the rough distance between two different geocoordinates 
+  //this is extraneous right now. may be useful when I do weather
+  //between points to give the user context about the distance
+  //between the weather calls i.e. you'll have rain for approximately
+  //the first 30 miles of your journey
 function calcDistance(lat1, lon1, lat2, lon2){
   var R = 6371; 
   var φ1 = lat1 * (Math.PI / 180);
@@ -122,8 +134,6 @@ function calcDistance(lat1, lon1, lat2, lon2){
   var d = R * c;
 
   var miles = d * 0.621371
-
-  console.log((miles).toFixed(2) + " miles, and approximately " + (miles/55).toFixed(2) + " hours");
 }
 
   //this calculates the distance between two different geocoordinates
@@ -239,7 +249,6 @@ function randomizePlaceHolder(){
   }
 
   function returnGeocodeData(data){ //pushes coodinates to myGeoArray and provides directions on where to put the coordinates depending on index
-        console.log(data)
         myGeoArray.push(data.results[0]["geometry"]["location"]);
           if (myGeoArray.length == 1){
             legData["startPoint"]["geocode"]["lat"] = myGeoArray[0].lat;
@@ -251,7 +260,6 @@ function randomizePlaceHolder(){
             updateWeatherObject(); //weather api refuses all of my requests
             logEventBriteData();
             getGoogleMaps();
-            calcAllDistance();
           }
   }
 
@@ -496,6 +504,8 @@ function randomizePlaceHolder(){
 // ******************************************************************
   var OPEN_WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
+  var weather = []; 
+
   function getDataFromOpenWeather(point, callback){
     var lat = point.lat;
     var lon = point.lng;
@@ -508,15 +518,17 @@ function randomizePlaceHolder(){
   }
 
   function pushDataFromOpenWeather(data){
-    console.log(data);
+    weather.push(data.weather[0]);
   }
 
   function updateWeatherObject(){
-    var pointsArray = [legData.startPoint.geocode, legData.endPoint.geocode];
+    var pointsArray = [legData.startPoint, legData.endPoint];
     // , legData.midPoint, legData["point0.5"], legData["point1.5"]]
-    getDataFromOpenWeather(pointsArray[0], pushDataFromOpenWeather);
-    getDataFromOpenWeather(pointsArray[1], pushDataFromOpenWeather)
+    pointsArray.forEach(function(point){
+      getDataFromOpenWeather(point.geocode, pushDataFromOpenWeather);
+    })
   }
+
 // ******************************************************************
 
       //Google Maps API
