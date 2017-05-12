@@ -106,9 +106,24 @@ function getDates(){
 function getLeg(){
   leg = [destinations[legCounter], destinations[legCounter + 1]];
   legDates = [dates[legCounter], dates[legCounter +1]];
+  
+    var dateArray0 = legDates[0].split("-")
+    var year0 = dateArray0[0]
+    var month0 = dateArray0[1]
+    var day0 = dateArray0[2]
+    var americanDateLeg0 = month0 + "/" + day0 + "/" + year0;
+
+    var dateArray1 = legDates[1].split("-")
+    var year1 = dateArray1[0]
+    var month1 = dateArray1[1]
+    var day1 = dateArray1[2]
+    var americanDateLeg1 = month1 + "/" + day1 + "/" + year1;
+
+
+
   var resultLegTitleHTML = "<div id=\"leg-title\">" +
                       "<p><span class=\"bold\">Destination:</span> " + leg[1] + "</p>"+
-                      "<p><span class=\"bold\">Dates: </span>" + legDates[0] + " to " + legDates[1] + "</p>"
+                      "<p><span class=\"bold\">Dates: </span>" + americanDateLeg0 + " to " + americanDateLeg1 + "</p>"
                     "</div>"
   $("#leg-title-container").empty();
   $("#leg-title-container").append(resultLegTitleHTML);
@@ -116,7 +131,6 @@ function getLeg(){
   var resultEventTitleHTML =  "<div id=\"event-title\">" +
                               "<p id=\"event-title-header\">Events" + "</p>" +
                               "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                              "<p id=\"event-title-dates\">From:  " + legDates[0] + " to " + legDates[1] + "</p>" +
                               "</div>"
   $("#event-title-container").empty();
   $("#event-title-container").append(resultEventTitleHTML);
@@ -327,6 +341,24 @@ function randomizePlaceHolder(){
       else {
         var cost = "PAID"
       };
+
+      var complexDate = (item.start.local).split("T")[0]
+      var dateArray = complexDate.split("-")
+      var year = dateArray[0]
+      var month = dateArray[1]
+      var day = dateArray[2]
+      var americanDate = month + "/" + day + "/" + year;
+
+
+      var time = (item.start.local).split("T")[1]
+      var now = new Date(item.start.local)
+      var hours = now.getHours()
+      var minutes = now.getMinutes()
+      var timeValue = "" + ((hours >12) ? hours -12 :hours)
+      timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
+      timeValue += (hours >= 12) ? " P.M." : " A.M."
+
+
       resultHTML +=   "<div class=\"total-event-container container col-xs-12\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
@@ -342,7 +374,7 @@ function randomizePlaceHolder(){
                             "<div class=\"row\">" +
                               "<div class=\"cost-container col-xs-4\">" + cost + 
                               "</div>" +
-                              "<div class=\"date-time-container col-xs-8\">" + item.start.local + 
+                              "<div class=\"date-time-container col-xs-8\">" + americanDate + " " + timeValue + 
                               "</div>" +
                             "</div>" +
                           "</div>" +
@@ -401,6 +433,22 @@ function randomizePlaceHolder(){
         var cost = "PAID"
       }
 
+      var complexDate = (item.start.local).split("T")[0]
+      var dateArray = complexDate.split("-")
+      var year = dateArray[0]
+      var month = dateArray[1]
+      var day = dateArray[2]
+      var americanDate = month + "/" + day + "/" + year;
+
+
+      var time = (item.start.local).split("T")[1]
+      var now = new Date(item.start.local)
+      var hours = now.getHours()
+      var minutes = now.getMinutes()
+      var timeValue = "" + ((hours >12) ? hours -12 :hours)
+      timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
+      timeValue += (hours >= 12) ? " P.M." : " A.M."
+
       resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
@@ -416,7 +464,7 @@ function randomizePlaceHolder(){
                             "<div class=\"row\">" +
                               "<div class=\"cost-container col-sm-3\">" + cost + 
                               "</div>" +
-                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
+                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + americanDate + " " + timeValue + 
                               "</div>" +
                             "</div>" +
                           "</div>" +
@@ -464,6 +512,22 @@ function randomizePlaceHolder(){
         var cost = "PAID"
       };
 
+      var complexDate = (item.start.local).split("T")[0]
+      var dateArray = complexDate.split("-")
+      var year = dateArray[0]
+      var month = dateArray[1]
+      var day = dateArray[2]
+      var americanDate = month + "/" + day + "/" + year;
+
+
+      var time = (item.start.local).split("T")[1]
+      var now = new Date(item.start.local)
+      var hours = now.getHours()
+      var minutes = now.getMinutes()
+      var timeValue = "" + ((hours >12) ? hours -12 :hours)
+      timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
+      timeValue += (hours >= 12) ? " P.M." : " A.M."
+
       resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
@@ -479,7 +543,7 @@ function randomizePlaceHolder(){
                             "<div class=\"row\">" +
                               "<div class=\"cost-container col-sm-3\">" + cost + 
                               "</div>" +
-                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
+                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + americanDate + " " + timeValue + 
                               "</div>" +
                             "</div>" +
                           "</div>" +
