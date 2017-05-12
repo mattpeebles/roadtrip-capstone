@@ -30,20 +30,20 @@
 						<input type="text" name="Start" class="js-destination" id="start" required/>
 					</div>
 					<div class="date-input col-xs-5">
-						<label>Day Leaving?</label>
+						<label>Leaving On</label>
 						<input type="date" name="begin-date" id="start-date" placeholder="mm/dd/yyyy" required/>
 					</div>
 					<div class="dest-nav-button col-xs-3 start-btn-set">
-						<button class="btn js-addDest" id="start-add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><br id="start-break">
+						<div class="btn js-addDest" id="start-add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></div><br id="start-break">
 					</div>
 				</div>
 				<div class="dest-container row">
 					<div class="city-input col-xs-4">
-						<label>End</label>
+						<label>Going To</label>
 						<input type="text" name="End" class="js-destination" id="end" required/>
 					</div>
 					<div class="length-input col-xs-5">
-						<label>Length of Stay</label>
+						<label>Staying For</label>
 						<input type="text" name="length" class="length" id="end-length" placeholder="3 days" required/>
 					</div>
 				</div>
@@ -67,17 +67,28 @@
 	</nav>
 
 	<section id="results">
+			<!-- leg information -->
 		<div class="container" id="leg-title-container">
 		</div>
+
+			<!-- google map -->
 		<div>
 			<div id="map-holder"></div>
 		</div>
+
+			<!-- leg nav section -->
 		<div id="leg-nav-btn-container">
 			<button type="button" class="btn leg-nav-btn hidden" id="prev-leg-button">Previous Leg</button>
 			<button type="button" class="btn leg-nav-btn hidden" id="next-leg-button">Next Leg</button>
 		</div>
-		<div id="js-event-holder">
-			<div id="event-holder" class="container"></div>
+
+			<!-- event section -->
+		<div id="event-title-container">
+		</div>
+		
+		<div id="event-holder" class="container"></div>
+
+		<div id="event-nav-btn-container">
 			<button type="button" class="btn event-nav-btn hidden" id="prev-events-button">Previous Events</button>
 			<button type="button" class="btn event-nav-btn hidden" id="next-events-button">Next Events</button>
 		</div>

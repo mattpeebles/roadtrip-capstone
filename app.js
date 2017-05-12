@@ -83,13 +83,13 @@ function getDates(){
   $("#destination-form .length").each(function(){
     var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
     var timeDate = new Date(dtstr.split("-").join("-")).getTime(); //this gets the last date's exact time in seconds
-    var length = $(this).val().toLowerCase(); //this grabs the length the user inputted
+    var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the length the user inputted
     if (length.indexOf("d") != -1){ //if user enters day or days, catches and converts to number
-        var length = length.substring(0, length.indexOf("d") - 1)
+        var length = length.substring(0, length.indexOf("d"))
     }
 
     else if (length.indexOf("w") != -1){ //if user enters week or weeks, catches, converts to number, and converts to days
-      var week = length.substring(0, length.indexOf("w") - 1)
+      var week = length.substring(0, length.indexOf("w"))
       var length = parseInt(week) * 7;
     }
     var newDate = new Date(timeDate+(length*24*60*60*1000)) //this calculates the new date based on the old date's exact time by adding the number of seconds in the length
@@ -106,12 +106,20 @@ function getDates(){
 function getLeg(){
   leg = [destinations[legCounter], destinations[legCounter + 1]];
   legDates = [dates[legCounter], dates[legCounter +1]];
-  var resultHTML = "<div id=\"leg-title\">" +
+  var resultLegTitleHTML = "<div id=\"leg-title\">" +
                       "<p><span class=\"bold\">Destination:</span> " + leg[1] + "</p>"+
                       "<p><span class=\"bold\">Dates: </span>" + legDates[0] + " to " + legDates[1] + "</p>"
                     "</div>"
-  $("#leg-title-container").empty(resultHTML);
-  $("#leg-title-container").append(resultHTML);
+  $("#leg-title-container").empty();
+  $("#leg-title-container").append(resultLegTitleHTML);
+
+  var resultEventTitleHTML =  "<div id=\"event-title\">" +
+                              "<p id=\"event-title-header\">Events" + "</p>" +
+                              "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
+                              "<p id=\"event-title-dates\">From:  " + legDates[0] + " to " + legDates[1] + "</p>" +
+                              "</div>"
+  $("#event-title-container").empty();
+  $("#event-title-container").append(resultEventTitleHTML);
 }
 
   //provides the formula to calculate the rough distance between two different geocoordinates 
@@ -166,16 +174,16 @@ function addDest(){
     event.preventDefault();
     var newDestForm = "<div class=\"dest-container row\">"+
                         "<div class=\"city-input col-xs-4\">" +
-                          "<label id=\"label-destination-" + addDestCounter + "\">TEST</label>"+
+                          "<label id=\"label-destination-" + addDestCounter + "\"></label>"+
                           "<input type=\"text\" name=\"dest-" + addDestCounter + "\" id = \"destination-" + addDestCounter + "\" class=\"js-destination\" placeholder=\"Destination\" required>" + 
                         "</div>" +
                         "<div class=\"date-input col-xs-5\">" +
-                          "<label>Length of Stay</label>" +
+                          "<label>Staying For</label>" +
                           "<input type=\"text\" name=\"Dest-" + addDestCounter + "-date\" class=\"length\" id=\"length-destination-" + addDestCounter + "\" placeholder=\"3 days\" required>" + 
                         "</div>" +
                         "<div class=\"dest-nav-button col-xs-3\">" +
-                          "<button class=\"btn js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></button>" +
-                          "<button class=\"btn js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></button>" +
+                          "<div class=\"btn js-addDest\"><span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span></div>" +
+                          "<div class=\"btn js-removeDest\"><span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></div>" +
                         "</div>" +
                       "</div>";
     var destId = "destination-" + addDestCounter;
@@ -208,7 +216,7 @@ function removeDest(){
 
 function randomizePlaceHolder(){
     var cities = ["San Antonio", "Austin", "Seattle", "Portland", "New York", "Chicago", "Atlanta", "San Francisco", "DC", "Vancouver", "Detroit", "Miami", "St. Louis", "Memphis", "Kansas City", "Santa Fe", "Fargo", "New Orleans", "Las Vegas"]
-    var days = ["1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days", "10 days", "11 days", "12 days", "13 days", "14 days", "15 days", "16 days", "17 days", "18 days", "19 days", "20 days"]
+    var days = ["1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days", "10 days", "11 days", "12 days", "13 days", "14 days", "15 days", "16 days", "17 days", "18 days", "19 days", "20 days", "21 days", "1 week", "2 weeks", "3 weeks"]
     var city1 = cities.splice(Math.floor(Math.random()*cities.length), 1);
     var city2 = cities.splice(Math.floor(Math.random()*cities.length), 1);
     $("#start").attr("placeholder", city1);
@@ -319,22 +327,22 @@ function randomizePlaceHolder(){
       else {
         var cost = "PAID"
       };
-      resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+      resultHTML +=   "<div class=\"total-event-container container col-xs-12\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
                         "<div class=\"event-container row\">" +
-                         "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                         "<div class=\"logo-container col-xs-12\">" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
-                          "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
+                          "<div class=\"information-container container col-xs-12\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
                             "</div>" +
                           "</div>" + 
-                          "<div class=\"date-time-cost-container col-sm-12\">" +
+                          "<div class=\"date-time-cost-container col-xs-12\">" +
                             "<div class=\"row\">" +
-                              "<div class=\"cost-container col-sm-3\">" + cost + 
+                              "<div class=\"cost-container col-xs-4\">" + cost + 
                               "</div>" +
-                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + item.start.local + 
+                              "<div class=\"date-time-container col-xs-8\">" + item.start.local + 
                               "</div>" +
                             "</div>" +
                           "</div>" +
@@ -398,7 +406,7 @@ function randomizePlaceHolder(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
@@ -461,7 +469,7 @@ function randomizePlaceHolder(){
                             "</div>" +
                         "<div class=\"event-container row\">" +
                          "<div class=\"logo-container col-sm-3\">" +
-                            "<a href=\"" + item.url + "\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
