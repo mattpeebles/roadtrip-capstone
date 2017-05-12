@@ -54,31 +54,32 @@
 			</form>
 		</div>
 	</section>
+
 	<nav class="navbar navbar-default hidden" id="results-nav">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 	      <a class="navbar-brand" href="#">
-	        <img alt="Brand" src="#">
+	        <img id="site-logo" alt="Brand" src="#">
 	      </a>
 	      <button type="button" class="btn btn-default navbar-btn" id="edit-trip">Edit Trip</button>
 	    </div>
 	  </div>
 	</nav>
 
-	<section>
-		<div>
-			<div id="map-holder"></div>
-		</div>
+	<section id="results">
 		<div class="container" id="leg-title-container">
 		</div>
 		<div>
-			<button type="button" class="btn btn-default leg-nav-btn hidden" id="prev-leg-button">Previous Leg</button>
-			<button type="button" class="btn btn-default leg-nav-btn hidden" id="next-leg-button">Next Leg</button>
+			<div id="map-holder"></div>
+		</div>
+		<div id="leg-nav-btn-container">
+			<button type="button" class="btn leg-nav-btn hidden" id="prev-leg-button">Previous Leg</button>
+			<button type="button" class="btn leg-nav-btn hidden" id="next-leg-button">Next Leg</button>
 		</div>
 		<div id="js-event-holder">
 			<div id="event-holder" class="container"></div>
-			<button type="button" class="btn btn-default event-nav-btn hidden" id="prev-events-button">Previous Events</button>
-			<button type="button" class="btn btn-default event-nav-btn hidden" id="next-events-button">Next Events</button>
+			<button type="button" class="btn event-nav-btn hidden" id="prev-events-button">Previous Events</button>
+			<button type="button" class="btn event-nav-btn hidden" id="next-events-button">Next Events</button>
 		</div>
 	</section>
 </body>
