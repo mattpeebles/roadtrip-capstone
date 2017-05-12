@@ -148,7 +148,7 @@
 	}
 
 	#leg-title{
-		color: #F9DEC9;
+		color: white;
 		text-align: center;
 		font-variant: small-caps;
 		width: 100%;
@@ -166,6 +166,10 @@
 	iframe{
 		width: 100%;
 		height: 450px;
+	}
+
+	.directions-card{
+		width: auto !important;
 	}
 /*************************************************/
 
@@ -196,7 +200,7 @@
 
 	/*Events Title Information*/
 /*************************************************/
-	#event-title-container{
+	#event-title-container{ /*styles the div that starts the events section*/
 		margin-top: 1%;
 		width: 100%;
 		background-color: #2892D7;
@@ -204,7 +208,7 @@
 	}
 
 	#event-title{
-		color: #F9DEC9;
+		color: white;
 		text-align: center;
 		font-variant: small-caps;
 		width: 100%;
@@ -215,11 +219,15 @@
 
 	/*Event Data*/
 /*************************************************/
-	#results{
+	#results{ /*contains leg info, leg nav section, event-title section, and event-holder section*/
 		color: white;
 	}
+
+	.event-holder{ /*holds all of the events*/
+		/*no style for mobile*/
+	}
+
 	.total-event-container{ /*holds all html for each event instance*/
-		width: 100%;
 		height: auto;
 		margin-top: 10%;
 	}
@@ -232,14 +240,25 @@
 		border-radius: 12px 12px 0 0;
 	}
 
-	.logo-container{
+	.event-container{ /*holds information for the logo, info, and dateTime*/
+		/*no style for mobile*/
+	}
+
+	.logo-container{ /*holds the logo image*/
 		width: 100%;
 		height: 100%;
 		position: relative;
 		margin-bottom: 2%
 	}
 
-	.information-container{
+	.event-logo{ /*styles the event-logo*/
+	    width: 100%;
+	    height: 100%;
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	}
+
+	.information-container{ /*holds the event description container*/
 		padding-right: 15px;
 		padding-left: 15px;
 		margin-bottom: 2%;
@@ -253,27 +272,19 @@
 	  text-align: center;
 	}
 
-	.logo-container .event-logo{
-		position: relative;
-	    width: 100%;
-	    height: 100%;
-	    background-repeat: no-repeat;
-	    background-size: cover;
-	}
-
-	.date-time-cost-container{
+	.date-time-cost-container{ /*the container that holds both the cost and date time*/
 		padding-right: 30px;
 		padding-left: 30px;
 		font-size: 16px;
 	}
 
-	.cost-container{
+	.cost-container{ /*holds the cost of the event*/
 		background-color: #DB5461;
 		text-align: left;
 		border-radius: 0 0 0 5px;
 	}
 
-	.date-time-container{
+	.date-time-container{ /*holds the date time of the event*/
 		background-color: #DB5461;
 		text-align: right;
 		border-radius: 0 0 5px 0;
@@ -307,5 +318,110 @@
 
 .hidden{
 	display: none;
+}
+
+@media (min-width: 700px) {
+
+		/*Nav Bar*/
+/*************************************************/
+	#results-nav{
+		margin-bottom: 1%; 
+	}
+
+	.navbar-brand{
+		margin-right: 1%;
+	}
+	.navbar-header{
+		background-color: #DB5461;
+		position: relative;
+		width: 100%
+	}
+
+	.navbar-btn{
+		position: absolute;
+		right: 5%;
+	}
+/*************************************************/
+
+		/*MAPS CSS*/
+/*************************************************/
+	iframe{
+		width: 75%;
+		height: 450px;
+		display: block;
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 2%;
+	}
+
+	.directions-card{
+		width: auto !important;
+	}
+/*************************************************/
+
+		/*Event Data*/
+/*************************************************/
+	#results{ /*contains leg info, leg nav section, event-title section, and event-holder section*/
+		/*no style for desktop*/
+	}
+
+	.event-holder{ /*holds all of the events*/
+		/*no style for desktop*/
+	}
+
+	.total-event-container{ /*holds all html for each event instance*/
+		height: auto;
+		margin-top: 6%;
+	}
+
+	.event-title-container { /*styles the event title */
+		font-size: 20px;
+		text-align: center;
+		background-color: #DB5461;
+		margin-bottom: 2%;
+		border-radius: 12px 12px 0 0;
+		overflow: hidden;
+		height: 32px;
+	}
+
+	.event-container{ /*holds information for the logo, info, and dateTime*/
+		/*no style for desktop*/
+	}
+
+	.logo-container{ /*holds the logo image*/
+		/*no style for desktop*/
+	}
+
+	.event-logo{ /*styles the event-logo*/
+		/*no style for desktop*/
+	}
+
+	.information-container{ /*holds the event description container*/
+		/*no style for desktop*/
+	}
+
+	.event-description-container{ /*holdes event description text */
+	  overflow: hidden;
+	  height: 140px;
+	  line-height: 2.2em;
+	  font-size: 16px;
+	  background-color: #2892D7;
+	  text-align: center;
+	}
+
+	.date-time-cost-container{ /*the container that holds both the cost and date time*/
+		/*no style for desktop*/
+	}
+
+	.cost-container{ /*holds the cost of the event*/
+		/*no style for desktop*/
+	}
+
+	.date-time-container{ /*holds the date time of the event*/
+		/*no style for desktop*/
+	}
+/*************************************************
+
 }
 

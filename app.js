@@ -302,6 +302,12 @@ function randomizePlaceHolder(){
   var nextPushed = 0;
   var prevPushed = 0;
 
+  function goToResults(){
+    $('html,body').animate({
+      scrollTop: $("#event-holder").offset().top},
+      'slow');
+  };
+
   function getDataFromEventBrite(callback){
     var query = {
       "location.latitude": legData["endPoint"]["geocode"]["lat"],
@@ -321,12 +327,16 @@ function randomizePlaceHolder(){
     var events = [];
     nextPushed = 0; //next pushed is used in event navigation
     prevPushed = 0; // prev pushed is used in event navigation
-    var resultHTML = ""; //will be used for DOM Manipulation
     data.events.forEach(function(item){ //pushes all items from JSON into events variable
       events.push(item);
     });
     eventPages = data.pagination;
     var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
+    
+    $("#event-holder").empty()
+    var resultHTML = "<div class=\"row\">";
+    var counter = 0; //allows control for how many results go into each row
+
     currentResults.forEach(function(item){
       if (item.logo !== null){ //some events do not have logos which threw errors, this conditional catches that
         var logo = item.logo.url;
@@ -359,7 +369,7 @@ function randomizePlaceHolder(){
       timeValue += (hours >= 12) ? " P.M." : " A.M."
 
 
-      resultHTML +=   "<div class=\"total-event-container container col-xs-12\">" +
+      resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
                         "<div class=\"event-container row\">" +
@@ -380,9 +390,14 @@ function randomizePlaceHolder(){
                           "</div>" +
                         "</div>" +
                       "</div>";
+      counter++;
+      if (counter == 2){ //if counter reaches two then row is done so it resets everything
+        resultHTML += "</div>";
+        $("#event-holder").append(resultHTML);
+        resultHTML = "<div class=\"row\">";
+        counter = 0;
+      }
     });
-    $("#event-holder").empty() //removes any previous html in event holder
-    $("#event-holder").html(resultHTML); //pushes all html from resultHTML to DOM
     currentResults.forEach(function(item){ //pushes just rendered objects to a justViewed element for navigation purposes
       justViewedEvent.push(item)
     })
@@ -390,11 +405,6 @@ function randomizePlaceHolder(){
     eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
   }
 
-  function goToResults(){
-    $('html,body').animate({
-          scrollTop: $("#event-holder").offset().top},
-          'slow');
-  };
 
   function nextEventsPage(){ //displays next 6 events in DOM
     var resultHTML = "";
@@ -416,6 +426,10 @@ function randomizePlaceHolder(){
         justViewedEvent.push(item);
       })
     }
+
+    $("#event-holder").empty()
+    var resultHTML = "<div class=\"row\">";
+    var counter = 0; //allows control for how many results go into each row
 
     currentResults.forEach(function(item){ //same functionality as displayEventBriteData section
       if (item.logo !== null){
@@ -449,28 +463,34 @@ function randomizePlaceHolder(){
       timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
       timeValue += (hours >= 12) ? " P.M." : " A.M."
 
-      resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+      resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
                         "<div class=\"event-container row\">" +
-                         "<div class=\"logo-container col-sm-3\">" +
+                         "<div class=\"logo-container col-xs-12\">" +
                             "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
-                          "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
+                          "<div class=\"information-container container col-xs-12\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
                             "</div>" +
                           "</div>" + 
-                          "<div class=\"date-time-cost-container col-sm-12\">" +
+                          "<div class=\"date-time-cost-container col-xs-12\">" +
                             "<div class=\"row\">" +
-                              "<div class=\"cost-container col-sm-3\">" + cost + 
+                              "<div class=\"cost-container col-xs-4\">" + cost + 
                               "</div>" +
-                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + americanDate + " " + timeValue + 
+                              "<div class=\"date-time-container col-xs-8\">" + americanDate + " " + timeValue + 
                               "</div>" +
                             "</div>" +
                           "</div>" +
                         "</div>" +
                       "</div>";
-
+      counter++;
+      if (counter == 2){ //if counter reaches two then row is done so it resets everything
+        resultHTML += "</div>";
+        $("#event-holder").append(resultHTML);
+        resultHTML = "<div class=\"row\">";
+        counter = 0;
+      }
     });
     $("#event-holder").empty();
     $("#event-holder").append(resultHTML);
@@ -496,6 +516,10 @@ function randomizePlaceHolder(){
         justViewedEvent.push(item);
       })
     }
+
+    $("#event-holder").empty()
+    var resultHTML = "<div class=\"row\">";
+    var counter = 0; //allows control for how many results go into each row
 
     prevResults.forEach(function(item){ //same functionality as displayEventBriteData
       if (item.logo !== null){
@@ -528,27 +552,34 @@ function randomizePlaceHolder(){
       timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
       timeValue += (hours >= 12) ? " P.M." : " A.M."
 
-      resultHTML +=   "<div class=\"total-event-container container col-sm-12 col-md-6\">" +
+      resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
                             "</div>" +
                         "<div class=\"event-container row\">" +
-                         "<div class=\"logo-container col-sm-3\">" +
+                         "<div class=\"logo-container col-xs-12\">" +
                             "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
-                          "<div class=\"information-container col-sm-8 col-sm-offset-1\">" +
+                          "<div class=\"information-container container col-xs-12\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
                             "</div>" +
                           "</div>" + 
-                          "<div class=\"date-time-cost-container col-sm-12\">" +
+                          "<div class=\"date-time-cost-container col-xs-12\">" +
                             "<div class=\"row\">" +
-                              "<div class=\"cost-container col-sm-3\">" + cost + 
+                              "<div class=\"cost-container col-xs-4\">" + cost + 
                               "</div>" +
-                              "<div class=\"data-time-container col-sm-8 col-sm-offset-1\">" + americanDate + " " + timeValue + 
+                              "<div class=\"date-time-container col-xs-8\">" + americanDate + " " + timeValue + 
                               "</div>" +
                             "</div>" +
                           "</div>" +
                         "</div>" +
                       "</div>";
+      counter++;
+      if (counter == 2){ //if counter reaches two then row is done so it resets everything
+        resultHTML += "</div>";
+        $("#event-holder").append(resultHTML);
+        resultHTML = "<div class=\"row\">";
+        counter = 0;
+      }
     });
     $("#event-holder").empty();
     $("#event-holder").append(resultHTML);

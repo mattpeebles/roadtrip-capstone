@@ -19,40 +19,53 @@
 
 <body>
 	<section class="container" id="roadtrip-begin-page">
-		<header id="roadtrip-title">
-			<h1>RoadTrip Capstone</h1>
-		</header>
-		<div class="roadtrip-inputs">
-			<form id="destination-form">
-				<div class="dest-container row">
-					<div class="city-input col-xs-4">
-						<label>Start</label>
-						<input type="text" name="Start" class="js-destination" id="start" required/>
+			<header id="roadtrip-title">
+				<h1>RoadTrip Capstone</h1>
+			</header>
+			<div class="roadtrip-inputs">
+				<form id="destination-form">
+					<div class="dest-container row">
+						<div class="city-input col-xs-4">
+							<label>Start</label>
+							<input type="text" name="Start" class="js-destination" id="start" required/>
+						</div>
+						<div class="date-input col-xs-5">
+							<label>Leaving On</label>
+							<input type="date" name="begin-date" id="start-date" placeholder="mm/dd/yyyy" required/>
+						</div>
+						<div class="dest-nav-button col-xs-3 start-btn-set">
+							<div class="btn js-addDest" id="start-add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></div><br id="start-break">
+						</div>
 					</div>
-					<div class="date-input col-xs-5">
-						<label>Leaving On</label>
-						<input type="date" name="begin-date" id="start-date" placeholder="mm/dd/yyyy" required/>
+					<div class="dest-container row">
+						<div class="city-input col-xs-4">
+							<label>Going To</label>
+							<input type="text" name="End" class="js-destination" id="end" required/>
+						</div>
+						<div class="length-input col-xs-5">
+							<label>Staying For</label>
+							<input type="text" name="length" class="length" id="end-length" placeholder="3 days" required/>
+						</div>
 					</div>
-					<div class="dest-nav-button col-xs-3 start-btn-set">
-						<div class="btn js-addDest" id="start-add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></div><br id="start-break">
-					</div>
-				</div>
-				<div class="dest-container row">
-					<div class="city-input col-xs-4">
-						<label>Going To</label>
-						<input type="text" name="End" class="js-destination" id="end" required/>
-					</div>
-					<div class="length-input col-xs-5">
-						<label>Staying For</label>
-						<input type="text" name="length" class="length" id="end-length" placeholder="3 days" required/>
-					</div>
-				</div>
-				<div class="row" id="form-submit-container">
-					<div class="form-submit-input col-xs-12">
-						<input type="submit" name="explore" id="js-form-submit">
-					</div>
-			</form>
-		</div>
+					<div class="row" id="form-submit-container">
+						<div class="form-submit-input col-xs-12">
+							<input type="submit" name="explore" id="js-form-submit">
+						</div>
+				</form>
+			</div>
+		<article class="page-description-container hidden">
+			<div>
+				<p>Welcome to Wander</p>
+				<ul>Steps for the Perfect Road Trip</ol>
+					<li>Start: City I'm Escaping From</li>
+					<li>Going To: My Dream Destination</li>
+					<li>Press <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> to add sights </li>
+					<li>Press <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> to remove sights</li>
+					<li>Press Submit!</li>
+						<li>See a Map detailing each leg of your journey</li>
+						<li>See Events happening in each of your destinations</li>
+			</div>
+		</article>
 	</section>
 
 	<nav class="navbar navbar-default hidden" id="results-nav">
