@@ -146,7 +146,7 @@ function updateDestLabel(){
     var location = $(parentContainer).index(this); //calculates it's position in relation to its siblings
     var tarLabel = "#label-" + item; //creates new label text
     $(tarLabel).text(''); //removes prior label text if it existed
-    $(tarLabel).text("Stop - " + (location -1)); //sets label to it's current location. Because the start position will always be at position 1, we account for that by subtracting 1
+    $(tarLabel).text("Sight " + (location)); //sets label to it's current location. Because the start position will always be at position 1, we account for that by subtracting 1
   })
 }
 
@@ -564,12 +564,12 @@ function watchFormSubmit(){
       $(".roadtrip-inputs").slideToggle("slow", function(){
         $("#roadtrip-begin-page").slideToggle("slow", function(){
           $("#results-nav").toggleClass("hidden");
-          getDestinations();
-          getDates();
-          getLeg();
-          updateLegDataGeocode();
         });
       })
+      getDestinations();
+      getDates();
+      getLeg();
+      updateLegDataGeocode();
     }
   }
 }

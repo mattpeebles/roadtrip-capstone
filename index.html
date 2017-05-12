@@ -24,7 +24,6 @@
 		</header>
 		<div class="roadtrip-inputs">
 			<form id="destination-form">
-				<label id="form-title">Plan My Trip</label>
 				<div class="dest-container row">
 					<div class="city-input col-xs-4">
 						<label>Start</label>
@@ -50,7 +49,7 @@
 				</div>
 				<div class="row" id="form-submit-container">
 					<div class="form-submit-input col-xs-12">
-						<input type="submit" name="submit" id="js-form-submit">
+						<input type="submit" name="explore" id="js-form-submit">
 					</div>
 			</form>
 		</div>
@@ -67,16 +66,15 @@
 	</nav>
 
 	<section>
+		<div>
+			<div id="map-holder"></div>
+		</div>
 		<div class="container" id="leg-title-container">
 		</div>
 		<div>
 			<button type="button" class="btn btn-default leg-nav-btn hidden" id="prev-leg-button">Previous Leg</button>
 			<button type="button" class="btn btn-default leg-nav-btn hidden" id="next-leg-button">Next Leg</button>
 		</div>
-		<div>
-			<div id="map-holder"></div>
-		</div>
-
 		<div id="js-event-holder">
 			<div id="event-holder" class="container"></div>
 			<button type="button" class="btn btn-default event-nav-btn hidden" id="prev-events-button">Previous Events</button>

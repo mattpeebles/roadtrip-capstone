@@ -15,7 +15,7 @@
 	}
 
 	#roadtrip-title{
-		color: #D1457F;
+		color: #DB5461;
 		text-align: center;
 	}
 
@@ -33,17 +33,26 @@
 			height: 50px;
 			font-size: 16px;
 			width: 90%;
-			background-color: rgba(237,240,218,0.7);
+			background-color: rgba(255,255,255,0.6);
   			border: none;
-  			border-bottom: solid 2px #c9c9c9;
+  			border-bottom: solid 2px rgba(255,255,255,0.08);
   			transition: border 0.3s;
 		}
 
 		label{
 			color: #333333;
 			font-size: 18px;
+			font-weight: normal;
 		}
 
+		#destination-form{
+			margin-top: 10%;
+		}
+
+		.dest-container{
+			margin-top: 2%;
+		}
+		
 		#form-title{
 			text-align: center;
 			font-size: 22px;
@@ -69,10 +78,10 @@
 
 		#js-form-submit{
 			position: relative;
-			background-color: #D1457F;
+			background-color: #DB5461;
 			text-align: center;
-			width: 100%
-			font-size: 20px;
+			width: 80%;
+			font-size: 1.5em;
 			color: #FFFFFF;
 			margin-left: auto;
 			margin-right: auto;
