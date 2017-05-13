@@ -1,10 +1,16 @@
+/*Global Rules*/
+
 body{
 	font-family: 'Raleway', sans-serif;
 }
 
+.hidden{
+	display: none;
+}
+
 /*Mobile CSS Rules*/
 
- 	/*ROADTRIP BEGIN PAGE STYLING*/
+ 	/*Begin Page Styling*/
 /*************************************************/	
 	#begin-page-container{
 		width: 100%;
@@ -279,7 +285,7 @@ body{
 
 	.logo-container{ /*holds the logo image*/
 		width: 100%;
-		height: 100%;
+		height: 215px;
 		position: relative;
 		margin-bottom: 2%
 	}
@@ -360,196 +366,240 @@ body{
 	}
 /*************************************************/
 
-.hidden{
-	display: none;
-}
-
 @media (min-width: 700px) {
 
-		/*FORM STYLING*/
-	/*************************************************/
-		input, label {
-			display: block;
-			text-align: left;
+	 	/*Begin Page Styling*/
+	/*************************************************/	
+		#begin-page-container{
+			/*unchanged from mobile*/
 		}
 
-		input {
-			height: 50px;
-			font-size: 16px;
-			width: 90%;
-			background-color: rgba(255,255,255,0.6);
-  			border: none;
-  			border-bottom: solid 2px rgba(255,255,255,0.08);
-  			transition: border 0.3s;
+		#roadtrip-begin-page{
+			/*unchanged from mobile*/
+	  	}
+
+		#title-form-container{
+			/*unchanged from mobile*/
 		}
 
-		label{
-			color: #333333;
-			font-size: 18px;
-			font-weight: normal;
+		#roadtrip-title{
+			/*unchanged from mobile*/
 		}
 
-		.pac-container{ /*targets google's autocomplete dropdown*/
-			width: 75% !important;
+		.roadtrip-title-min{
+			/*unchanged from mobile*/
 		}
 
-		#destination-form{
-			margin-top: 10%;
+		.begin-page-height-full{
+			/*unchanged from mobile*/
 		}
 
-		.dest-container{
-			margin-top: 2%;
-		}
-		
-		#form-title{
-			text-align: center;
-			font-size: 22px;
+		.begin-page-height-auto{
+			/*unchanged from mobile*/
 		}
 
-		#start-date{
-			width: 100%;
-		}
+			/*FORM STYLING*/
+		/*************************************************/
+			input, label {
+				/*unchanged from mobile*/
+			}
 
-		.roadtrip-inputs{
-			width: 100%;
-			margin: 0;
-		}
+			input {
+				background-color: rgba(255,255,255,0.6);
+				border: 0;
+			}
 
-		.roadtrip-inputs{
-			margin-left: auto;
-			margin-right: auto;
-		}
+			label{
+				/*unchanged from mobile*/
 
-		#form-submit-container{
-			margin-top: 5%;
-		}
+			}
 
-		#js-form-submit{
-			position: relative;
-			background-color: #DB5461;
-			text-align: center;
-			width: 80%;
-			font-size: 1.5em;
-			color: #FFFFFF;
-			margin-left: auto;
-			margin-right: auto;
-		}
+			.pac-container{ /*targets google's autocomplete dropdown*/
+				/*unchanged from mobile*/
+			}
 
-		.dest-nav-button {
-			margin-top: 30px;
-			position: relative;
-			height: 48px;
-		}
+			#destination-form{
+				/*unchanged from mobile*/
+			}
 
-		.js-destination{
-			width: 100%;
-		}
+			.dest-container{
+				padding-left: 15px;	
+			}
+			
+			#form-title{
+				/*unchanged from mobile*/
+
+			}
+
+			#start-date{
+				/*unchanged from mobile*/
+			}
+
+			.roadtrip-inputs{
+				/*unchanged from mobile*/
+			}
+
+			.roadtrip-inputs{
+				/*unchanged from mobile*/
+			}
+
+			#form-submit-container{
+				/*unchanged from mobile*/
+			}
+
+			#js-form-submit{
+				/*unchanged from mobile*/
+			}
+
+			.dest-nav-button {
+				/*unchanged from mobile*/
+			}
+
+			.js-destination{
+				width: 100%;
+			}
+
+			.js-addDest{
+				/*unchanged from mobile*/
+
+			}
+
+			.js-removeDest{
+				/*unchanged from mobile*/
+
+			}
+		/*************************************************/
 	/*************************************************/
 
 		/*Nav Bar*/
-/*************************************************/
-	.container-fluid{
-		padding-left: 0;
-		padding-right: 0;
-	}
-	#results-nav{
-		margin-bottom: 1%; 
-	}
+	/*************************************************/
+		.container-fluid{
+			padding-left: 0;
+			padding-right: 0;
+		}
 
-	.navbar-brand{
-		margin-right: 1%;
-	}
-	.navbar-header{
-		background-color: #DB5461;
-		position: relative;
-		width: 100%
-	}
+		#results-nav{
+			/*unchanged from mobile*/
+		}
 
-	.navbar-btn{
-		position: absolute;
-		right: 5%;
-	}
-/*************************************************/
+		.navbar-brand{
+			margin-right: 1%;
+		}
+
+		.navbar-header{
+			background-color: #DB5461;
+			position: relative;
+			width: 100%
+		}
+
+		.navbar-btn{
+			/*unchanged from mobile*/
+		}		
+	/*************************************************/
 
 		/*MAPS CSS*/
-/*************************************************/
-	iframe{
-		width: 75%;
-		height: 450px;
-		display: block;
-		position: relative;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 2%;
-	}
+	/*************************************************/
+		iframe{
+			width: 75%;
+			height: 450px;
+			display: block;
+			position: relative;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: 2%;
+		}
 
-	.directions-card{
-		width: auto !important;
-	}
-/*************************************************/
+		.directions-card{ /*targets the autocomplete div popup*/
+			/*unchanged from mobile*/
+		}
+	/*************************************************/
 
 		/*Event Data*/
-/*************************************************/
-	#results{ /*contains leg info, leg nav section, event-title section, and event-holder section*/
-		/*no style for desktop*/
-	}
+	/*************************************************/
+		#results{ /*contains leg info, leg nav section, event-title section, and event-holder section*/
+			/*unchanged from mobile*/
+		}
 
-	.event-holder{ /*holds all of the events*/
-		/*no style for desktop*/
-	}
+		.event-holder{ /*holds all of the events*/
+			/*unchanged from mobile*/
+		}
 
-	.total-event-container{ /*holds all html for each event instance*/
-		height: auto;
-		margin-top: 6%;
-	}
+		.total-event-container{ /*holds all html for each event instance*/
+			height: auto;
+		}
 
-	.event-title-container { /*styles the event title */
-		font-size: 20px;
-		text-align: center;
-		background-color: #DB5461;
-		margin-bottom: 2%;
-		border-radius: 12px 12px 0 0;
-		overflow: hidden;
-		height: 32px;
-	}
+		.event-title-container { /*styles the event title */
+			font-size: 20px;
+			text-align: center;
+			background-color: #DB5461;
+			margin-bottom: 2%;
+			border-radius: 12px 12px 0 0;
+			overflow: hidden;
+			height: 32px;
+		}
 
-	.event-container{ /*holds information for the logo, info, and dateTime*/
-		/*no style for desktop*/
-	}
+		.event-container{ /*holds information for the logo, info, and dateTime*/
+			/*unchanged from mobile*/
+		}
 
-	.logo-container{ /*holds the logo image*/
-		/*no style for desktop*/
-	}
+		.logo-container{ /*holds the logo image*/
+			/*unchanged from mobile*/
+		}
 
-	.event-logo{ /*styles the event-logo*/
-		/*no style for desktop*/
-	}
+		.event-logo{ /*styles the event-logo*/
+			/*unchanged from mobile*/
+		}
 
-	.information-container{ /*holds the event description container*/
-		/*no style for desktop*/
-	}
+		.information-container{ /*holds the event description container*/
+			/*unchanged from mobile*/
+		}
 
-	.event-description-container{ /*holdes event description text */
-	  overflow: hidden;
-	  height: 140px;
-	  line-height: 2.2em;
-	  font-size: 16px;
-	  background-color: #2892D7;
-	  text-align: center;
-	}
+		.event-description-container{ /*holdes event description text */
+		  overflow: hidden;
+		  height: 140px;
+		  line-height: 2.2em;
+		  font-size: 16px;
+		  background-color: #2892D7;
+		  text-align: center;
+		}
 
-	.date-time-cost-container{ /*the container that holds both the cost and date time*/
-		/*no style for desktop*/
-	}
+		.date-time-cost-container{ /*the container that holds both the cost and date time*/
+			/*unchanged from mobile*/
+		}
 
-	.cost-container{ /*holds the cost of the event*/
-		/*no style for desktop*/
-	}
+		.cost-container{ /*holds the cost of the event*/
+			/*unchanged from mobile*/
+		}
 
-	.date-time-container{ /*holds the date time of the event*/
-		/*no style for desktop*/
-	}
-/*************************************************
+		.date-time-container{ /*holds the date time of the event*/
+			/*unchanged from mobile*/
+		}
+	/*************************************************
 
-}
+		/*Event Nav Button*/
+	/*************************************************/
+		.event-nav-btn{
+			/*unchanged from mobile*/
+		}
+
+		#first-event-nav-container{
+			/*unchanged from mobile*/
+		}
+
+		#event-nav-container-bottom{
+			margin-top:	-3%;
+		}
+
+		.event-nav-btn-container{
+			/*unchanged from mobile*/
+		}
+
+		.prev-events-button{
+			/*unchanged from mobile*/
+		}
+
+		.next-events-button{
+			/*unchanged from mobile*/
+		}
+	/*************************************************/
 
