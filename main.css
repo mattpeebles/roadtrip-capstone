@@ -126,6 +126,11 @@
 		margin-bottom: 1%; 
 	}
 
+	#nav-brand-title{
+		color: white;
+		font-variant: small-caps;
+	}
+
 	.navbar-header{
 		background-color: #DB5461;
 		position: relative;
@@ -322,8 +327,92 @@
 
 @media (min-width: 700px) {
 
+		/*FORM STYLING*/
+	/*************************************************/
+		input, label {
+			display: block;
+			text-align: left;
+		}
+
+		input {
+			height: 50px;
+			font-size: 16px;
+			width: 90%;
+			background-color: rgba(255,255,255,0.6);
+  			border: none;
+  			border-bottom: solid 2px rgba(255,255,255,0.08);
+  			transition: border 0.3s;
+		}
+
+		label{
+			color: #333333;
+			font-size: 18px;
+			font-weight: normal;
+		}
+
+		.pac-container{ /*targets google's autocomplete dropdown*/
+			width: 75% !important;
+		}
+
+		#destination-form{
+			margin-top: 10%;
+		}
+
+		.dest-container{
+			margin-top: 2%;
+		}
+		
+		#form-title{
+			text-align: center;
+			font-size: 22px;
+		}
+
+		#start-date{
+			width: 100%;
+		}
+
+		.roadtrip-inputs{
+			width: 100%;
+			margin: 0;
+		}
+
+		.roadtrip-inputs{
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		#form-submit-container{
+			margin-top: 5%;
+		}
+
+		#js-form-submit{
+			position: relative;
+			background-color: #DB5461;
+			text-align: center;
+			width: 80%;
+			font-size: 1.5em;
+			color: #FFFFFF;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.dest-nav-button {
+			margin-top: 30px;
+			position: relative;
+			height: 48px;
+		}
+
+		.js-destination{
+			width: 100%;
+		}
+	/*************************************************/
+
 		/*Nav Bar*/
 /*************************************************/
+	.container-fluid{
+		padding-left: 0;
+		padding-right: 0;
+	}
 	#results-nav{
 		margin-bottom: 1%; 
 	}
