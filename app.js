@@ -57,6 +57,8 @@ var pageCount = 1;
 
 var eventPages;
 
+var resultsPerPage;
+
 
 
 // State Manipulation Section
@@ -72,9 +74,7 @@ function getDestinations(){
 
   // grabs first date and based on that calculates all
   //subsequent dates based on length of time user inputs
-  //MAY NEED TO ADD FUNCTIONALITY TO ACCOUNT FOR DRIVE TIME
-  //ALL NEED TO UPDATE HTML TO MAKE IT CLEAR HOW DATES ARE 
-  //CALCULATED
+
 function getDates(){
   dates = [];
   var datesIndex = 0;
@@ -84,6 +84,7 @@ function getDates(){
     var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
     var timeDate = new Date(dtstr.split("-").join("-")).getTime(); //this gets the last date's exact time in seconds
     var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the length the user inputted
+    
     if (length.indexOf("d") != -1){ //if user enters day or days, catches and converts to number
         var length = length.substring(0, length.indexOf("d"))
     }
@@ -152,6 +153,7 @@ function calcDistance(lat1, lon1, lat2, lon2){
 }
 
   //this calculates the distance between two different geocoordinates
+  //this will be used once weather is added to the page
 function calcAllDistance(){ //make this less complicated
   calcDistance(legData["startPoint"]["geocode"]["lat"], legData["startPoint"]["geocode"]["lng"], 
                legData["endPoint"]["geocode"]["lat"], legData["endPoint"]["geocode"]["lng"]);
@@ -175,7 +177,8 @@ function updateDestLabel(){
   })
 }
 
-  // adds new destination input area in form
+  // adds new destination input area in form after the div
+  //  which contains the buttno that was pushed
 function addDest(){
   $("#destination-form").on("click", ".js-addDest", function(event){
     event.preventDefault();
@@ -209,6 +212,8 @@ function addDest(){
 }
 
   //allows users to remove destination
+  //removes destination that contains the 
+  //remove button
 function removeDest(){
   $("#destination-form").on("click", ".js-removeDest", function(event){
     event.preventDefault();
@@ -219,8 +224,8 @@ function removeDest(){
   })
 };
 
-  //changes placeholder for destination cities
-
+  //randomizes placeholders for destination cities
+  //to give users ideas of possiblities
 function randomizePlaceHolder(){
     var cities = ["San Antonio", "Austin", "Seattle", "Portland", "New York", "Chicago", "Atlanta", "San Francisco", "DC", "Vancouver", "Detroit", "Miami", "St. Louis", "Memphis", "Kansas City", "Santa Fe", "Fargo", "New Orleans", "Las Vegas"]
     var days = ["1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days", "10 days", "11 days", "12 days", "13 days", "14 days", "15 days", "16 days", "17 days", "18 days", "19 days", "20 days", "21 days", "1 week", "2 weeks", "3 weeks"]
@@ -250,7 +255,7 @@ function randomizePlaceHolder(){
       //All other apis require the data that this section
       //gathers. As such, all other api calls are made within this
       //section to ensure that the data is in it's proper place
-      //before the other calls are run
+      //before the other functions are run
 // ******************************************************************
   var GOOGLE_GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
   var myGeoArray = []; //holds coordinates that geocode returns
@@ -288,19 +293,25 @@ function randomizePlaceHolder(){
 
 
       //EventBrite API
-      //Calculates Events for EndPoint at each leg
+      //Grabs and Displays Events for EndPoint at each leg
 // ******************************************************************
   var EVENTBRITE_BASE_URL = "https://www.eventbriteapi.com/v3/events/search/";
 
+  // counters that keep track of user navigation through pages
   var nextPushed = 0;
   var prevPushed = 0;
 
+  // function that animates screen to go to the results section
+  //after next event is pushed
   function goToResults(){
     $('html,body').animate({
       scrollTop: $("#event-title-page").offset().top},
       'slow');
   };
 
+
+  // queries eventbrite api to obtain data about events
+  //within the dates the user will be in the city
   function getDataFromEventBrite(callback){
     var query = {
       "location.latitude": legData["endPoint"]["geocode"]["lat"],
@@ -324,11 +335,16 @@ function randomizePlaceHolder(){
       events.push(item);
     });
     eventPages = data.pagination.page_count;
-    var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
+    resultsPerPage = data.pagination.page_size
+
+    if (resultsPerPage % 6 != 0){
+      var amountOfPages = Math.floor(resultsPerPage/6) + 1;
+    }
+    else{
+      var amountOfPages = resultsPerPage/6;
+    }
     
-    
-    var userPages = eventPages * 6
-    console.log(eventPages)
+    var userPages = eventPages * amountOfPages
 
     if (nextPushed == 0){
       var resultEventTitleHTML =  "<div id=\"event-title\">" +
@@ -344,6 +360,8 @@ function randomizePlaceHolder(){
     $("#event-holder").empty()
     var resultHTML = "<div class=\"row\" id=\"first-row\">";
     var counter = 0; //allows control for how many results go into each row
+
+    var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
 
     currentResults.forEach(function(item){
       if (item.logo !== null){ //some events do not have logos which threw errors, this conditional catches that
@@ -428,12 +446,20 @@ function randomizePlaceHolder(){
   function nextEventsPage(){ //displays next 6 events in DOM
     var resultHTML = "";
     
-    var userPages = eventPages * 6
+    if (resultsPerPage % 6 != 0){
+      var amountOfPages = Math.floor(resultsPerPage/6) + 1;
+    }
+    else{
+      var amountOfPages = resultsPerPage/6;
+    }
+    
+    var userPages = eventPages * amountOfPages
+
     var resultEventTitleHTML =  "<div id=\"event-title\">" +
-                                "<p id=\"event-title-header\">Events" + "</p>" +
-                                "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
-                                "</div>"
+                              "<p id=\"event-title-header\">Events" + "</p>" +
+                              "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
+                              "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
+                              "</div>"
     $("#event-title-container").empty();
     $("#event-title-container").append(resultEventTitleHTML);
 
@@ -527,15 +553,23 @@ function randomizePlaceHolder(){
     goToResults();
   }
 
-  function prevEventsPage(){ //displays previously viewed events on screen,
+  function prevEventsPage(){ //displays previously viewed events
     var resultHTML = "";
+    
+    if (resultsPerPage % 6 != 0){
+      var amountOfPages = Math.floor(resultsPerPage/6) + 1;
+    }
+    else{
+      var amountOfPages = resultsPerPage/6;
+    }
+    
+    var userPages = eventPages * amountOfPages
 
-    var userPages = eventPages * 6
     var resultEventTitleHTML =  "<div id=\"event-title\">" +
-                                "<p id=\"event-title-header\">Events" + "</p>" +
-                                "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
-                                "</div>"
+                              "<p id=\"event-title-header\">Events" + "</p>" +
+                              "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
+                              "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
+                              "</div>"
     $("#event-title-container").empty();
     $("#event-title-container").append(resultEventTitleHTML);
 
@@ -643,7 +677,8 @@ function randomizePlaceHolder(){
 // ******************************************************************
 
 
-      //Open Weather API - CONTINOUSLY REFUSES MY REQUESTS. LIKELY WILL REPLACE WITH DIFFERENT API
+      //Open Weather API
+      //future functionality
 // ******************************************************************
   var OPEN_WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
@@ -671,7 +706,6 @@ function randomizePlaceHolder(){
       getDataFromOpenWeather(point.geocode, pushDataFromOpenWeather);
     })
   }
-
 // ******************************************************************
 
       //Google Maps API
@@ -679,11 +713,18 @@ function randomizePlaceHolder(){
     var GOOGLE_MAPS_BASE_URL = "https://www.google.com/maps/embed/v1/directions"
 
     function getGoogleMaps(callback){
+      
+        //formats locations according to google's requirement
+        //New York City, New York becomes
+        //New+York+City,New+York
       var origin1 = leg[0].replace(/, /g, ",")
       var destination1 = leg[1].replace(/, /g, ",")
       var origin = origin1.replace(/ /g, "+")
       var destination = destination1.replace(/ /g, "+")
 
+      //removes any previous map and displays
+      //map on screen. Also reveals leg navigation
+      //buttons
       var resultElement = "<iframe frameborder=\"0\" style=\"border:0\" src=\"https://www.google.com/maps/embed/v1/directions?"+
       "origin=" + origin + 
       "&destination=" + destination + 
@@ -691,7 +732,12 @@ function randomizePlaceHolder(){
       "allowfullscreen></iframe>";
       $("#map-holder").empty();
       $("#map-holder").html(resultElement);
-      $(".leg-nav-btn").removeClass("hidden")
+      
+      //displays leg navigation functionality if 
+      //user has inputted more than two destinations
+      if (destinations.length >2){
+        $(".leg-nav-btn").removeClass("hidden")
+      }
     }
 // ******************************************************************
 
@@ -722,6 +768,14 @@ function watchFormSubmit(){
           $("#results").removeClass("hidden");
         });
       })
+
+      nextPushed = 0;
+      prevPushed = 0;
+      
+      eventsList = [];
+      viewedEvents = [];
+      justViewedEvent = [];
+
       getDestinations();
       getDates();
       getLeg();
@@ -778,24 +832,25 @@ function watchEventsNavigate(){ //this ensures users always see events
       prevPushed = 0;
       eventsList = viewedEvents;
       viewedEvents = [];
-      $(".prev-events-button").addClass("hidden")
     }
     else { //increments eventnavbutton counters for use in functions 
-      $(".prev-events-button").removeClass("hidden")
       console.log("else")
       nextPushed++
       prevPushed--
     }
     event.preventDefault();
     nextEventsPage();
+    if (pageCount == 1){
+      $(".prev-events-button").addClass("hidden")
+    }
+    else{
+      $(".prev-events-button").removeClass("hidden")
+    }
   })
 
   $(".prev-events-button").on("click", function(){
-      prevPushed++
-      nextPushed--
-    if (nextPushed == 0){ //this function is exactly function above but focused on the previous button
-      $(".prev-events-button").addClass("hidden");
-    }
+    prevPushed++
+    nextPushed--
     event.preventDefault();
     prevEventsPage();
   })
