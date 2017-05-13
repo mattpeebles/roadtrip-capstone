@@ -150,7 +150,7 @@ body{
 	/*************************************************/
 /*************************************************/
 
-	/*Nav Bar*/
+	/*Nav Bar Top*/
 /*************************************************/
 	#results-nav{
 		margin-bottom: 1%; 
@@ -160,6 +160,9 @@ body{
 		color: white;
 		font-variant: small-caps;
 		font-family: 'Inknut Antiqua', serif;
+		position: absolute;
+		left: 0;
+		margin-left: 4%;
 	}
 
 	.navbar-header{
@@ -334,6 +337,7 @@ body{
 		background-color: #DB5461;
 		text-align: right;
 		border-radius: 0 0 5px 0;
+		padding-left: 0;
 	}
 /*************************************************/
 
@@ -365,6 +369,26 @@ body{
 		right: 5%;
 	}
 /*************************************************/
+
+	/*Nav Bar Bottom*/
+/*************************************************/
+	#footer-nav{
+		margin-top: 1%;
+	}
+
+	#nav-brand-credit{
+		color: white;
+		font-variant: small-caps;
+		font-family: 'Inknut Antiqua', serif;
+		font-size: 14px;
+		margin-right: 4%;
+		position: absolute;
+		width: 135px;
+		right: 0;
+	}
+
+/*************************************************/
+
 
 @media (min-width: 700px) {
 

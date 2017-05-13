@@ -765,6 +765,7 @@ function watchFormSubmit(){
       $(".roadtrip-inputs").slideToggle("slow", function(){
         $("#begin-page-container").fadeToggle("slow", function(){
           $("#results-nav").removeClass("hidden");
+          $("#footer-nav").removeClass("hidden")
           $("#results").removeClass("hidden");
         });
       })
@@ -866,6 +867,7 @@ function watchTripEdit(){
     $("#begin-page-container").fadeToggle("slow", function(){
       $(".roadtrip-inputs").slideToggle("slow")
       $("#results-nav").toggleClass("hidden");
+      $("#footer-nav").toggleClass("hidden");
     })
   }) 
 }
