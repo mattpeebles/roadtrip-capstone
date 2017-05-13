@@ -315,8 +315,10 @@ function randomizePlaceHolder(){
       "start_date.range_start": legDates[0] + "T00:00:00",
       "start_date.range_end": legDates[1] + "T00:00:00",
       "location.within": 25 + "mi",
+      "sort_by": "date",
+      "include_all_series_instances": false,
+      "categories": "103,110,113,105,104,108,107,102,109,111,114,115,116,106,117,118,119,199",
       // "price": null, //future functionality
-      // "categories": null, //future functionality
       // "page_number": pageCount, //this is causing an error, it should return paginated responses however
       token: "NYUIK7WAP7JD57IF4W4H",
     }
@@ -364,9 +366,11 @@ function randomizePlaceHolder(){
       var now = new Date(item.start.local)
       var hours = now.getHours()
       var minutes = now.getMinutes()
-      var timeValue = "" + ((hours >12) ? hours -12 :hours)
+      var timeValue = "" + ((hours > 12) ? hours -12 :hours)
       timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
       timeValue += (hours >= 12) ? " P.M." : " A.M."
+
+      timeValue = ((timeValue == "0:00 A.M.") ? "Midnight" : timeValue)
 
 
       resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
@@ -463,6 +467,8 @@ function randomizePlaceHolder(){
       var timeValue = "" + ((hours >12) ? hours -12 :hours)
       timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
       timeValue += (hours >= 12) ? " P.M." : " A.M."
+      timeValue = ((timeValue == "0:00 A.M.") ? "Midnight" : timeValue)
+
 
       resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
@@ -474,6 +480,7 @@ function randomizePlaceHolder(){
                           "<div class=\"information-container container col-xs-12\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
                             "</div>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
                           "</div>" + 
                           "<div class=\"date-time-cost-container col-xs-12\">" +
                             "<div class=\"row\">" +
@@ -550,6 +557,7 @@ function randomizePlaceHolder(){
       var timeValue = "" + ((hours >12) ? hours -12 :hours)
       timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
       timeValue += (hours >= 12) ? " P.M." : " A.M."
+      timeValue = ((timeValue == "0:00 A.M.") ? "Midnight" : timeValue)
 
       resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
                             "<div class=\"event-title-container\">"+ item.name.text + 
@@ -561,6 +569,7 @@ function randomizePlaceHolder(){
                           "<div class=\"information-container container col-xs-12\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
                             "</div>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
                           "</div>" + 
                           "<div class=\"date-time-cost-container col-xs-12\">" +
                             "<div class=\"row\">" +
@@ -655,13 +664,6 @@ function randomizePlaceHolder(){
 
 
 // Watch Submit
-
-function watchIntroButton(){
-  $("#intro-button").on("click", function(event){
-    event.preventDefault();
-    $("#intro-container").addClass("hidden")
-  })
-}
 
 function watchFormSubmit(){
   $("#destination-form").submit(function(event){
@@ -763,7 +765,6 @@ function watchTripEdit(){
 }
 
 $(function(){
-  watchIntroButton();
   randomizePlaceHolder()
   setInterval(function(){randomizePlaceHolder()}, 5000);
   autoComplete();
