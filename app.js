@@ -75,6 +75,33 @@ function getDestinations(){
   // grabs first date and based on that calculates all
   //subsequent dates based on length of time user inputs
 
+function checkInputs(){
+   var lengthDigit;
+   $("#destination-form .length").each(function(){
+    
+    var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the length the user inputted
+    
+    if (length.indexOf("d") != -1){ //if user enters day or days, catches and converts to number
+        var length = length.substring(0, length.indexOf("d"))
+    }
+
+    else if (length.indexOf("w") != -1){ //if user enters week or weeks, catches, converts to number, and converts to days
+      var length = length.substring(0, length.indexOf("w"))
+    }
+
+    if (isNaN(parseInt(length))){
+      lengthDigit = false;
+      console.log("i'm catching")
+    }
+
+    else{
+      lengthDigit = true;
+    }
+  })
+  return lengthDigit;
+  console.log(lengthDigit)
+}
+
 function getDates(){
   dates = [];
   var datesIndex = 0;
@@ -753,14 +780,19 @@ function watchFormSubmit(){
 
   function createRoadTrip(){ //function ensures that user is alerted of required tags
     var proceed = false; //locks application rendering behind this variable
-    if($("#destination-form")[0].checkValidity){
-      if($("#destination-form")[0].checkValidity()){
-        proceed = true
-      }
+    if($("#destination-form")[0].checkValidity()){
     }
     else {
       proceed = true
     }
+
+    if(checkInputs() === false){
+        proceed = false
+    }
+    else{
+        proceed = true
+    }
+    
     if (proceed){ //if proceed returns true application runs
       $(".roadtrip-inputs").slideToggle("slow", function(){
         $("#begin-page-container").fadeToggle("slow", function(){
@@ -783,7 +815,7 @@ function watchFormSubmit(){
       updateLegDataGeocode();
     }
   }
-}
+};
 
 function watchLegsNavigate(){
   $("#next-leg-button").on("click", function(){
@@ -873,7 +905,7 @@ function watchTripEdit(){
 }
 
 $(function(){
-  randomizePlaceHolder()
+  randomizePlaceHolder();
   setInterval(function(){randomizePlaceHolder()}, 5000);
   autoComplete();
   watchFormSubmit();
