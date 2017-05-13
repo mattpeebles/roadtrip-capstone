@@ -55,7 +55,7 @@ var justViewedEvent = [];
 
 var pageCount = 1;
 
-var eventPages = {};
+var eventPages;
 
 
 
@@ -127,13 +127,6 @@ function getLeg(){
                     "</div>"
   $("#leg-title-container").empty();
   $("#leg-title-container").append(resultLegTitleHTML);
-
-  var resultEventTitleHTML =  "<div id=\"event-title\">" +
-                              "<p id=\"event-title-header\">Events" + "</p>" +
-                              "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                              "</div>"
-  $("#event-title-container").empty();
-  $("#event-title-container").append(resultEventTitleHTML);
 }
 
   //provides the formula to calculate the rough distance between two different geocoordinates 
@@ -304,7 +297,7 @@ function randomizePlaceHolder(){
 
   function goToResults(){
     $('html,body').animate({
-      scrollTop: $("#event-holder").offset().top},
+      scrollTop: $("#event-title-page").offset().top},
       'slow');
   };
 
@@ -319,7 +312,7 @@ function randomizePlaceHolder(){
       "include_all_series_instances": false,
       "categories": "103,110,113,105,104,108,107,102,109,111,114,115,116,106,117,118,119,199",
       // "price": null, //future functionality
-      // "page_number": pageCount, //this is causing an error, it should return paginated responses however
+      "page": pageCount, //this is causing an error, it should return paginated responses however
       token: "NYUIK7WAP7JD57IF4W4H",
     }
     $.getJSON(EVENTBRITE_BASE_URL, query, callback)
@@ -327,16 +320,29 @@ function randomizePlaceHolder(){
 
   function displayEventBriteData(data){ //grabs all event data and displays first 6 events in DOM
     var events = [];
-    nextPushed = 0; //next pushed is used in event navigation
-    prevPushed = 0; // prev pushed is used in event navigation
     data.events.forEach(function(item){ //pushes all items from JSON into events variable
       events.push(item);
     });
-    eventPages = data.pagination;
+    eventPages = data.pagination.page_count;
     var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
     
+    
+    var userPages = eventPages * 6
+    console.log(eventPages)
+
+    if (nextPushed == 0){
+      var resultEventTitleHTML =  "<div id=\"event-title\">" +
+                                "<p id=\"event-title-header\">Events" + "</p>" +
+                                "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
+                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
+                                "</div>"
+      $("#event-title-container").empty();
+      $("#event-title-container").append(resultEventTitleHTML);
+    }
+
+
     $("#event-holder").empty()
-    var resultHTML = "<div class=\"row\">";
+    var resultHTML = "<div class=\"row\" id=\"first-row\">";
     var counter = 0; //allows control for how many results go into each row
 
     currentResults.forEach(function(item){
@@ -353,6 +359,14 @@ function randomizePlaceHolder(){
       else {
         var cost = "PAID"
       };
+
+      if (item.description.text == null){
+        var descr = "Organizer has not added a description for this event"
+      }
+
+      else {
+        var descr = item.description.text
+      }
 
       var complexDate = (item.start.local).split("T")[0]
       var dateArray = complexDate.split("-")
@@ -381,7 +395,7 @@ function randomizePlaceHolder(){
                             "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container container col-xs-12\">" +
-                            "<div class=\"event-description-container\">" + item.description.text + 
+                            "<div class=\"event-description-container\">" + descr + 
                             "</div>" +
                             "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
                           "</div>" + 
@@ -406,13 +420,23 @@ function randomizePlaceHolder(){
     currentResults.forEach(function(item){ //pushes just rendered objects to a justViewed element for navigation purposes
       justViewedEvent.push(item)
     })
-    $(".event-nav-btn").removeClass("hidden");
+    $(".event-nav-btn-container").removeClass("hidden");
     eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
   }
 
 
   function nextEventsPage(){ //displays next 6 events in DOM
     var resultHTML = "";
+    
+    var userPages = eventPages * 6
+    var resultEventTitleHTML =  "<div id=\"event-title\">" +
+                                "<p id=\"event-title-header\">Events" + "</p>" +
+                                "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
+                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
+                                "</div>"
+    $("#event-title-container").empty();
+    $("#event-title-container").append(resultEventTitleHTML);
+
     if (prevPushed<0){ //this conditional is dominant over the if statement in prevEventsPage. looks to see if previous button has ever been pushed. if it hasn't then only next has so it pulls events from eventsList rather that viewedEvents -- pairs with if statement in prevEventsPage function
       var currentResults = eventsList.splice(0, 6) //grabs and removes first 6 events from events variable. the ones displayed in DOM are only in justViewed variable
       viewedEvents = justViewedEvent.concat(viewedEvents); //moves justViewed items to viewedEvents. viewedEvents holds all previously viewed events, used for backwards navigation
@@ -433,7 +457,7 @@ function randomizePlaceHolder(){
     }
 
     $("#event-holder").empty()
-    var resultHTML = "<div class=\"row\">";
+    var resultHTML = "<div class=\"row\" id=\"first-row\">";
     var counter = 0; //allows control for how many results go into each row
 
     currentResults.forEach(function(item){ //same functionality as displayEventBriteData section
@@ -505,6 +529,16 @@ function randomizePlaceHolder(){
 
   function prevEventsPage(){ //displays previously viewed events on screen,
     var resultHTML = "";
+
+    var userPages = eventPages * 6
+    var resultEventTitleHTML =  "<div id=\"event-title\">" +
+                                "<p id=\"event-title-header\">Events" + "</p>" +
+                                "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
+                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
+                                "</div>"
+    $("#event-title-container").empty();
+    $("#event-title-container").append(resultEventTitleHTML);
+
     if (nextPushed >= 0){ //this conditional requires that the if statement in nextEventsPage was called; triggers if next button has ever been pushed when prevEventsPage is called
       var prevResults = viewedEvents.splice(0, 6); //grabs and removes first 6 items from viewedEvents var that nextEventPage function put
       eventsList = justViewedEvent.concat(eventsList); //places justViewedEvent at beginning of eventsList. This ensures var is in same order as it was in JSON
@@ -524,7 +558,7 @@ function randomizePlaceHolder(){
     }
 
     $("#event-holder").empty()
-    var resultHTML = "<div class=\"row\">";
+    var resultHTML = "<div class=\"row\" id=\"first-row\">";
     var counter = 0; //allows control for how many results go into each row
 
     prevResults.forEach(function(item){ //same functionality as displayEventBriteData
@@ -727,12 +761,28 @@ function watchLegsNavigate(){
 }
 
 function watchEventsNavigate(){ //this ensures users always see events
-  $("#next-events-button").on("click", function(){
-    if (eventsList.length == 0){ //if eventsList has been emptied by user scrolling through it, this resets everything to beginning
+  $(".next-events-button").on("click", function(){
+    if (eventsList.length == 0 && pageCount != eventPages){ //if eventsList has been emptied by user scrolling through it, this resets everything to beginning
       // pageCount++; //feature for when pagination is working in eventbrite api call
+     console.log("if")
+      pageCount++
+      nextPushed++
+      prevPushed--
       logEventBriteData();
     }
+
+    else if(eventsList.length == 0 && pageCount == eventPages){
+      console.log("else if")
+      pageCount = 1;
+      nextPushed = 0;
+      prevPushed = 0;
+      eventsList = viewedEvents;
+      viewedEvents = [];
+      $(".prev-events-button").addClass("hidden")
+    }
     else { //increments eventnavbutton counters for use in functions 
+      $(".prev-events-button").removeClass("hidden")
+      console.log("else")
       nextPushed++
       prevPushed--
     }
@@ -740,13 +790,11 @@ function watchEventsNavigate(){ //this ensures users always see events
     nextEventsPage();
   })
 
-  $("#prev-events-button").on("click", function(){
-    if (eventsList.length == 0){ //this function is exactly function above but focused on the previous button
-      logEventBriteData();
-    }
-    else {
+  $(".prev-events-button").on("click", function(){
       prevPushed++
       nextPushed--
+    if (nextPushed == 0){ //this function is exactly function above but focused on the previous button
+      $(".prev-events-button").addClass("hidden");
     }
     event.preventDefault();
     prevEventsPage();
