@@ -840,12 +840,12 @@ function watchEventsNavigate(){ //this ensures users always see events
     }
     event.preventDefault();
     nextEventsPage();
-    if (pageCount == 1){
+    if (nextPushed == 0){
       $(".prev-events-button").addClass("hidden")
     }
     else{
       $(".prev-events-button").removeClass("hidden")
-    }
+    };
   })
 
   $(".prev-events-button").on("click", function(){
@@ -853,6 +853,9 @@ function watchEventsNavigate(){ //this ensures users always see events
     nextPushed--
     event.preventDefault();
     prevEventsPage();
+    if (nextPushed == 0){
+      $(".prev-events-button").addClass("hidden")
+    }
   })
 }
 
