@@ -1,9 +1,12 @@
+body{
+	font-family: 'Raleway', sans-serif;
+}
+
 /*Mobile CSS Rules*/
 
  	/*ROADTRIP BEGIN PAGE STYLING*/
 /*************************************************/	
-	#roadtrip-begin-page{
-		min-height: auto;
+	#begin-page-container{
 		width: 100%;
 		background-image: 
 			linear-gradient(rgba(237,240,218,0.4), rgba(237,240,218,0.2)),
@@ -12,15 +15,35 @@
 		position: relative;
 		background-position: center;
 		background-repeat: no-repeat;
+		display: table;
+	}
+
+	#roadtrip-begin-page{
+		display: table-cell;
+		vertical-align: middle;
+  	}
+
+	#title-form-container{
+		background-color: rgba(255,255,255,0.6);
+		border-radius: 15px;
 	}
 
 	#roadtrip-title{
 		color: #DB5461;
 		text-align: center;
+		font-family: 'Inknut Antiqua', serif
 	}
 
 	.roadtrip-title-min{
 		background-color: #EDF0DA
+	}
+
+	.begin-page-height-full{
+		min-height: 100vh;
+	}
+
+	.begin-page-height-auto{
+		min-height: auto;
 	}
 
 	/*FORM STYLING*/
@@ -34,9 +57,9 @@
 			height: 50px;
 			font-size: 16px;
 			width: 90%;
-			background-color: rgba(255,255,255,0.6);
+			background-color: transparent;
   			border: none;
-  			border-bottom: solid 2px rgba(255,255,255,0.08);
+  			border-bottom: dotted 2px #333333;
   			transition: border 0.3s;
 		}
 
@@ -64,7 +87,8 @@
 		}
 
 		#start-date{
-			width: 107%;
+			width: 100%;
+			font-size: 14px;
 		}
 
 		.roadtrip-inputs{
@@ -90,20 +114,19 @@
 			color: #FFFFFF;
 			margin-left: auto;
 			margin-right: auto;
+			border-radius: 8px;
+			margin-bottom: 2%;
 		}
 
 		.dest-nav-button {
 			margin-top: 30px;
 			position: relative;
 			height: 48px;
+			right: 16px;
 		}
 
 		.js-destination{
 			width: 110%;
-		}
-
-		#start-add-button{
-			margin-left: 8%;
 		}
 
 		.js-addDest{
@@ -117,6 +140,7 @@
 			left: 0;
 			background-color: #A3C3D9;
 		}
+
 	/*************************************************/
 /*************************************************/
 
@@ -129,6 +153,7 @@
 	#nav-brand-title{
 		color: white;
 		font-variant: small-caps;
+		font-family: 'Inknut Antiqua', serif;
 	}
 
 	.navbar-header{
@@ -139,6 +164,8 @@
 	.navbar-btn{
 		position: absolute;
 		right: 5%;
+		background-color: #A3C3D9;
+		color: white;
 	}
 /*************************************************/
 
@@ -243,6 +270,7 @@
 		background-color: #DB5461;
 		margin-bottom: 2%;
 		border-radius: 12px 12px 0 0;
+		font-family: 'Inknut Antiqua', serif;
 	}
 
 	.event-container{ /*holds information for the logo, info, and dateTime*/
@@ -266,7 +294,6 @@
 	.information-container{ /*holds the event description container*/
 		padding-right: 15px;
 		padding-left: 15px;
-		margin-bottom: 2%;
 	}
 	.event-description-container{ /*holdes event description text */
 	  overflow: hidden;
@@ -277,10 +304,17 @@
 	  text-align: center;
 	}
 
+	.info-link{
+		text-align: center;
+		font-size: 16px;
+		margin-top: 2%;
+		vertical-align: center;
+	}
+
 	.date-time-cost-container{ /*the container that holds both the cost and date time*/
 		padding-right: 30px;
 		padding-left: 30px;
-		font-size: 16px;
+		font-size: 18px;	
 	}
 
 	.cost-container{ /*holds the cost of the event*/

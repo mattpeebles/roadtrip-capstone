@@ -379,6 +379,7 @@ function randomizePlaceHolder(){
                           "<div class=\"information-container container col-xs-12\">" +
                             "<div class=\"event-description-container\">" + item.description.text + 
                             "</div>" +
+                            "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
                           "</div>" + 
                           "<div class=\"date-time-cost-container col-xs-12\">" +
                             "<div class=\"row\">" +
@@ -492,8 +493,6 @@ function randomizePlaceHolder(){
         counter = 0;
       }
     });
-    $("#event-holder").empty();
-    $("#event-holder").append(resultHTML);
     goToResults();
   }
 
@@ -581,8 +580,6 @@ function randomizePlaceHolder(){
         counter = 0;
       }
     });
-    $("#event-holder").empty();
-    $("#event-holder").append(resultHTML);
     goToResults();
   }
 
@@ -659,6 +656,13 @@ function randomizePlaceHolder(){
 
 // Watch Submit
 
+function watchIntroButton(){
+  $("#intro-button").on("click", function(event){
+    event.preventDefault();
+    $("#intro-container").addClass("hidden")
+  })
+}
+
 function watchFormSubmit(){
   $("#destination-form").submit(function(event){
     event.preventDefault();
@@ -677,8 +681,9 @@ function watchFormSubmit(){
     }
     if (proceed){ //if proceed returns true application runs
       $(".roadtrip-inputs").slideToggle("slow", function(){
-        $("#roadtrip-begin-page").slideToggle("slow", function(){
-          $("#results-nav").toggleClass("hidden");
+        $("#begin-page-container").fadeToggle("slow", function(){
+          $("#results-nav").removeClass("hidden");
+          $("#results").removeClass("hidden");
         });
       })
       getDestinations();
@@ -748,7 +753,9 @@ function watchEventsNavigate(){ //this ensures users always see events
 
 function watchTripEdit(){
   $("#edit-trip").on("click", function(){
-    $("#roadtrip-begin-page").slideToggle("slow", function(){
+    $("#begin-page-container").removeClass("begin-page-height-full");
+    $("#begin-page-container").removeClass("begin-page-height-auto");
+    $("#begin-page-container").fadeToggle("slow", function(){
       $(".roadtrip-inputs").slideToggle("slow")
       $("#results-nav").toggleClass("hidden");
     })
@@ -756,6 +763,7 @@ function watchTripEdit(){
 }
 
 $(function(){
+  watchIntroButton();
   randomizePlaceHolder()
   setInterval(function(){randomizePlaceHolder()}, 5000);
   autoComplete();
