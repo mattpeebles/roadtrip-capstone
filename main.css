@@ -8,6 +8,11 @@ body{
 	display: none;
 }
 
+#nonDigit-alert{
+	bottom: 0px;
+	display: none;
+}
+
 /*Mobile CSS Rules*/
 
  	/*Begin Page Styling*/

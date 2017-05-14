@@ -99,7 +99,6 @@ function checkInputs(){
     }
   })
   return lengthDigit;
-  console.log(lengthDigit)
 }
 
 function getDates(){
@@ -788,6 +787,8 @@ function watchFormSubmit(){
 
     if(checkInputs() === false){
         proceed = false
+        $("#nonDigit-alert").show(1000);
+        $("#nonDigit-alert").fadeOut(15000);
     }
     else{
         proceed = true
@@ -850,8 +851,6 @@ function watchLegsNavigate(){
 function watchEventsNavigate(){ //this ensures users always see events
   $(".next-events-button").on("click", function(){
     if (eventsList.length == 0 && pageCount != eventPages){ //if eventsList has been emptied by user scrolling through it, this resets everything to beginning
-      // pageCount++; //feature for when pagination is working in eventbrite api call
-     console.log("if")
       pageCount++
       nextPushed++
       prevPushed--
@@ -859,7 +858,6 @@ function watchEventsNavigate(){ //this ensures users always see events
     }
 
     else if(eventsList.length == 0 && pageCount == eventPages){
-      console.log("else if")
       pageCount = 1;
       nextPushed = 0;
       prevPushed = 0;
@@ -867,7 +865,6 @@ function watchEventsNavigate(){ //this ensures users always see events
       viewedEvents = [];
     }
     else { //increments eventnavbutton counters for use in functions 
-      console.log("else")
       nextPushed++
       prevPushed--
     }
