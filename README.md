@@ -9,3 +9,7 @@ completed:
 to do:
 -begin creating mobile first MVP CSS
 -added js to display leg of journey with cities
+
+future additions
+	to catch spelled out numbers and use them
+		https://www.npmjs.com/package/words-to-num
