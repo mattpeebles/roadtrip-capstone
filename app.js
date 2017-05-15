@@ -321,10 +321,10 @@ function randomizePlaceHolder(){
   }
 
   function updateLegDataGeocode(){ //calls and executes Geocode API for each item in the leg array, clears geoarray so no duplicates are pushed
-      myGeoArray=[];
       leg.forEach(function(item){
         getDataFromGoogleGeocode(item, returnGeocodeData);
       });
+      myGeoArray = [];
   }
 // ******************************************************************
 
@@ -655,7 +655,7 @@ function randomizePlaceHolder(){
     var resultEventTitleHTML =  "<div id=\"event-section-title\">" +
                                 "<p id=\"event-title-header\">Events" + "</p>" +
                                 "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of approximately" + userPages + "</p>"
+                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of approximately " + userPages + "</p>"
                               "</div>"
     $("#event-section-title-container").empty();
     $("#event-section-title-container").append(resultEventTitleHTML);
@@ -826,7 +826,7 @@ function randomizePlaceHolder(){
       
       //displays leg navigation functionality if 
       //user has inputted more than two destinations
-      if (destinations.length >2){
+      if (destinations.length > 2){
         $(".leg-nav-btn").removeClass("hidden")
       }
     }
