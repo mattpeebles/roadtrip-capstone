@@ -938,7 +938,7 @@ function watchLegsNavigate(){
 
 function watchEventsNavigate(){ //this ensures users always see events
   $(".next-events-button").on("click", function(){
-    
+    console.log("I'm working")
     //if eventsList has been emptied by user scrolling through it, this resets everything to beginning
     //by navigating through events, 6 events are removed from eventList, when eventList is empty
     //then the events that were returned for that particular page have all been seen
@@ -975,7 +975,6 @@ function watchEventsNavigate(){ //this ensures users always see events
       prevPushed--
     }
 
-    event.preventDefault();
     nextEventsPage(); //uses nextPushed variable to display next events as set by previous conditional statements
 
 
@@ -993,7 +992,6 @@ function watchEventsNavigate(){ //this ensures users always see events
   $(".prev-events-button").on("click", function(){
     prevPushed++
     nextPushed--
-    event.preventDefault();
     prevEventsPage(); //uses prevPushed to scroll back through data
     if (nextPushed == 0){ //hides previous event if user has backed to the first events
       $(".prev-events-button").addClass("hidden")
