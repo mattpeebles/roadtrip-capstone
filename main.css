@@ -1,5 +1,12 @@
 /*Global Rules*/
 
+#load-gif{
+	position: relative;
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 body{
 	font-family: 'Raleway', sans-serif;
 }
@@ -75,7 +82,6 @@ body{
 			width: 90%;
 			background-color: transparent;
   			border: none;
-  			border-bottom: dotted 2px #333333;
   			transition: border 0.3s;
 		}
 
@@ -160,10 +166,26 @@ body{
 	/*************************************************/
 /*************************************************/
 
+	/*All Results*/
+/*************************************************/
+	#results{ /*contains leg info, leg nav section, event-title section, nav bars top and bottom, and event-holder section*/
+		width: 100%;
+		height: 100%;
+		background-image: 
+			linear-gradient(rgba(237,240,218,0.4), rgba(237,240,218,0.2)),
+			url(resources/map-background.jpeg);
+		position: relative;
+		background-repeat: repeat;
+		padding-top: 5px;	
+		color: #333333;
+	}
+/*************************************************/
+
+
 	/*Nav Bar Top*/
 /*************************************************/
 	#results-nav{
-		margin-bottom: 1%; 
+		margin-bottom: 0;
 	}
 
 	#nav-brand-title{
@@ -173,6 +195,15 @@ body{
 		position: absolute;
 		left: 0;
 		margin-left: 4%;
+	}
+
+	.navbar{
+		border: 1px solid #DB5461;
+		width: 95%;
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		border-radius: 5px;
 	}
 
 	.navbar-header{
@@ -192,14 +223,16 @@ body{
 /*************************************************/
 	#leg-title-container{
 		margin-top: 1%;
-		width: 100%;
-		background-color: #2892D7;
+		width: 95%;
+		background-color: rgba(40, 146, 215, .7);
 		margin-bottom: 2%;
+		border: 1px solid rgba(40, 146, 215, .7);
+		border-radius: 5px;
 
 	}
 
 	#leg-title{
-		color: white;
+		color: #333333;
 		text-align: center;
 		font-variant: small-caps;
 		width: 100%;
@@ -221,6 +254,13 @@ body{
 
 	.directions-card{
 		width: auto !important;
+	}
+
+	#map-holder{
+		width: 95%;
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
 	}
 /*************************************************/
 
@@ -251,31 +291,35 @@ body{
 
 	/*Events Title Information*/
 /*************************************************/
-	#event-title-container{ /*styles the div that starts the events section*/
+	#event-section-title-container{ /*styles the div that starts the events section, holds page number and city*/
 		margin-top: 1%;
-		width: 100%;
-		background-color: #2892D7;
+		width: 95%;
+		background-color: rgba(40, 146, 215, .7);
+		margin-bottom: 2%;
+		border: 1px solid rgba(40, 146, 215, .7);
+		border-radius: 5px;
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
 
 	}
 
-	#event-title{
-		color: white;
+	#event-section-title{
+		color: rgba(255, 255, 255, .5);
 		text-align: center;
 		font-variant: small-caps;
 		width: 100%;
 		font-size: 20px;
+		color: #333333;
 
 	}
 /*************************************************/
 
 	/*Event Data*/
 /*************************************************/
-	#results{ /*contains leg info, leg nav section, event-title section, and event-holder section*/
-		color: white;
-	}
-
 	.event-holder{ /*holds all of the events*/
-		/*no style for mobile*/
+		height: 200px;
+		position: relative;
 	}
 
 	.total-event-container{ /*holds all html for each event instance*/
@@ -286,8 +330,9 @@ body{
 	.event-title-container { /*styles the event title */
 		font-size: 20px;
 		text-align: center;
-		background-color: #DB5461;
-		margin-bottom: 2%;
+		background-color: rgba(219, 84, 97, 0.3);
+		padding-bottom: 2%;
+		padding-top: 2%;
 		border-radius: 12px 12px 0 0;
 		font-family: 'Inknut Antiqua', serif;
 	}
@@ -300,7 +345,6 @@ body{
 		width: 100%;
 		height: 215px;
 		position: relative;
-		margin-bottom: 2%
 	}
 
 	.event-logo{ /*styles the event-logo*/
@@ -319,7 +363,7 @@ body{
 	  height: 140px;
 	  line-height: 2.2em;
 	  font-size: 16px;
-	  background-color: #2892D7;
+	  background-color: rgba(40, 146, 215, 0.4);
 	  text-align: center;
 	  padding: 5px;
 	}
@@ -327,8 +371,11 @@ body{
 	.info-link{
 		text-align: center;
 		font-size: 16px;
-		margin-top: 2%;
-		vertical-align: center;
+		padding-top: 2%;
+		background-color: rgba(255, 255, 255, .5);
+		margin-bottom: 0;
+		padding-bottom: 2%;
+		font-variant: small-caps;
 	}
 
 	.date-time-cost-container{ /*the container that holds both the cost and date time*/
@@ -338,13 +385,13 @@ body{
 	}
 
 	.cost-container{ /*holds the cost of the event*/
-		background-color: #DB5461;
+		background-color: rgba(219, 84, 97, 0.3);
 		text-align: left;
 		border-radius: 0 0 0 5px;
 	}
 
 	.date-time-container{ /*holds the date time of the event*/
-		background-color: #DB5461;
+		background-color: rgba(219, 84, 97, 0.3);
 		text-align: right;
 		border-radius: 0 0 5px 0;
 		padding-left: 0;
@@ -563,13 +610,8 @@ body{
 		}
 
 		.event-title-container { /*styles the event title */
-			font-size: 20px;
-			text-align: center;
-			background-color: #DB5461;
-			margin-bottom: 2%;
-			border-radius: 12px 12px 0 0;
 			overflow: hidden;
-			height: 32px;
+			height: 39px;
 		}
 
 		.event-container{ /*holds information for the logo, info, and dateTime*/
@@ -593,7 +635,6 @@ body{
 		  height: 140px;
 		  line-height: 2.2em;
 		  font-size: 16px;
-		  background-color: #2892D7;
 		  text-align: center;
 		}
 
