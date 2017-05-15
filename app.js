@@ -1004,7 +1004,7 @@ function watchEventsNavigate(){ //this ensures users always see events
 function watchTripEdit(){ //if user wants to edit trip, this calls down the begin page with an adjusted height
   $("#edit-trip").on("click", function(){
     $("#begin-page-container").removeClass("begin-page-height-full");
-    $("#begin-page-container").addClass("begin-page-height-auto");
+    $("#begin-page-container").removeClass("begin-page-height-auto");
     $("#begin-page-container").fadeToggle("slow", function(){
       $(".roadtrip-inputs").slideToggle("slow")
       $("#results-nav").toggleClass("hidden");
