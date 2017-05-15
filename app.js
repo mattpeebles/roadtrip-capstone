@@ -72,14 +72,11 @@ function getDestinations(){
   }); //initiates initial leg of the journey
 }
 
-  // grabs first date and based on that calculates all
-  //subsequent dates based on length of time user inputs
-
 function checkInputs(){
    var lengthDigit;
    $("#destination-form .length").each(function(){
     
-    var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the length the user inputted
+    var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the text the user inputted in the staying for input
     
     if (length.indexOf("d") != -1){ //if user enters day or days, catches and converts to number
         var length = length.substring(0, length.indexOf("d"))
@@ -100,6 +97,9 @@ function checkInputs(){
   })
   return lengthDigit;
 }
+
+  // grabs first date and based on that calculates all
+  //subsequent dates based on length of time user inputs
 
 function getDates(){
   dates = [];
@@ -855,18 +855,22 @@ function watchEventsNavigate(){ //this ensures users always see events
       nextPushed++
       prevPushed--
       logEventBriteData();
+      console.log("if")
     }
 
     else if(eventsList.length == 0 && pageCount == eventPages){
       pageCount = 1;
       nextPushed = 0;
       prevPushed = 0;
-      eventsList = viewedEvents;
+      eventsList = [];
       viewedEvents = [];
+      console.log("else if")
+      logEventBriteData()
     }
     else { //increments eventnavbutton counters for use in functions 
       nextPushed++
       prevPushed--
+      console.log("else")
     }
     event.preventDefault();
     nextEventsPage();
