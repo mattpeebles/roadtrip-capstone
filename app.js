@@ -72,7 +72,7 @@ function getDestinations(){
   }); //initiates initial leg of the journey
 }
 
-function checkInputs(){
+function checkLengthInputs(){
    var lengthDigit;
    $("#destination-form .length").each(function(){
     
@@ -100,6 +100,14 @@ function checkInputs(){
 
   // grabs first date and based on that calculates all
   //subsequent dates based on length of time user inputs
+
+function preventPastDate(){
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday = yesterday.toISOString().split('T')[0]
+  document.getElementsByName("begin-date")[0].setAttribute('min', yesterday);
+}
+
 
 function getDates(){
   dates = [];
@@ -454,11 +462,17 @@ function randomizePlaceHolder(){
                         "</div>" +
                       "</div>";
       counter++;
-      if (counter == 2){ //if counter reaches two then row is done so it resets everything
+      if (currentResults.length == 1){
         resultHTML += "</div>";
         $("#event-holder").append(resultHTML);
-        resultHTML = "<div class=\"row\">";
-        counter = 0;
+      }
+      else {
+        if (counter == 2){ //if counter reaches two then row is done so it resets everything
+          resultHTML += "</div>";
+          $("#event-holder").append(resultHTML);
+          resultHTML = "<div class=\"row\">";
+          counter = 0;
+        }
       }
     });
     currentResults.forEach(function(item){ //pushes just rendered objects to a justViewed element for navigation purposes
@@ -569,11 +583,17 @@ function randomizePlaceHolder(){
                         "</div>" +
                       "</div>";
       counter++;
-      if (counter == 2){ //if counter reaches two then row is done so it resets everything
+      if (currentResults.length == 1){
         resultHTML += "</div>";
         $("#event-holder").append(resultHTML);
-        resultHTML = "<div class=\"row\">";
-        counter = 0;
+      }
+      else {
+        if (counter == 2){ //if counter reaches two then row is done so it resets everything
+          resultHTML += "</div>";
+          $("#event-holder").append(resultHTML);
+          resultHTML = "<div class=\"row\">";
+          counter = 0;
+        }
       }
     });
     goToResults();
@@ -780,12 +800,13 @@ function watchFormSubmit(){
   function createRoadTrip(){ //function ensures that user is alerted of required tags
     var proceed = false; //locks application rendering behind this variable
     if($("#destination-form")[0].checkValidity()){
+      proceed = true;
     }
     else {
-      proceed = true
+      proceed = true;
     }
 
-    if(checkInputs() === false){
+    if(checkLengthInputs() === false){
         proceed = false
         $("#nonDigit-alert").show(1000);
         $("#nonDigit-alert").fadeOut(15000);
@@ -795,14 +816,6 @@ function watchFormSubmit(){
     }
     
     if (proceed){ //if proceed returns true application runs
-      $(".roadtrip-inputs").slideToggle("slow", function(){
-        $("#begin-page-container").fadeToggle("slow", function(){
-          $("#results-nav").removeClass("hidden");
-          $("#footer-nav").removeClass("hidden")
-          $("#results").removeClass("hidden");
-        });
-      })
-
       nextPushed = 0;
       prevPushed = 0;
       
@@ -814,6 +827,14 @@ function watchFormSubmit(){
       getDates();
       getLeg();
       updateLegDataGeocode();
+
+      $(".roadtrip-inputs").slideToggle("slow", function(){
+        $("#begin-page-container").fadeToggle("slow", function(){
+          $("#results-nav").removeClass("hidden");
+          $("#footer-nav").removeClass("hidden")
+          $("#results").removeClass("hidden");
+        });
+      })
     }
   }
 };
@@ -906,6 +927,7 @@ function watchTripEdit(){
 }
 
 $(function(){
+  preventPastDate();
   randomizePlaceHolder();
   setInterval(function(){randomizePlaceHolder()}, 5000);
   autoComplete();
