@@ -1,6 +1,6 @@
 # wandery
 
-https://mattpeebles.github.io/roadtrip-capstone/
+https://mattpeebles.github.io/wandery/
 
 completed:
 -Javascript
