@@ -102,10 +102,11 @@ function checkLengthInputs(){
   //subsequent dates based on length of time user inputs
 
 function preventPastDate(){
-  var yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  yesterday = yesterday.toISOString().split('T')[0]
-  document.getElementsByName("begin-date")[0].setAttribute('min', yesterday);
+  var today = new Date();
+  // yesterday.setDate(yesterday.getDate() - 1);
+  today = today.toISOString().split('T')[0]
+  document.getElementsByName("begin-date")[0].setAttribute('min', today);
+  console.log(today)
 }
 
 
@@ -364,122 +365,137 @@ function randomizePlaceHolder(){
   }
 
   function displayEventBriteData(data){ //grabs all event data and displays first 6 events in DOM
-    var events = [];
-    data.events.forEach(function(item){ //pushes all items from JSON into events variable
-      events.push(item);
-    });
-    eventPages = data.pagination.page_count;
-    resultsPerPage = data.pagination.page_size
+    if(data.events.length == 0){
+     var resultEventTitleHTML =  "<div id=\"event-section-title\">" +
+                          "<p id=\"event-title-header\">I'm Sorry</p>" +
+                          "<p id=\"event-title-loc\">There are no events in the area during your visit</p>" +
+                          "<p id=\"event-title-page\"><span class=\"glyphicon glyphicon-road\" aria-hidden=\"true\"></span></p>"
+                          "</div>"
+      $("#event-holder").empty()
+      $("#event-section-title-container").empty();
+      $("#event-section-title-container").append(resultEventTitleHTML)
+      $(".event-nav-btn-container").addClass("hidden");
 
-    if (resultsPerPage % 6 != 0){
-      var amountOfPages = Math.floor(resultsPerPage/6) + 1;
+
     }
     else{
-      var amountOfPages = resultsPerPage/6;
-    }
-    
-    var userPages = eventPages * amountOfPages
+      var events = [];
+      data.events.forEach(function(item){ //pushes all items from JSON into events variable
+        events.push(item);
+      });
+      eventPages = data.pagination.page_count;
+      resultsPerPage = data.pagination.page_size
 
-    if (nextPushed == 0){
-      var resultEventTitleHTML =  "<div id=\"event-title\">" +
-                                "<p id=\"event-title-header\">Events" + "</p>" +
-                                "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                                "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
-                                "</div>"
-      $("#event-title-container").empty();
-      $("#event-title-container").append(resultEventTitleHTML);
-    }
-
-
-    $("#event-holder").empty()
-    var resultHTML = "<div class=\"row\" id=\"first-row\">";
-    var counter = 0; //allows control for how many results go into each row
-
-    var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
-
-    currentResults.forEach(function(item){
-      if (item.logo !== null){ //some events do not have logos which threw errors, this conditional catches that
-        var logo = item.logo.url;
+      if (resultsPerPage % 6 != 0){
+        var amountOfPages = Math.floor(resultsPerPage/6) + 1;
       }
-      else {
-        var logo = "resources/event-placeholder-logo.jpeg"; //if there is no logo, this generic image will replace it. NEED TO ADD GENERIC IMAGE
-      };
-      if (item.is_free == true){
-        var cost = "FREE";
+      else{
+        var amountOfPages = resultsPerPage/6;
+      }
+      
+      var userPages = eventPages * amountOfPages
+
+      if (nextPushed == 0){
+        var resultEventTitleHTML =  "<div id=\"event-section-title\">" +
+                                  "<p id=\"event-title-header\">Events" + "</p>" +
+                                  "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
+                                  "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of approximately " + userPages + "</p>"
+                                  "</div>"
+        $("#event-section-title-container").empty();
+        $("#event-section-title-container").append(resultEventTitleHTML);
       }
 
-      else {
-        var cost = "PAID"
-      };
 
-      if (item.description.text == null){
-        var descr = "Organizer has not added a description for this event"
-      }
+      $("#event-holder").empty()
+      var resultHTML = "<div class=\"row\" id=\"first-row\">";
+      var counter = 0; //allows control for how many results go into each row
 
-      else {
-        var descr = item.description.text
-      }
+      var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
 
-      var complexDate = (item.start.local).split("T")[0]
-      var dateArray = complexDate.split("-")
-      var year = dateArray[0]
-      var month = dateArray[1]
-      var day = dateArray[2]
-      var americanDate = month + "/" + day + "/" + year;
+      currentResults.forEach(function(item){
+        if (item.logo !== null){ //some events do not have logos which threw errors, this conditional catches that
+          var logo = item.logo.url;
+        }
+        else {
+          var logo = "resources/event-placeholder-logo.jpeg"; //if there is no logo, this generic image will replace it. NEED TO ADD GENERIC IMAGE
+        };
+        if (item.is_free == true){
+          var cost = "FREE";
+        }
+
+        else {
+          var cost = "PAID"
+        };
+
+        if (item.description.text == null){
+          var descr = "Organizer has not added a description for this event"
+        }
+
+        else {
+          var descr = item.description.text
+        }
+
+        var complexDate = (item.start.local).split("T")[0]
+        var dateArray = complexDate.split("-")
+        var year = dateArray[0]
+        var month = dateArray[1]
+        var day = dateArray[2]
+        var americanDate = month + "/" + day + "/" + year;
 
 
-      var time = (item.start.local).split("T")[1]
-      var now = new Date(item.start.local)
-      var hours = now.getHours()
-      var minutes = now.getMinutes()
-      var timeValue = "" + ((hours > 12) ? hours -12 :hours)
-      timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
-      timeValue += (hours >= 12) ? " P.M." : " A.M."
+        var time = (item.start.local).split("T")[1]
+        var now = new Date(item.start.local)
+        var hours = now.getHours()
+        var minutes = now.getMinutes()
+        var timeValue = "" + ((hours > 12) ? hours -12 :hours)
+        timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
+        timeValue += (hours >= 12) ? " P.M." : " A.M."
 
-      timeValue = ((timeValue == "0:00 A.M.") ? "Midnight" : timeValue)
+        timeValue = ((timeValue == "0:00 A.M.") ? "Midnight" : timeValue)
 
 
-      resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
-                            "<div class=\"event-title-container\">"+ item.name.text + 
-                            "</div>" +
-                        "<div class=\"event-container row\">" +
-                         "<div class=\"logo-container col-xs-12\">" +
-                            "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
-                          "</div>" +
-                          "<div class=\"information-container container col-xs-12\">" +
-                            "<div class=\"event-description-container\">" + descr + 
-                            "</div>" +
-                            "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
-                          "</div>" + 
-                          "<div class=\"date-time-cost-container col-xs-12\">" +
-                            "<div class=\"row\">" +
-                              "<div class=\"cost-container col-xs-4\">" + cost + 
+        resultHTML +=   "<div class=\"total-event-container container col-xs-12 col-sm-6\">" +
+                              "<div class=\"event-title-container\">"+ item.name.text + 
                               "</div>" +
-                              "<div class=\"date-time-container col-xs-8\">" + americanDate + " " + timeValue + 
+                          "<div class=\"event-container row\">" +
+                           "<div class=\"logo-container col-xs-12\">" +
+                              "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
+                            "</div>" +
+                            "<div class=\"information-container container col-xs-12\">" +
+                              "<div class=\"event-description-container\">" + descr + 
+                              "</div>" +
+                              "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
+                            "</div>" + 
+                            "<div class=\"date-time-cost-container col-xs-12\">" +
+                              "<div class=\"row\">" +
+                                "<div class=\"cost-container col-xs-4\">" + cost + 
+                                "</div>" +
+                                "<div class=\"date-time-container col-xs-8\">" + americanDate + " " + timeValue + 
+                                "</div>" +
                               "</div>" +
                             "</div>" +
                           "</div>" +
-                        "</div>" +
-                      "</div>";
-      counter++;
-      if (currentResults.length == 1){
-        resultHTML += "</div>";
-        $("#event-holder").append(resultHTML);
-      }
-      else {
-        if (counter == 2){ //if counter reaches two then row is done so it resets everything
+                        "</div>";
+        counter++;
+        if (currentResults.length == 1){
           resultHTML += "</div>";
           $("#event-holder").append(resultHTML);
-          resultHTML = "<div class=\"row\">";
-          counter = 0;
         }
-      }
-    });
-    currentResults.forEach(function(item){ //pushes just rendered objects to a justViewed element for navigation purposes
-      justViewedEvent.push(item)
-    })
-    $(".event-nav-btn-container").removeClass("hidden");
-    eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
+        else {
+          if (counter == 2){ //if counter reaches two then row is done so it resets everything
+            resultHTML += "</div>";
+            $("#event-holder").append(resultHTML);
+            resultHTML = "<div class=\"row\">";
+            counter = 0;
+          }
+        }
+      });
+      currentResults.forEach(function(item){ //pushes just rendered objects to a justViewed element for navigation purposes
+        justViewedEvent.push(item)
+      })
+      $(".event-nav-btn-container").removeClass("hidden");
+      eventsList = events; //sets global variable eventsList to the events variable created earlier, holds all events from JSON
+    }
   }
 
 
@@ -495,13 +511,13 @@ function randomizePlaceHolder(){
     
     var userPages = eventPages * amountOfPages
 
-    var resultEventTitleHTML =  "<div id=\"event-title\">" +
+    var resultEventTitleHTML =  "<div id=\"event-section-title\">" +
                               "<p id=\"event-title-header\">Events" + "</p>" +
                               "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                              "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
+                              "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of approximately " + userPages + "</p>"
                               "</div>"
-    $("#event-title-container").empty();
-    $("#event-title-container").append(resultEventTitleHTML);
+    $("#event-section-title-container").empty();
+    $("#event-section-title-container").append(resultEventTitleHTML);
 
     if (prevPushed<0){ //this conditional is dominant over the if statement in prevEventsPage. looks to see if previous button has ever been pushed. if it hasn't then only next has so it pulls events from eventsList rather that viewedEvents -- pairs with if statement in prevEventsPage function
       var currentResults = eventsList.splice(0, 6) //grabs and removes first 6 events from events variable. the ones displayed in DOM are only in justViewed variable
@@ -542,6 +558,14 @@ function randomizePlaceHolder(){
         var cost = "PAID"
       }
 
+      if (item.description.text == null){
+        var descr = "Organizer has not added a description for this events"
+      }
+
+      else {
+        var descr = item.description.text
+      }
+
       var complexDate = (item.start.local).split("T")[0]
       var dateArray = complexDate.split("-")
       var year = dateArray[0]
@@ -568,7 +592,7 @@ function randomizePlaceHolder(){
                             "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container container col-xs-12\">" +
-                            "<div class=\"event-description-container\">" + item.description.text + 
+                            "<div class=\"event-description-container\">" + descr + 
                             "</div>" +
                             "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
                           "</div>" + 
@@ -611,13 +635,13 @@ function randomizePlaceHolder(){
     
     var userPages = eventPages * amountOfPages
 
-    var resultEventTitleHTML =  "<div id=\"event-title\">" +
+    var resultEventTitleHTML =  "<div id=\"event-section-title\">" +
                               "<p id=\"event-title-header\">Events" + "</p>" +
                               "<p id=\"event-title-loc\">" + leg[1] + "</p>" +
-                              "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of " + userPages + "</p>"
+                              "<p id=\"event-title-page\">Page: " + (nextPushed +1) + " of approximately" + userPages + "</p>"
                               "</div>"
-    $("#event-title-container").empty();
-    $("#event-title-container").append(resultEventTitleHTML);
+    $("#event-section-title-container").empty();
+    $("#event-section-title-container").append(resultEventTitleHTML);
 
     if (nextPushed >= 0){ //this conditional requires that the if statement in nextEventsPage was called; triggers if next button has ever been pushed when prevEventsPage is called
       var prevResults = viewedEvents.splice(0, 6); //grabs and removes first 6 items from viewedEvents var that nextEventPage function put
@@ -656,6 +680,14 @@ function randomizePlaceHolder(){
         var cost = "PAID"
       };
 
+      if (item.description.text == null){
+        var descr = "Organizer has not added a description for this event"
+      }
+
+      else {
+        var descr = item.description.text
+      }
+
       var complexDate = (item.start.local).split("T")[0]
       var dateArray = complexDate.split("-")
       var year = dateArray[0]
@@ -681,7 +713,7 @@ function randomizePlaceHolder(){
                             "<a href=\"" + item.url + "\" target=\"_blank\"><img class=\"event-logo\" src=\""+ logo + "\"></a>" +
                           "</div>" +
                           "<div class=\"information-container container col-xs-12\">" +
-                            "<div class=\"event-description-container\">" + item.description.text + 
+                            "<div class=\"event-description-container\">" + descr + 
                             "</div>" +
                             "<a href=\"" + item.url + "\" target=\"_blank\"><p class=\"info-link\">More Info</p></a>" +
                           "</div>" + 
@@ -839,6 +871,13 @@ function watchFormSubmit(){
   }
 };
 
+function watchInputClick(){
+  $("input[type='text']").click(function () {
+   $(this).select();
+});
+
+}
+
 function watchLegsNavigate(){
   $("#next-leg-button").on("click", function(){
     if ((legCounter + 1) == (destinations.length-1)){
@@ -875,7 +914,7 @@ function watchEventsNavigate(){ //this ensures users always see events
       pageCount++
       nextPushed++
       prevPushed--
-      logEventBriteData();
+      $("#event-holder").html("<div id =\"load-gif\"><img src=\"resources/Preloader_2.gif\"></div>").load(logEventBriteData());
       console.log("if")
     }
 
@@ -886,7 +925,7 @@ function watchEventsNavigate(){ //this ensures users always see events
       eventsList = [];
       viewedEvents = [];
       console.log("else if")
-      logEventBriteData()
+      $("#event-holder").html("<div id =\"load-gif\"><img src=\"resources/Preloader_2.gif\"></div>").load(logEventBriteData());
     }
     else { //increments eventnavbutton counters for use in functions 
       nextPushed++
@@ -927,6 +966,7 @@ function watchTripEdit(){
 }
 
 $(function(){
+  watchInputClick();
   preventPastDate();
   randomizePlaceHolder();
   setInterval(function(){randomizePlaceHolder()}, 5000);
