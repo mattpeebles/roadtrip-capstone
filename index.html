@@ -7,6 +7,11 @@
 	<meta name="keywords" content="road trip, event planning, event" >
 	<title>Wandery</title>
 
+	<!-- jquery ui -->
+	<link type="text/css" href="resources/jquery-ui/jquery-ui.css" rel="stylesheet">
+	<link type="text/css" href="resources/jquery-ui/jquery-ui.structure.css" rel="stylesheet">
+	<link type="text/css" href="resources/jquery-ui/jquery-ui.theme.css" rel="stylesheet">
+
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -18,6 +23,8 @@
 
 	<!-- my css -->
 	<link rel="stylesheet" type="text/css" href="main.css">
+
+
 </head>
 
 <body>
@@ -37,7 +44,7 @@
 							</div>
 							<div class="date-input col-xs-5">
 								<label>Leaving On</label>
-								<input type="date" name="begin-date" id="start-date" placeholder="yyyy-mm-dd" required/>
+								<input type="text" name="begin-date" id="start-date" placeholder="mm/dd/yyyy" required/>
 							</div>
 							<div class="dest-nav-button col-xs-3 start-btn-set">
 								<div class="btn js-addDest" id="start-add-button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></div><br id="start-break">
@@ -128,6 +135,9 @@
 
 	<!-- jquery -->
 	<script src="resources/jquery.js"></script>
+
+	<!-- dhtmlx calendar -->
+	<script src="resources/jquery-ui/jquery-ui.js"></script>
 
 	<!-- Google Places -->
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMCPU7PyFM8_7KihOTm3T_cfitx-494cQ&libraries=places"></script>
