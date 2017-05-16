@@ -72,6 +72,10 @@ function getDestinations(){
   }); //initiates initial leg of the journey
 }
 
+function startCalendar(){
+  $("#start-date").datepicker();  
+}
+
   //ensures all user inputted lengths of stay are numbers
   //used as a check in the submit form section
 function checkLengthInputs(){
@@ -116,11 +120,18 @@ function getDates(){
   dates = [];
   var datesIndex = 0;
   var startDate = document.getElementById("start-date").value;
+  var startDate = startDate.replace("/", "-")
+  var startDate = startDate.replace("/", "-")
+  console.log(startDate)
   console.log(startDate)
   dates.push(startDate);
+  console.log(dates)
+  var fixStart = dates[0].split("-")
+  dates[0] = ([fixStart[2], fixStart[0], fixStart[1]]).join("-")
   $("#destination-form .length").each(function(){
     var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
     var timeDate = new Date(dtstr.split("-").join("-")).getTime(); //this gets the last date's exact time in seconds
+    console.log(timeDate)
     var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the length the user inputted
     
     if (length.indexOf("d") != -1){ //if user enters day or days, catches and converts to number
@@ -147,6 +158,7 @@ function getLeg(){
   legDates = [dates[legCounter], dates[legCounter +1]];
   
     var dateArray0 = legDates[0].split("-")
+    console.log(dateArray0)
     var year0 = dateArray0[0]
     var month0 = dateArray0[1]
     var day0 = dateArray0[2]
@@ -1013,6 +1025,7 @@ function watchTripEdit(){ //if user wants to edit trip, this calls down the begi
 }
 
 $(function(){
+  startCalendar();
   watchInputClick();
   preventPastDate();
   randomizePlaceHolder(); //randomizes placeholder on first load
