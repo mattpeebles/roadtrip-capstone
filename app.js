@@ -130,7 +130,7 @@ function getDates(){
   dates[0] = ([fixStart[2], fixStart[0], fixStart[1]]).join("-")
   $("#destination-form .length").each(function(){
     var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
-    var timeDate = new Date(dtstr.split("-").join("-")).getTime(); //this gets the last date's exact time in seconds
+    var timeDate = new Date(dtstr).getTime(); //this gets the last date's exact time in seconds
     console.log(timeDate)
     var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the length the user inputted
     
