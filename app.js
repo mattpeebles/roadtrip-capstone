@@ -116,6 +116,7 @@ function getDates(){
   dates = [];
   var datesIndex = 0;
   var startDate = document.getElementById("start-date").value;
+  console.log(startDate)
   dates.push(startDate);
   $("#destination-form .length").each(function(){
     var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
