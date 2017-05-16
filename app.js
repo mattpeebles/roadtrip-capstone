@@ -122,16 +122,12 @@ function getDates(){
   var startDate = document.getElementById("start-date").value;
   var startDate = startDate.replace("/", "-")
   var startDate = startDate.replace("/", "-")
-  console.log(startDate)
-  console.log(startDate)
   dates.push(startDate);
-  console.log(dates)
   var fixStart = dates[0].split("-")
   dates[0] = ([fixStart[2], fixStart[0], fixStart[1]]).join("-")
   $("#destination-form .length").each(function(){
     var dtstr = dates[datesIndex]; //grabs last date in the array to calculate next date
     var timeDate = new Date(dtstr).getTime(); //this gets the last date's exact time in seconds
-    console.log(timeDate)
     var length = $(this).val().toLowerCase().replace(/ /g,''); //this grabs the length the user inputted
     
     if (length.indexOf("d") != -1){ //if user enters day or days, catches and converts to number
@@ -158,7 +154,6 @@ function getLeg(){
   legDates = [dates[legCounter], dates[legCounter +1]];
   
     var dateArray0 = legDates[0].split("-")
-    console.log(dateArray0)
     var year0 = dateArray0[0]
     var month0 = dateArray0[1]
     var day0 = dateArray0[2]
@@ -951,7 +946,6 @@ function watchLegsNavigate(){
 
 function watchEventsNavigate(){ //this ensures users always see events
   $(".next-events-button").on("click", function(){
-    console.log("I'm working")
     //if eventsList has been emptied by user scrolling through it, this resets everything to beginning
     //by navigating through events, 6 events are removed from eventList, when eventList is empty
     //then the events that were returned for that particular page have all been seen
