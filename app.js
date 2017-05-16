@@ -73,7 +73,9 @@ function getDestinations(){
 }
 
 function startCalendar(){
-  $("#start-date").datepicker();  
+  $("#start-date").datepicker({
+    minDate: 0,
+  });  
 }
 
   //ensures all user inputted lengths of stay are numbers
@@ -101,16 +103,6 @@ function checkLengthInputs(){
     }
   })
   return lengthDigit;
-}
-
-  //sets calendar min-date to today
-  //user is unable to select dates that happened
-  //before today
-function preventPastDate(){
-  var today = new Date();
-  // yesterday.setDate(yesterday.getDate() - 1);
-  today = today.toISOString().split('T')[0]
-  document.getElementsByName("begin-date")[0].setAttribute('min', today);
 }
 
 
@@ -1021,7 +1013,6 @@ function watchTripEdit(){ //if user wants to edit trip, this calls down the begi
 $(function(){
   startCalendar();
   watchInputClick();
-  preventPastDate();
   randomizePlaceHolder(); //randomizes placeholder on first load
   setInterval(function(){randomizePlaceHolder()}, 5000); //randomizes placeholder every 5 seconds thereafter
   autoComplete();
