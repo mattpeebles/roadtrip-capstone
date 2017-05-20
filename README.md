@@ -3,10 +3,10 @@
 https://mattpeebles.github.io/wandery/
 
  ## Table of Contents ##
-	1. [Introduction](#introduction)
-	1. [Screen Shots](#screen-shots)
-	1. [Technology Used](#tech-used)
-	1. [Future Plans](#future-plans)
+ 1. [Introduction](#introduction)
+ 1. [Screen Shots](#screen-shots)
+ 1. [Technology Used](#tech-used)
+ 1. [Future Plans](#future-plans)
 
 **Introduction**<a name="introduction"></a>
 	This application is designed to make it easier to design roadtrips with any number of stops. Users enter
@@ -21,26 +21,26 @@ https://mattpeebles.github.io/wandery/
 	button in the nav bar, users are able to add and remove cities as they please and reorder their roadtrip. 
 
 **Screen Shots**<a name="screen-shots"></a>
-	* Landing Page
-	* Edit Trip
-	* Map w/o leg navigation
-	* Map w/ leg navigation
-	* First Event Page
-	* Subsequent Event Pages
+* Landing Page
+* Edit Trip
+* Map w/o leg navigation
+* Map w/ leg navigation
+* First Event Page
+* Subsequent Event Pages
 
 **Technology Used**<a name="tech-used"></a>
-	* HTML
-	* CSS
-		* [Bootstrap](http://getbootstrap.com/)
-	* JavaScript
-	* jQuery
-		* [jQueryUI](https://jqueryui.com/)
-	* API Calls
-		* [EventBrite](https://www.eventbrite.com/developer/v3/)
-		* [Google Autocomplete](https://developers.google.com/maps/documentation/javascript/places-autocomplete)
-		* [Google Geocoding](https://developers.google.com/maps/documentation/geocoding/intro)
+ * HTML
+ * CSS
+  * [Bootstrap](http://getbootstrap.com/)
+ * JavaScript
+ * jQuery
+  * [jQueryUI](https://jqueryui.com/)
+* API Calls
+  * [EventBrite](https://www.eventbrite.com/developer/v3/)
+  * [Google Autocomplete](https://developers.google.com/maps/documentation/javascript/places-autocomplete)
+  * [Google Geocoding](https://developers.google.com/maps/documentation/geocoding/intro)
 
 **Future Plans**<a name="future-plans"></a>
-	* to catch spelled out numbers and use them rather than throwing alert
-		* https://www.npmjs.com/package/words-to-num
-	* Adding weather functionality to display forecast along route
+ * to catch spelled out numbers and use them rather than throwing alert
+  * https://www.npmjs.com/package/words-to-num
+ * Adding weather functionality to display forecast along route
