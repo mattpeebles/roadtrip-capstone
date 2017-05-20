@@ -8,7 +8,7 @@ https://mattpeebles.github.io/wandery/
  1. [Technology Used](#tech-used)
  1. [Future Plans](#future-plans)
 
-**Introduction**<a name="introduction"></a>
+### Introduction ###<a name="introduction"></a><br>
 	This application is designed to make it easier to design roadtrips with any number of stops. Users enter
 	the length of time they are staying in each destination and the day they begin the roadtrip. The app then
 	breaks the trip into legs of two cities each, the starting city and the destination city. In addition to a 
@@ -20,7 +20,7 @@ https://mattpeebles.github.io/wandery/
 	Of course, a user can make as many edits to the roadtrip as they please. By clicking the _edit trip_ 
 	button in the nav bar, users are able to add and remove cities as they please and reorder their roadtrip. 
 
-**Screen Shots**<a name="screen-shots"></a>
+### Screen Shots ###<a name="screen-shots"></a>
 * Landing Page
 * Edit Trip
 * Map w/o leg navigation
@@ -28,7 +28,7 @@ https://mattpeebles.github.io/wandery/
 * First Event Page
 * Subsequent Event Pages
 
-**Technology Used**<a name="tech-used"></a>
+### Technology Used ###<a name="tech-used"></a>
  * HTML
  * CSS
   * [Bootstrap](http://getbootstrap.com/)
@@ -40,7 +40,6 @@ https://mattpeebles.github.io/wandery/
   * [Google Autocomplete](https://developers.google.com/maps/documentation/javascript/places-autocomplete)
   * [Google Geocoding](https://developers.google.com/maps/documentation/geocoding/intro)
 
-**Future Plans**<a name="future-plans"></a>
- * to catch spelled out numbers and use them rather than throwing alert
-  * https://www.npmjs.com/package/words-to-num
+### Future Plans ###<a name="future-plans"></a>
+ * to convert typed out numbers to digits by using [word-to-number](https://www.npmjs.com/package/words-to-num) package rather than throwing alert 
  * Adding weather functionality to display forecast along route
