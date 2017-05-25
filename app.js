@@ -165,7 +165,7 @@ function updateDestLabel(){
     var parentDiv = $(jqueryItem).parent() //grabs the parent of the label which is the city-input div
     var parentContainer = $(parentDiv).parent(); //grabs the parent of the city-input div which is the dest-container div
     var location = $(parentContainer).index(this); //calculates it's position in relation to its siblings
-    var tarLabel = "#label-" + item; //creates new label text
+    var tarLabel = "#label-" + item; //creates new label text, tarLabel = targetLabel
     $(tarLabel).text(''); //removes prior label text if it existed
     $(tarLabel).text("Sight " + (location)); //sets label to it's current location. Because the start position will always be at position 1, we account for that by subtracting 1
   })
@@ -175,7 +175,6 @@ function updateDestLabel(){
   //  which contains the buttno that was pushed
 function addDest(){
   $("#destination-form").on("click", ".js-addDest", function(event){
-    event.preventDefault();
     var newDestForm = "<div class=\"dest-container row\">"+
                         "<div class=\"city-input col-xs-4\">" +
                           "<label id=\"label-destination-" + addDestCounter + "\"></label>"+
@@ -195,6 +194,7 @@ function addDest(){
     var currentParent = $(this).parent();
     var formParent = $(currentParent).parent();
     $(formParent).after(newDestForm);
+
     // adds autocomplete functionality to each new input
   var nPoint = "destination-" + addDestCounter;
   var newPoint = document.getElementById(nPoint);
@@ -210,7 +210,6 @@ function addDest(){
   //remove button
 function removeDest(){
   $("#destination-form").on("click", ".js-removeDest", function(event){
-    event.preventDefault();
     var currentParent = $(this).parent();
     var formParent = $(currentParent).parent();
     $(formParent).remove();
