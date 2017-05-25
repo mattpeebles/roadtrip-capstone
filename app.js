@@ -1014,7 +1014,7 @@ $(function(){
   startCalendar();
   watchInputClick();
   randomizePlaceHolder(); //randomizes placeholder on first load
-  setInterval(function(){randomizePlaceHolder()}, 5000); //randomizes placeholder every 5 seconds thereafter
+  setInterval(function(){randomizePlaceHolder()}, 15000); //randomizes placeholder every 15 seconds thereafter
   autoComplete();
   watchFormSubmit();
   addDest();

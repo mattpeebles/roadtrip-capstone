@@ -131,14 +131,27 @@ body{
 		#js-form-submit{
 			position: relative;
 			background-color: #DB5461;
+			border: none;
+  			border-radius: 15px;
+  			box-shadow: 0 10px #501f24;
 			text-align: center;
-			width: 80%;
+			width: 45%;
 			font-size: 1.5em;
 			color: #FFFFFF;
 			margin-left: auto;
 			margin-right: auto;
 			border-radius: 8px;
 			margin-bottom: 2%;
+		}
+
+		#js-form-submit:hover{
+			background-color: #a03e47;
+		}
+
+		#js-form-submit:active{
+			background-color: #a03e47;
+  			box-shadow: 0 5px #501f24;
+  			transform: translateY(5px);
 		}
 
 		.dest-nav-button {
@@ -152,16 +165,32 @@ body{
 			width: 110%;
 		}
 
-		.js-addDest{
-			position: absolute;
-			right: 5%;
+		.js-addDest, .js-removeDest{
 			background-color: #A3C3D9;
+			box-shadow: 0 4px #3c474f;
+			position: absolute;
+			color: lightyellow;
+
+		}
+
+		.js-addDest:hover, .js-removeDest:hover{
+			background-color: #86a0b2;
+		}
+
+		.js-addDest:active, .js-removeDest:active{
+			background-color: #86a0b2;
+			box-shadow: 0 2px #3c474f;
+			transform: translateY(2px)
+
+		}
+
+		.js-addDest{
+			right: 5%;
+
 		}
 
 		.js-removeDest{
-			position: absolute;
 			left: 0;
-			background-color: #A3C3D9;
 		}
 
 	/*************************************************/
@@ -200,7 +229,6 @@ body{
 
 	.navbar{
 		border: 1px solid #DB5461;
-		width: 95%;
 		position: relative;
 		margin-left: auto;
 		margin-right: auto;
@@ -224,11 +252,10 @@ body{
 /*************************************************/
 	#leg-title-container{
 		margin-top: 1%;
-		width: 95%;
+		width: 100%;
 		background-color: rgba(40, 146, 215, .7);
 		margin-bottom: 2%;
 		border: 1px solid rgba(40, 146, 215, .7);
-		border-radius: 5px;
 
 	}
 
@@ -294,11 +321,9 @@ body{
 /*************************************************/
 	#event-section-title-container{ /*styles the div that starts the events section, holds page number and city*/
 		margin-top: 1%;
-		width: 95%;
 		background-color: rgba(40, 146, 215, .7);
 		margin-bottom: 2%;
 		border: 1px solid rgba(40, 146, 215, .7);
-		border-radius: 5px;
 		position: relative;
 		margin-left: auto;
 		margin-right: auto;
@@ -361,17 +386,17 @@ body{
 	}
 	.event-description-container{ /*holdes event description text */
 	  overflow: hidden;
-	  height: 140px;
+	  height: 153px;
 	  line-height: 2.2em;
 	  font-size: 16px;
 	  background-color: rgba(40, 146, 215, 0.4);
 	  text-align: center;
-	  padding: 5px;
+	  padding: 2%;
 	}
 
 	.info-link{
 		text-align: center;
-		font-size: 16px;
+		font-size: 1 6px;
 		padding-top: 2%;
 		background-color: rgba(255, 255, 255, .5);
 		margin-bottom: 0;
@@ -385,17 +410,21 @@ body{
 		font-size: 18px;	
 	}
 
-	.cost-container{ /*holds the cost of the event*/
+	
+	.cost-container, .date-time-container{
 		background-color: rgba(219, 84, 97, 0.3);
-		text-align: left;
 		border-radius: 0 0 0 5px;
+		padding-top: 2%;
+		padding-bottom: 2%;
+
+	}
+
+	.cost-container{ /*holds the cost of the event*/
+		text-align: left;
 	}
 
 	.date-time-container{ /*holds the date time of the event*/
-		background-color: rgba(219, 84, 97, 0.3);
 		text-align: right;
-		border-radius: 0 0 5px 0;
-		padding-left: 0;
 	}
 /*************************************************/
 
@@ -633,7 +662,6 @@ body{
 
 		.event-description-container{ /*holdes event description text */
 		  overflow: hidden;
-		  height: 140px;
 		  line-height: 2.2em;
 		  font-size: 16px;
 		  text-align: center;
