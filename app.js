@@ -22,27 +22,6 @@ var legData  = {
                 endPoint: {geocode: {},
                           weather: {}
                          },
-                         //FUTURE FUNCTIONALITY
-               // midPoint: {geocode: {},
-               //            weather: {}
-               //            },
-
-               // "point0.25": {geocode: {},
-               //            weather: {}
-               //           },
-               // "point0.75": {geocode: {},
-               //            weather: {}
-               //           },
-               //  "startToEnd": {distance: null,
-               //                  time: null},
-               //  "startTo0.25": {distance: null,
-               //                  time: null },
-               //  "point0.25ToMid": {distance: null,
-               //                  time: null },
-               //  "midTo0.75": {distance: null,
-               //                  time: null },
-               //  "Point0.75ToEnd": {distance: null,
-               //                  time: null },
               };
 
 
@@ -72,6 +51,10 @@ function getDestinations(){
   }); //initiates initial leg of the journey
 }
 
+
+  //calls calendar function on
+  //start date and sets today
+  //as the earliest date user can pick
 function startCalendar(){
   $("#start-date").datepicker({
     minDate: 0,
@@ -80,6 +63,8 @@ function startCalendar(){
 
   //ensures all user inputted lengths of stay are numbers
   //used as a check in the submit form section
+  //throws alert if user enters a non-digit and focuses
+  //on the input that is throwing the error
 function checkLengthInputs(){
    var lengthDigit;
    $("#destination-form .length").each(function(){
@@ -96,6 +81,9 @@ function checkLengthInputs(){
 
     if (isNaN(parseInt(length))){
       lengthDigit = false;
+      $(this).focus();
+      $("#nonDigit-alert").show(1000); 
+      $("#nonDigit-alert").fadeOut(10000);
     }
 
     else{
@@ -112,8 +100,7 @@ function getDates(){
   dates = [];
   var datesIndex = 0;
   var startDate = document.getElementById("start-date").value;
-  var startDate = startDate.replace("/", "-")
-  var startDate = startDate.replace("/", "-")
+  var startDate = startDate.replace(/[/]/g, "-")
   dates.push(startDate);
   var fixStart = dates[0].split("-")
   dates[0] = ([fixStart[2], fixStart[0], fixStart[1]]).join("-")
@@ -166,36 +153,6 @@ function getLeg(){
   $("#leg-title-container").empty();
   $("#leg-title-container").append(resultLegTitleHTML);
 }
-
-  //provides the formula to calculate the rough distance between two different geocoordinates 
-  //this is extraneous right now. may be useful when I do weather
-  //between points to give the user context about the distance
-  //between the weather calls i.e. you'll have rain for approximately
-  //the first 30 miles of your journey
-function calcDistance(lat1, lon1, lat2, lon2){
-  var R = 6371; 
-  var φ1 = lat1 * (Math.PI / 180);
-  var φ2 = lat2 * (Math.PI / 180);
-  var Δφ = (lat2-lat1) * (Math.PI / 180);
-  var Δλ = (lon2-lon1) * (Math.PI / 180);
-
-  var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-          Math.cos(φ1) * Math.cos(φ2) *
-          Math.sin(Δλ/2) * Math.sin(Δλ/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-  var d = R * c;
-
-  var miles = d * 0.621371
-}
-
-  //this calculates the distance between two different geocoordinates
-  //this will be used once weather is added to the page
-function calcAllDistance(){ //make this less complicated
-  calcDistance(legData["startPoint"]["geocode"]["lat"], legData["startPoint"]["geocode"]["lng"], 
-               legData["endPoint"]["geocode"]["lat"], legData["endPoint"]["geocode"]["lng"]);
-}
-
 
 // DOM Manipulation
 var destIds = [];
@@ -851,11 +808,9 @@ function watchFormSubmit(){
     else {
       proceed = true;
     }
-
     if(checkLengthInputs() === false){ //ensures checkLengthInputs did not return false, if it did, they didn't enter a viable length of stay
         proceed = false
-        $("#nonDigit-alert").show(1000); 
-        $("#nonDigit-alert").fadeOut(15000);
+      console.log("me")
     }
     else{
         proceed = true
