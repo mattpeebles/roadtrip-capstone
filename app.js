@@ -340,9 +340,10 @@ function randomizePlaceHolder(){
 
   // function that animates screen to go to the results section
   //after next event is pushed
-  function goToResults(){
+  function goToResults(id){
+    var formatId = "#" + id
     $('html,body').animate({
-      scrollTop: $("#event-title-page").offset().top},
+      scrollTop: $(formatId).offset().top},
       'slow');
   };
 
@@ -637,7 +638,7 @@ function randomizePlaceHolder(){
         }
       }
     });
-    goToResults(); //scrolls the page section of event section title div
+    goToResults("event-title-page"); //scrolls the page section of event section title div
   }
 
   function prevEventsPage(){ //displays previously viewed events, again almost similar functionality to previous functions except where noted
@@ -874,6 +875,14 @@ function watchFormSubmit(){
       getLeg();
       updateLegDataGeocode();
 
+      if (destinations.length == 2){
+        $("#leg-nav-btn-container").addClass("hidden")
+      }
+
+      else{
+        $("#leg-nav-btn-container").removeClass("hidden")
+      }
+
       $(".roadtrip-inputs").slideToggle("slow", function(){
         $("#begin-page-container").fadeToggle("slow", function(){
           $("#results-nav").removeClass("hidden");
@@ -1002,6 +1011,7 @@ function watchTripEdit(){ //if user wants to edit trip, this calls down the begi
   $("#edit-trip").on("click", function(){
     $("#begin-page-container").removeClass("begin-page-height-full");
     $("#begin-page-container").removeClass("begin-page-height-auto");
+    goToResults("begin-page-container");
     $("#begin-page-container").fadeToggle("slow", function(){
       $(".roadtrip-inputs").slideToggle("slow")
       $("#results-nav").toggleClass("hidden");
