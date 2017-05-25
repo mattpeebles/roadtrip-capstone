@@ -154,7 +154,8 @@ function getLeg(){
   $("#leg-title-container").append(resultLegTitleHTML);
 }
 
-// DOM Manipulation
+// DOM Manipulation Section
+
 var destIds = [];
   
   //creates label for each new destination and ensures that the
@@ -242,6 +243,16 @@ function randomizePlaceHolder(){
     cities.push(city2[0]);
 }
 
+  // function that animates screen to go to the results section
+  //after next event is pushed
+function goToResults(id){
+    var formatId = "#" + id
+    $('html,body').animate({
+      scrollTop: $(formatId).offset().top},
+      'slow');
+};
+
+
 // API SECTION
 
       //Obtaining geocodes section 
@@ -270,17 +281,18 @@ function randomizePlaceHolder(){
           else if (myGeoArray.length == 2){
             legData["endPoint"]["geocode"]["lat"] = myGeoArray[1].lat;
             legData["endPoint"]["geocode"]["lng"] = myGeoArray[1].lng;
-            // updateWeatherObject(); //will be used in the future to update weather
+            
+            //calls only once array is filled with geocoordinates of two destinations
             logEventBriteData();
             getGoogleMaps();
           }
   }
 
-  function updateLegDataGeocode(){ //calls and executes Geocode API for each item in the leg array, clears geoarray so no duplicates are pushed
+  function updateLegDataGeocode(){ //calls and executes Geocode API for each item in the leg array
       leg.forEach(function(item){
         getDataFromGoogleGeocode(item, returnGeocodeData);
       });
-      myGeoArray = [];
+      myGeoArray = []; //clears geoarray so no duplicates are pushed if user edits trip
   }
 // ******************************************************************
 
@@ -294,16 +306,6 @@ function randomizePlaceHolder(){
   var nextPushed = 0;
   var prevPushed = 0;
 
-  // function that animates screen to go to the results section
-  //after next event is pushed
-  function goToResults(id){
-    var formatId = "#" + id
-    $('html,body').animate({
-      scrollTop: $(formatId).offset().top},
-      'slow');
-  };
-
-
   // queries eventbrite api to obtain data about events
   //within the dates the user will be in the city
   function getDataFromEventBrite(callback){
@@ -316,8 +318,7 @@ function randomizePlaceHolder(){
       "sort_by": "date",
       "include_all_series_instances": false,
       "categories": "103,110,113,105,104,108,107,102,109,111,114,115,116,106,117,118,119,199",
-      // "price": null, //future functionality
-      "page": pageCount, //this is causing an error, it should return paginated responses however
+      "page": pageCount,
       token: "NYUIK7WAP7JD57IF4W4H",
     }
     $.getJSON(EVENTBRITE_BASE_URL, query, callback)
@@ -344,15 +345,12 @@ function randomizePlaceHolder(){
       data.events.forEach(function(item){ //pushes all items from JSON into events variable
         events.push(item);
       });
-      eventPages = data.pagination.page_count; //grabs the amount of pages that the query returned
-      resultsPerPage = data.pagination.page_size //grabs the amount of results per page
 
-      if (resultsPerPage % 6 != 0){
-        var amountOfPages = Math.floor(resultsPerPage/6) + 1; //app displays 6 events. So we take resultsPerPage/6 and if there is a remainder, we add 1 additional page to it.
-      }
-      else{
-        var amountOfPages = resultsPerPage/6;
-      }
+      eventPages = data.pagination.page_count; //grabs the amount of pages that the query returned, used for nav purposes
+      resultsPerPage = data.pagination.page_size //grabs the amount of results per page, used for nav purposes
+
+      var amountOfPages = ((resultsPerPage % 6 != 0) ? (Math.floor(resultsPerPage/6) + 1) : (resultsPerPage/6))
+
       var userPages = eventPages * amountOfPages
 
         //displays event header, event city, and the approximate number of event pages. Eventbrite does not guarantee the amount that is returned, so any calculation is approximate
@@ -374,30 +372,13 @@ function randomizePlaceHolder(){
       var currentResults = events.splice(0, 6); //instantiates a new variable by grabbing and removing first 6 events in events
 
       currentResults.forEach(function(item){
-        if (item.logo !== null){ //some events do not have logos which threw errors, this conditional catches that
-          var logo = item.logo.url;
-        }
-        else {
-          var logo = "resources/event-placeholder-logo.jpeg"; //if there is no logo, this generic image will replace it. NEED TO ADD GENERIC IMAGE
-        };
+        var logo = ((item.logo !== null) ? item.logo.url : "resources/event-placeholder-logo.jpeg")
 
         //sets price either free or not free
-        if (item.is_free == true){
-          var cost = "FREE";
-        }
-
-        else {
-          var cost = "PAID"
-        };
+        var cost = ((item.is_free == true) ? "FREE" : "PAID")
 
         //sets description
-        if (item.description.text == null){
-          var descr = "Organizer has not added a description for this event"
-        }
-
-        else {
-          var descr = item.description.text
-        }
+        var descr = ((item.description.text == null) ? "Organizer has not added a description for this event" : item.description.text)
 
           //Transforms returned date into traditional
           //American date syntax
@@ -476,13 +457,8 @@ function randomizePlaceHolder(){
   function nextEventsPage(){ //displays next 6 events in DOM, functions are almost exactly the same as in displayEventBrite Data
     var resultHTML; //creates new resultHTML variable
     
-    if (resultsPerPage % 6 != 0){
-      var amountOfPages = Math.floor(resultsPerPage/6) + 1;
-    }
-    else{
-      var amountOfPages = resultsPerPage/6;
-    }
-    
+    var amountOfPages = ((resultsPerPage % 6 != 0) ? (Math.floor(resultsPerPage/6) + 1) : (resultsPerPage/6))
+
     var userPages = eventPages * amountOfPages
 
     var resultEventTitleHTML =  "<div id=\"event-section-title\">" +
@@ -517,28 +493,13 @@ function randomizePlaceHolder(){
     var counter = 0; //allows control for how many results go into each row
 
     currentResults.forEach(function(item){ //same functionality as displayEventBriteData section
-      if (item.logo !== null){
-        var logo = item.logo.url;
-      }
-      else {
-        var logo = "resources/event-placeholder-logo.jpeg";
-      }
+      var logo = ((item.logo !== null) ? item.logo.url : "resources/event-placeholder-logo.jpeg")
 
-      if (item.is_free == true){
-        var cost = "FREE";
-      }
+      //sets price either free or not free
+      var cost = ((item.is_free == true) ? "FREE" : "PAID")
 
-      else {
-        var cost = "PAID"
-      }
-
-      if (item.description.text == null){
-        var descr = "Organizer has not added a description for this events"
-      }
-
-      else {
-        var descr = item.description.text
-      }
+      //sets description
+      var descr = ((item.description.text == null) ? "Organizer has not added a description for this event" : item.description.text)
 
       var complexDate = (item.start.local).split("T")[0]
       var dateArray = complexDate.split("-")
@@ -600,12 +561,8 @@ function randomizePlaceHolder(){
   function prevEventsPage(){ //displays previously viewed events, again almost similar functionality to previous functions except where noted
     var resultHTML;
     
-    if (resultsPerPage % 6 != 0){
-      var amountOfPages = Math.floor(resultsPerPage/6) + 1;
-    }
-    else{
-      var amountOfPages = resultsPerPage/6;
-    }
+    var amountOfPages = ((resultsPerPage % 6 != 0) ? (Math.floor(resultsPerPage/6) + 1) : (resultsPerPage/6))
+
     
     var userPages = eventPages * amountOfPages
 
@@ -640,27 +597,13 @@ function randomizePlaceHolder(){
     var counter = 0; //allows control for how many results go into each row
 
     prevResults.forEach(function(item){ //same functionality as displayEventBriteData
-      if (item.logo !== null){
-        var logo = item.logo.url
-      }
-      else {
-        var logo = "#";
-      };
+      var logo = ((item.logo !== null) ? item.logo.url : "resources/event-placeholder-logo.jpeg")
 
-      if (item.is_free == true){
-        var cost = "FREE";
-      }
-      else {
-        var cost = "PAID"
-      };
+      //sets price either free or not free
+      var cost = ((item.is_free == true) ? "FREE" : "PAID")
 
-      if (item.description.text == null){
-        var descr = "Organizer has not added a description for this event"
-      }
-
-      else {
-        var descr = item.description.text
-      }
+      //sets description
+      var descr = ((item.description.text == null) ? "Organizer has not added a description for this event" : item.description.text)
 
       var complexDate = (item.start.local).split("T")[0]
       var dateArray = complexDate.split("-")
@@ -675,6 +618,7 @@ function randomizePlaceHolder(){
       var hours = now.getHours()
       var minutes = now.getMinutes()
       var timeValue = "" + ((hours >12) ? hours -12 :hours)
+
       timeValue += ((minutes < 10) ? ":0" : ":")  + minutes
       timeValue += (hours >= 12) ? " P.M." : " A.M."
       timeValue = ((timeValue == "0:00 A.M.") ? "Midnight" : timeValue)
@@ -723,38 +667,6 @@ function randomizePlaceHolder(){
       var autocompleteEnd = new google.maps.places.Autocomplete(end)
     }
 // ******************************************************************
-
-
-      //Open Weather API
-      //future functionality
-// // ******************************************************************
-//   var OPEN_WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
-
-//   var weather = []; 
-
-//   function getDataFromOpenWeather(point, callback){
-//     var lat = point.lat;
-//     var lon = point.lng;
-//     var query = {
-//       "lat": lat,
-//       "lon": lon,
-//       appid: "d01498adc1f04688324d55f1b9507017",
-//     }
-//   $.getJSON(OPEN_WEATHER_BASE_URL, query, callback)
-//   }
-
-//   function pushDataFromOpenWeather(data){
-//     weather.push(data.weather[0]);
-//   }
-
-//   function updateWeatherObject(){
-//     var pointsArray = [legData.startPoint, legData.endPoint];
-//     // , legData.midPoint, legData["point0.5"], legData["point1.5"]]
-//     pointsArray.forEach(function(point){
-//       getDataFromOpenWeather(point.geocode, pushDataFromOpenWeather);
-//     })
-//   }
-// // ******************************************************************
 
       //Google Maps API
 // ******************************************************************
