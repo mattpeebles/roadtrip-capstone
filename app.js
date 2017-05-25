@@ -713,15 +713,13 @@ function watchFormSubmit(){
 
   function createRoadTrip(){ //function ensures that user has inputted required data
     var proceed = false; //locks application rendering behind this variable
+    
     if($("#destination-form")[0].checkValidity()){ //ensures user has inputted required data in all inputs
       proceed = true;
     }
-    else {
-      proceed = true;
-    }
+
     if(checkLengthInputs() === false){ //ensures checkLengthInputs did not return false, if it did, they didn't enter a viable length of stay
         proceed = false
-      console.log("me")
     }
     else{
         proceed = true
@@ -763,8 +761,7 @@ function watchFormSubmit(){
 function watchInputClick(){ //highlights all text when user clicks on an input
   $("input[type='text']").click(function () {
    $(this).select();
-});
-
+  });
 }
 
 function watchLegsNavigate(){
@@ -824,6 +821,7 @@ function watchEventsNavigate(){ //this ensures users always see events
       nextPushed++
       prevPushed--
         //this function shows a loading gif while logEventBriteData is loading the data
+     
       $("#event-holder").html("<div id =\"load-gif\"><img src=\"resources/Preloader_2.gif\"></div>").load(logEventBriteData());
     }
 
