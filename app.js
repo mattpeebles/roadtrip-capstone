@@ -730,6 +730,18 @@ function watchFormSubmit(){
       nextPushed = 0;
       prevPushed = 0;
       
+
+      myGeoArray = [];
+
+      legData  = {
+                startPoint: {geocode: {},
+                            weather: {}
+                           },
+                endPoint: {geocode: {},
+                          weather: {}
+                         },
+              };
+
       eventsList = [];
       viewedEvents = [];
       justViewedEvent = [];
