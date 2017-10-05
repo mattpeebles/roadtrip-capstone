@@ -39,6 +39,7 @@ body{
 		background-position: center;
 		background-repeat: no-repeat;
 		display: table;
+		height: 100vh;
 	}
 
 	#roadtrip-begin-page{
